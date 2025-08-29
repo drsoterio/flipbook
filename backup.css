@@ -1,0 +1,226 @@
+/* JOURNAL THEME — page & cover styling like the reference image  */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
+
+:root{
+  --paper: #ece4d6;         /* warm beige paper */
+  --ink:   #171717;         /* near-black text */
+  --ink-2: #333333;         /* body gray */
+  --rule:  #262626;         /* divider line */
+  --label: #111111;         /* label headings */
+  --muted: #6b6b6b;         /* captions, byline */
+  --accent:#0d2b4d;         /* optional accent */
+}
+
+/* base (keep flip size & pointer behavior) */
+*{ box-sizing:border-box; margin:0; padding:0; }
+html,body{ height:100%; }
+body{
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background: #e7e1d5;
+  color: var(--ink-2);
+  display: grid;
+  place-content: center;
+  overflow: hidden;
+}
+
+.flipbook{ width: 1000px; height: 600px; }
+.flipbook .page, .flipbook .hard{ cursor: pointer; }
+
+/* ========== HARD COVERS (journal look) ========== */
+.hard.cover-journal,
+.hard.inside-journal{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.3)),
+    var(--paper);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  position: relative;
+}
+
+.cover-journal .cover-inner{
+  text-align: center;
+  max-width: 80%;
+}
+.cover-journal h1{
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  font-size: clamp(26px, 3vw, 40px);
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.cover-journal h2{
+  font-weight: 600;
+  font-size: clamp(16px, 2vw, 20px);
+  margin-bottom: 8px;
+  color: var(--ink-2);
+}
+.cover-journal .byline{
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: .3px;
+}
+.cover-journal.back .byline{ opacity:.7; }
+
+.cover-band{
+  position: absolute;
+  left: 24px; right: 24px;
+  height: 2px;
+  background: var(--rule);
+  opacity: .85;
+}
+.cover-band.top{ top: 22px; }
+.cover-band.bottom{ bottom: 22px; }
+
+.inside-journal .colophon{
+  max-width: 80%;
+  text-align: center;
+  color: var(--ink-2);
+}
+
+/* ========== PAGE: JOURNAL PAPER LOOK ========== */
+.page.journal{
+  position: relative;
+  padding: 24px 28px 26px;
+  background: var(--paper);
+  color: var(--ink-2);
+  line-height: 1.45;
+}
+
+/* subtle ink/paper grain (light, performant) */
+.paper-grain{
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(120% 90% at 20% 10%, rgba(0,0,0,.03), transparent 60%),
+    radial-gradient(100% 70% at 80% 20%, rgba(0,0,0,.02), transparent 60%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* header block like your image */
+.specimen-head{ margin-bottom: 10px; }
+.specimen-head.compact{ margin-bottom: 6px; }
+
+.specimen-id{
+  font-variant: small-caps;
+  letter-spacing: 0.8px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+}
+.specimen-title{
+  color: var(--ink);
+  font-weight: 900;
+  line-height: 1.15;
+  margin-top: 4px;
+  font-size: clamp(18px, 2.2vw, 24px);
+}
+.rule{
+  margin-top: 8px;
+  height: 2px;
+  width: 100%;
+  background: var(--rule);
+  opacity: .9;
+}
+
+/* illustration floats to the right like a blueprint */
+.illustration{
+  width: 55%;
+  max-width: 520px;
+  float: right;
+  margin: 6px 0 10px 18px;
+  filter: grayscale(100%) contrast(1.05);
+  opacity: .9;
+}
+
+/* meta labels & paragraphs */
+.meta h4{
+  margin: 12px 0 2px;
+  font-weight: 800;
+  letter-spacing: .3px;
+  color: var(--label);
+}
+.meta p{
+  margin: 0 0 8px;
+  color: var(--ink-2);
+}
+
+/* emphasized inline elements mimic the reference */
+.meta em{ font-style: italic; }
+.meta strong{ font-weight: 800; color: var(--ink); }
+
+.documented-by{
+  margin-top: 10px;
+  color: var(--ink-2);
+}
+.documented-by span{
+  font-weight: 800;
+  color: var(--label);
+}
+
+/* back page: plate + list */
+.backmatter{ display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; align-items: start; }
+.backmatter .plate img{
+  width: 100%; height: auto; display: block;
+  filter: grayscale(100%) contrast(1.05);
+}
+.backmatter .plate figcaption{
+  font-size: 12px; color: var(--muted); margin-top: 6px;
+}
+.backmatter .lead{
+  font-weight: 700; color: var(--ink);
+  margin-bottom: 6px;
+}
+.backmatter ul{ padding-left: 18px; }
+.backmatter li{ margin: 4px 0; }
+
+/* clickable feedback without interfering with turn.js */
+.page.journal:active{ filter: brightness(.99); transition: filter 120ms ease; }
+
+/* responsive */
+@media (max-width: 900px){
+  .illustration{ float: none; width: 100%; margin: 8px 0; }
+  .backmatter{ grid-template-columns: 1fr; }
+}
+/* --- turn.js stability fixes --- */
+.flipbook .page,
+.flipbook .hard {
+  /* keep the page box EXACT (no borders), and avoid 3D backface flicker */
+  border: none !important;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform: translateZ(0); /* promote to its own layer */
+}
+
+/* prevent large box-shadows/outlines from being clipped weirdly */
+.flipbook .page * {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* images should not reflow during the turn */
+.flipbook .page img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* if you used a floating illustration, floats can repaint mid-turn on some GPUs.
+   Prefer block or grid; if you keep float, at least lock its width. */
+.illustration {
+  float: none;            /* was: float:right */
+  width: 55%;
+  max-width: 520px;
+  margin: 6px 0 10px auto; /* keeps it visually to the right without float */
+}
+
+/* blend modes & filters can cause compositing jank; tone them down DURING turns */
+.paper-grain { will-change: opacity, transform; }
+.turning .paper-grain { opacity: 0.35; }
+
+/* optional: remove click flash that uses filter() to avoid extra composites */
+.page.journal:active { filter: none; }

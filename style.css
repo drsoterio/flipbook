@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+/* =========================
+   THEME & TEXTURES
+   ========================= */
+:root{
+  --ink:#0d2b4d;
+  --ink-2:#244f7a;
+  --paper:#ece4d6;
+  --sepia:#6e5b40;
+  --charcoal:#2d2a26;
+  --moss:#566b4f;
+  --accent:#7aa37a;
+
+  /* Cover cloth */
+  --cloth:#6e8176;
+  --cloth-edge:#55685e;
+
+  /* Gold foil */
+  --foil-hi:#f6e7b1;
+  --foil-mid:#d4b16a;
+  --foil-low:#8a6d36;
+
+  /* Archival paper texture */
+  --paper-texture: url("Beige Black Vintage Formal Calligraphy Old Fashioned Letter.jpg");
+
+  /* Cover inner padding + FINAL floral nudges */
+  --padX: 68px;
+  --padY: 52px;
+  --tr-size: 34%;
+  --bl-size: 38%;
+  --tr-nudge-x: -66px; --tr-nudge-y: -40px;
+  --bl-nudge-x: -68px; --bl-nudge-y: -44px;
+
+  /* ===== ABSTRACT PAGE KNOBS (edit here) ===== */
+  --abs-left-width: 200px;   /* image column width (smaller = more room for text) */
+  --abs-gap: 12px;           /* space between image and text */
+  --abs-pad-left: 40px;      /* page padding */
+  --abs-pad-right: 36px;
+  --abs-img: 70%;            /* image width inside the left column */
+  --abs-art-shift: 8px;      /* + moves image down; - moves up */
+  --abs-title-size: 42px;
+  --abs-body-size: 17.25px;
+  --abs-body-leading: 1.42;  /* tighter line spacing */
+  --abs-text-measure: 60ch;  /* comfortable max line length */
+}
+
+/* =========================
+   BASE (desk + noise)
+   ========================= */
+*{ margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+
+body{
+  display:grid; place-content:center;
+  height:100vh; width:100vw; overflow:hidden;
+  background-image:url("wooden-desk.png");
+  background-position:center center; background-size:cover; background-repeat:no-repeat; background-attachment:fixed;
+}
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(1300px 700px at 55% 45%, rgba(0,0,0,.22), transparent 60%),
+    linear-gradient(180deg, rgba(30,18,10,.22), rgba(255,255,255,0) 55%, rgba(15,10,8,.22));
+  mix-blend-mode:multiply;
+}
+body::after{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.05"/></svg>');
+  mix-blend-mode:multiply;
+}
+
+/* =========================
+   BOOK CONTAINER
+   ========================= */
+.book-wrap{ position:relative; width:1000px; height:600px; perspective:1800px; perspective-origin:50% 50%; z-index:1; }
+.book-wrap::before{
+  content:""; position:absolute; left:-3%; right:-3%; top:49%; height:84%;
+  transform:translateY(-50%);
+  background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.32) 0%, rgba(0,0,0,.18) 35%, rgba(0,0,0,.09) 63%, transparent 90%);
+  filter:blur(24px); z-index:0; pointer-events:none;
+}
+.flipbook{ position:relative; width:100%; height:100%; transform-style:preserve-3d; backface-visibility:hidden; z-index:2; }
+.flipbook .page, .flipbook .hard{ cursor:pointer; transform-style:preserve-3d; backface-visibility:hidden; }
+
+/* =========================
+   COVERS (cloth + deboss)
+   ========================= */
+.flipbook .page.hard{
+  position:relative; border:none; border-radius:10px; overflow:hidden; color:#fff; font-weight:600;
+  background:
+    radial-gradient(120% 100% at 20% 15%, rgba(255,255,255,.08) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(120% 120% at 80% 85%, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 1px, rgba(0,0,0,0) 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.035) 0 1px, rgba(0,0,0,0) 1px 3px),
+    var(--cloth) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 6px 6px 18px rgba(255,255,255,.03), inset -10px -10px 22px rgba(0,0,0,.26), 0 10px 26px rgba(0,0,0,.25);
+}
+.flipbook .page.hard::before{
+  content:""; position:absolute; inset:16px; border-radius:8px; z-index:0;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.10), inset 0 0 0 2px rgba(0,0,0,.26), inset 0 0 28px rgba(0,0,0,.28);
+  pointer-events:none;
+}
+.flipbook .page.hard::after{
+  content:""; position:absolute; top:3%; bottom:3%; width:10px; right:-6px;
+  background:linear-gradient(180deg, var(--cloth-edge), var(--cloth));
+  border-radius:0 8px 8px 0;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), 3px 0 8px rgba(0,0,0,.22);
+  pointer-events:none;
+}
+.flipbook .page.hard:last-child::after,
+.flipbook .page.hard:nth-last-child(2)::after{
+  left:-6px; right:auto; border-radius:8px 0 0 8px;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), -3px 0 8px rgba(0,0,0,.22);
+}
+
+/* content box padding */
+.cover-inner{
+  position:relative; z-index:1;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; text-align:center; width:100%; height:100%;
+  padding: var(--padY) var(--padX);
+}
+
+/* =========================
+   GOLD FOIL TYPOGRAPHY
+   ========================= */
+.foil{
+  color:transparent;
+  background-image:
+    linear-gradient(105deg, var(--foil-low) 0%, var(--foil-mid) 30%, var(--foil-hi) 50%, var(--foil-mid) 70%, var(--foil-low) 100%),
+    radial-gradient(120% 120% at 20% 10%, rgba(255,255,255,.40), transparent 60%);
+  background-clip:text; -webkit-background-clip:text;
+  text-shadow:0 1px 0 rgba(255,255,255,.18), 0 1px 8px rgba(0,0,0,.26);
+}
+.cover-title{ font-family:"Italianno", cursive; font-weight:400; font-size:64px; line-height:1.02; letter-spacing:.2px; margin-bottom:6px; position:relative; z-index:3; }
+.cover-sub{ font-family:"EB Garamond", serif; font-variant:small-caps; letter-spacing:1.2px; opacity:.97; font-size:18px; margin-top:2px; position:relative; z-index:3; }
+.cover-editor{ font-family:"EB Garamond", serif; letter-spacing:.6px; opacity:.92; margin-top:10px; font-size:16px; position:relative; z-index:3; }
+
+/* =========================
+   FLORAL ORNAMENTS (gold)
+   ========================= */
+.cover-florals{
+  position:absolute; pointer-events:none; z-index:2;
+  background:linear-gradient(105deg, var(--foil-low), var(--foil-mid) 34%, var(--foil-hi) 55%, var(--foil-mid) 76%, var(--foil-low));
+  -webkit-mask-image:url("flower-cover.png"); mask-image:url("flower-cover.png");
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-size:contain; mask-size:contain;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.35)); opacity:.95;
+}
+.cover-florals.top-right{ width:var(--tr-size); aspect-ratio:1/1; bottom:calc(var(--padY) + var(--tr-nudge-y)); right:calc(var(--padX) + var(--tr-nudge-x)); -webkit-mask-position:100% 100%; mask-position:100% 100%; }
+.cover-florals.bottom-left{ width:var(--bl-size); aspect-ratio:1/1; top:calc(var(--padY) + var(--bl-nudge-y)); left:calc(var(--padX) + var(--bl-nudge-x)); -webkit-mask-position:0% 0%; mask-position:0% 0%; transform:rotate(180deg); }
+@supports not (-webkit-mask-image: url("")) {
+  .cover-florals{
+    background:none; background-image:url("flower-cover.png"); background-repeat:no-repeat; background-size:contain; background-position:center;
+    filter:invert(74%) sepia(56%) saturate(410%) hue-rotate(356deg) brightness(96%) contrast(95%) drop-shadow(0 1px 2px rgba(0,0,0,.35));
+    opacity:.98;
+  }
+}
+
+/* =========================
+   PAGES (archival paper)
+   ========================= */
+.flipbook .page:not(.hard){
+  background:
+    radial-gradient(140% 100% at 50% 10%, rgba(0,0,0,.03), rgba(0,0,0,0) 55%),
+    radial-gradient(120% 140% at 10% 50%, rgba(0,0,0,.05), transparent 60%),
+    radial-gradient(120% 140% at 90% 50%, rgba(0,0,0,.05), transparent 60%),
+    var(--paper);
+  color:var(--charcoal);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  border:1px solid rgba(0,0,0,.06); border-radius:6px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35), 0 10px 22px rgba(0,0,0,.22);
+  position:relative; overflow:hidden;
+}
+.flipbook .page:not(.hard)::after{
+  content:""; position:absolute; inset:0; pointer-events:none; opacity:.9;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.02)), var(--paper-texture);
+  background-size:cover; mix-blend-mode:multiply;
+}
+.flipbook .page:not(.hard).even::before,
+.flipbook .page:not(.hard).odd::before{
+  content:""; position:absolute; top:0; bottom:0; width:46px; pointer-events:none; z-index:2;
+}
+.flipbook .page:not(.hard).even::before{ right:-1px; background:linear-gradient(90deg, rgba(0,0,0,.22), rgba(0,0,0,.12) 26%, rgba(0,0,0,.05) 60%, transparent 100%); }
+.flipbook .page:not(.hard).odd::before{  left:-1px; background:linear-gradient(270deg, rgba(0,0,0,.22), rgba(0,0,0,.12) 26%, rgba(0,0,0,.05) 60%, transparent 100%); }
+
+.page img{ width:70%; object-fit:cover; margin:auto; }
+.flipbook .page small{ font-size:14px; margin-bottom:10px; }
+
+/* =========================
+   ABSTRACT PAGE (two-column, robust)
+   ========================= */
+.flipbook .page:not(.hard) > .conteudo.abstract{
+  align-self: stretch;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.abstract{
+  position:relative;
+  text-align:left;
+  display:block;
+  width:100%; height:100%;
+  padding: 36px var(--abs-pad-right) 36px var(--abs-pad-left);
+}
+
+/* grid: fixed image column + flexible text column */
+.abs-grid{
+  display:grid;
+  grid-template-columns: var(--abs-left-width) minmax(0, 1fr);
+  gap: var(--abs-gap);
+  align-items: stretch;   /* enables vertical centering in left column */
+  height: 100%;
+  width:100%;
+}
+
+/* Left art: centered both ways; optional vertical nudge */
+.abs-art{
+  display:flex;
+  align-items:center;          /* vertical centering */
+  justify-content:center;      /* horizontal centering */
+  margin:0;
+  padding:0;
+  background:none !important;
+}
+.abs-art img{
+  display:block;
+  width: var(--abs-img);
+  height: auto;
+  object-fit: contain;
+  object-position: center center;
+  transform: translateY(var(--abs-art-shift));
+}
+
+/* Right column: never clip; slightly smaller text */
+.abs-text{ min-width:0; max-width: var(--abs-text-measure); padding-right:.5rem; }
+/* Meow Script is a single-style font; no bold/italics variants */
+.abs-title{
+  font-family: "Meow Script", cursive;
+  font-weight: 400;
+  font-size: 34px;   /* keep your size or tweak */
+  line-height: 1.05;
+  color: #111;
+  margin: 2px 0 14px 0;
+}
+
+.abs-body{
+  font-family:"EB Garamond", serif;
+  font-size: var(--abs-body-size);
+  line-height: var(--abs-body-leading);
+  letter-spacing:.1px;
+  hyphens:auto;
+  overflow-wrap:break-word;
+}
+
+/* Abstract page 2 */
+.abstract--text-only{ max-width:720px; }
+.abs-keys{ margin-top:16px; font-family:"EB Garamond", serif; font-size:17px; line-height:1.45; color:var(--ink-2); }
+.keys-label{ color:var(--moss); font-weight:700; }
+
+/* margin note */
+.margem{
+  position:absolute; right:8px; top:10px;
+  writing-mode:vertical-rl; text-orientation:mixed;
+  font:16px/1.1 "Brush Script MT","Snell Roundhand",cursive;
+  color:var(--sepia); opacity:.82; pointer-events:none;
+  z-index:3;
+}
+
+/* =========================
+   INTERACTIONS
+   ========================= */
+.butterfly{ position:fixed; top:0; left:0; width:80px; height:auto; pointer-events:auto; z-index:9999; transform:translate(8px, calc(100vh - 100px)) rotate(0deg); transition:transform 90ms linear; filter:drop-shadow(0 2px 3px rgba(0,0,0,.25)); will-change:transform; }
+@media (prefers-reduced-motion:reduce){ .butterfly{ transition:none !important; } }
+.flipbook .page:active{ filter:brightness(.985); transition:filter 120ms ease; }
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width:1100px){
+  .book-wrap{ width:92vw; height:calc(92vw * .6); }
+  :root{ --abs-left-width: 170px; --abs-gap: 10px; }
+}
+@media (max-width:900px){
+  .margem{ display:none; }
+  .abs-grid{ grid-template-columns:1fr; height:auto; }
+  .abs-art{ margin:0 auto 12px; }
+  .abs-body{ font-size:16.75px; line-height:1.45; }
+}
+
+/* =========================
+   PRINT
+   ========================= */
+@media print{
+  body{ background:#fff; }
+  .flipbook .page{ box-shadow:none; border:none; }
+  a::after{ content:" (" attr(href) ")"; font-size:10px; }
+}

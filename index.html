@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Italianno&family=Meow+Script&display=swap" rel="stylesheet">
+
+  
+
+  <title>Digital Ecologies</title>
+
+  <!-- Butterfly img element style -->
+  <style>
+    .butterfly{
+      position:fixed; top:0; left:0; width:80px; height:auto;
+      pointer-events:auto; z-index:9999;
+      transform:translate(8px, calc(100vh - 100px)) rotate(0deg);
+      filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+      will-change:transform;
+    }
+    @media (prefers-reduced-motion: reduce){ .butterfly{ transition:none !important; } }
+  </style>
+</head>
+
+<body>
+  <div class="book-wrap">
+    <div class="flipbook">
+      <!-- FRONT COVER -->
+      <div class="hard">
+        <div class="cover-inner" aria-label="Cover">
+          <div class="cover-florals top-right" aria-hidden="true"></div>
+          <div class="cover-florals bottom-left" aria-hidden="true"></div>
+
+          <!-- keep this line break -->
+          <br />
+          <h1 class="cover-title foil">Digital Ecologies of Hope</h1>
+          <p class="cover-sub foil">A Natural History of Emerging Media Futures</p>
+          <p class="cover-editor foil">By __________</p>
+        </div>
+      </div>
+
+      <!-- INSIDE FRONT HARD -->
+      <div class="hard"></div>
+
+      <!-- ABSTRACT — PAGE 1 -->
+      <div class="parchment">
+        <div class="conteudo abstract">
+          <div class="abs-grid">
+            <!-- Left art column -->
+            <figure class="abs-art">
+              <img
+                src="abstract-left-1.png?v=6"
+                onerror="this.onerror=null; this.src='abstract-left-1?v=6';"
+                alt="Botanical + digital sketch"
+              />
+            </figure>
+
+            <!-- Right text column -->
+            <section class="abs-text">
+              <h2 class="abs-title">Abstract</h2>
+              <p class="abs-body">
+                This project presents a collaborative field guide documenting “digital ecologies of hope”: instances where media technologies become instruments of collective imagination, care, and becoming across diverse global contexts. Using the aesthetic and organizational principles of naturalist field guides, fourteen researchers contribute “specimens” from their work, ranging from Sudanese youth maintaining educational networks amid civil war to transgender youth documenting voice transitions as acts of collective becoming.
+              </p>
+            </section>
+          </div>
+
+          <!-- margin note -->
+          <div class="margem" aria-hidden="true">field notes → abstract</div>
+        </div>
+      </div>
+
+      <!-- ABSTRACT — PAGE 2 -->
+      <div class="parchment">
+        <div class="conteudo abstract abstract--text-only">
+          <p class="abs-body">
+            Each specimen follows field guide conventions (i.e., classification, habitat, conservation status, field notes, and visual documentation), treating hopeful practices as living systems worthy of documentation and preservation. Ultimately, by attending to what we call “felt futures”—the emotionally charged visions of possibility that animate research—we seek to demonstrate how research itself can become utopian practice through collaborative authorship and multimodal representation.
+          </p>
+          <p class="abs-keys">
+            <span class="keys-label">Keywords:</span>
+            digital hope, digital resilience, networked care, youth digital practices, critical fabulations, field guide
+          </p>
+        </div>
+      </div>
+
+      <!-- OTHER PAGES (placeholders unchanged) -->
+      <div class="parchment">
+        <div class="conteudo">
+          <small class="subtitulo">word word word</small><br />
+          <small class="mono">word</small>
+        </div>
+        <div class="margem" aria-hidden="true">field notes → wonder</div>
+      </div>
+
+      <div class="parchment"><div class="conteudo"><img src="images/img-1.png" alt="Specimen 1" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+      <div class="parchment"><div class="conteudo"><img src="images/img-2.png" alt="Specimen 2" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+      <div class="parchment"><div class="conteudo"><img src="images/img-3.png" alt="Specimen 3" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+      <div class="parchment"><div class="conteudo"><img src="images/img-4.png" alt="Specimen 4" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+      <div class="parchment"><div class="conteudo"><img src="images/img-5.png" alt="Specimen 5" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+
+      <!-- BACK COVERS -->
+      <div class="hard"></div>
+      <div class="hard"><div class="cover-inner"><p class="cover-sub foil">Thank you</p></div></div>
+    </div>
+  </div>
+
+  <!-- JS (Turn.js + audio unchanged) -->
+  <script src="jquery.js"></script>
+  <script src="turn.js"></script>
+  <script>
+    var $book = $(".flipbook").turn({
+      autoCenter: true,
+      duration: 700,
+      gradients: true,
+      elevation: 80
+    });
+
+    const flipSound  = new Audio("page-flip-sound.mp3");
+    const coverSound = new Audio("page-flip-sound.mp3");
+    [flipSound, coverSound].forEach(a => { a.preload = "auto"; });
+
+    let audioUnlocked = false;
+    function unlockAudioOnce() {
+      if (audioUnlocked) return;
+      audioUnlocked = true;
+      try {
+        const v = flipSound.volume;
+        flipSound.volume = 0.0001;
+        const p = flipSound.play();
+        if (p && typeof p.then === "function") p.then(() => flipSound.pause()).catch(()=>{});
+        flipSound.volume = v;
+      } catch(e) {}
+      window.removeEventListener("pointerdown", unlockAudioOnce, true);
+      window.removeEventListener("keydown", unlockAudioOnce, true);
+    }
+    window.addEventListener("pointerdown", unlockAudioOnce, true);
+    window.addEventListener("keydown", unlockAudioOnce, true);
+
+    function safePlay(audio) {
+      try { audio.currentTime = 0; const p = audio.play(); if (p && p.catch) p.catch(()=>{}); } catch(e) {}
+    }
+    $book.on("turning", function (e, page) {
+      const total = $book.turn("pages");
+      const isCoverTurn = (page === 1 || page === total);
+      safePlay(isCoverTurn ? coverSound : flipSound);
+    });
+    $book.on("click", ".page, .hard", function (e) {
+      if ($(e.target).closest("a,button,input,textarea,select,[data-no-turn]").length) return;
+      if ($book.turn("animating")) return;
+      var off = $book.offset(), x = e.pageX - off.left, mid = $book.width()/2;
+      $book.turn(x > mid ? "next" : "previous");
+    });
+    window.addEventListener("resize", function () { $book.turn("center"); });
+  </script>
+
+  <!-- Butterfly (rest ~60s, resumes flying on hover and on page turns) -->
+  <img src="butterfly-closed.png" alt="Butterfly" class="butterfly" />
+  <script>
+    (() => {
+      /* TUNE THESE */
+      const BOOK_LAND_CHANCE = 0.55;   // % of hops that land on the book (0–1)
+      const BOOK_PAD = 38;             // keep away from page edges/seam (px)
+      const REST_MS = 60000;           // how long it rests before next hop
+      const FLIGHT_MS = 1500;          // flight duration (shorter = more hops)
+      const FLAP_FPS = 8;              // wing beat while flying
+      const REST_FLAP_FPS = 0;         // wing beat while resting
+      const MARGIN = 100;              // screen margin for off-book landings
+
+      const bf = document.querySelector(".butterfly");
+      const bookEl = document.querySelector(".flipbook");
+      const OPEN_SRC = "butterfly-open.png";
+      const CLOSED_SRC = "butterfly-closed.png";
+      [OPEN_SRC, CLOSED_SRC].forEach(s => { const i = new Image(); i.src = s; });
+
+      /* helpers */
+      const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
+      const easeInOut = t => (t<.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2);
+
+      function rndOnBook() {
+        const b = bookEl.getBoundingClientRect();
+        const x = b.left + BOOK_PAD + Math.random() * Math.max(20, b.width  - BOOK_PAD*2);
+        const y = b.top  + BOOK_PAD + Math.random() * Math.max(20, b.height - BOOK_PAD*2);
+        return { x, y };
+      }
+      function rndAnywhere() {
+        return {
+          x: MARGIN + Math.random() * Math.max(8, innerWidth  - MARGIN*2),
+          y: MARGIN + Math.random() * Math.max(8, innerHeight - MARGIN*2),
+        };
+      }
+      const pickLandingSpot = () =>
+        (Math.random() < BOOK_LAND_CHANCE ? rndOnBook() : rndAnywhere());
+
+      /* wing flap */
+      let flapTimer=null, open=false;
+      function flap(rate){
+        if (flapTimer){ clearInterval(flapTimer); flapTimer=null; }
+        if (rate>0){
+          flapTimer=setInterval(()=>{ open=!open; bf.src=open?OPEN_SRC:CLOSED_SRC; }, 1000/rate);
+        } else { open=false; bf.src=CLOSED_SRC; }
+      }
+
+      /* flight */
+      function flyTo(dest, dur=FLIGHT_MS){
+        return new Promise(res=>{
+          const t0 = performance.now();
+          const rect = bf.getBoundingClientRect();
+          const x0 = parseFloat(bf.dataset.x ?? rect.left);
+          const y0 = parseFloat(bf.dataset.y ?? rect.top);
+          const dx = dest.x - x0, dy = dest.y - y0;
+          const ang = Math.atan2(dy, dx);
+          flap(FLAP_FPS);
+          (function frame(now){
+            const t = clamp((now - t0) / dur, 0, 1);
+            const e = easeInOut(t);
+            const x = x0 + dx * e;
+            const y = y0 + dy * e;
+            const deg = (ang * 180/Math.PI) + 90 + Math.sin(now/90)*3;
+
+            bf.style.transform = `translate(${x}px,${y}px) rotate(${deg}deg)`;
+            bf.dataset.x = x.toFixed(2);
+            bf.dataset.y = y.toFixed(2);
+
+            if (t < 1) requestAnimationFrame(frame);
+            else { flap(REST_FLAP_FPS); bf.src = CLOSED_SRC; res(); }
+          })(t0);
+        });
+      }
+
+      /* hop loop */
+      let restTimer=null;
+      async function hop(){
+        const dest = pickLandingSpot();
+        await flyTo(dest);
+        if (restTimer) clearTimeout(restTimer);
+        restTimer = setTimeout(hop, REST_MS);
+      }
+
+      function start(){
+        const x = 8, y = innerHeight - 100;
+        bf.style.transform = `translate(${x}px,${y}px) rotate(0deg)`;
+        bf.dataset.x = x; bf.dataset.y = y; bf.src = CLOSED_SRC;
+        hop();
+      }
+      if (!bf.complete){ bf.addEventListener("load", start, {once:true}); } else { start(); }
+
+      /* ===== restore interactions ===== */
+
+      // Hover makes it take off (without forwarding a click)
+      bf.addEventListener("pointerenter", () => {
+        if (restTimer) { clearTimeout(restTimer); }
+        hop();
+      });
+
+      // Clicking/tapping the butterfly forwards the click to the page beneath,
+      // then makes the butterfly take off as well.
+      bf.addEventListener("pointerdown", e => {
+        e.preventDefault();
+        // forward the click to underlying element so covers/pages still turn
+        bf.style.pointerEvents = "none";
+        requestAnimationFrame(() => {
+          const el = document.elementFromPoint(e.clientX, e.clientY);
+          if (el && typeof el.click === "function") el.click();
+          bf.style.pointerEvents = "auto";
+        });
+        if (restTimer) { clearTimeout(restTimer); }
+        hop();
+      }, { passive:false });
+
+      // If the book starts turning (page or cover), shoo the butterfly away
+      if (window.jQuery && window.jQuery.fn.turn) {
+        jQuery(".flipbook").on("turning", () => {
+          if (restTimer) { clearTimeout(restTimer); }
+          hop();
+        });
+      } else {
+        // fallback: any click inside the flipbook area shoo it
+        bookEl.addEventListener("click", () => {
+          if (restTimer) { clearTimeout(restTimer); }
+          hop();
+        });
+      }
+
+      /* keep inside the viewport on resize */
+      addEventListener("resize", () => {
+        const x = clamp(parseFloat(bf.dataset.x || 0), 8, innerWidth - 100);
+        const y = clamp(parseFloat(bf.dataset.y || 0), 8, innerHeight - 100);
+        bf.style.transform = `translate(${x}px,${y}px) rotate(0deg)`;
+        bf.dataset.x = x.toFixed(2);
+        bf.dataset.y = y.toFixed(2);
+      });
+    })();
+  </script>
+</body>
+</html>

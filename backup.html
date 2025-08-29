@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Field Guide Flipbook</title>
+</head>
+
+<body>
+  <div class="flipbook">
+    <!-- ===== FRONT COVER (hard) ===== -->
+    <div class="hard cover-journal">
+      <div class="cover-band top"></div>
+      <div class="cover-inner">
+        <h1>Digital Ecologies of Hope</h1>
+        <h2>A Natural History of Emerging Media Futures</h2>
+        <p class="byline">A Collaborative Field Guide</p>
+      </div>
+      <div class="cover-band bottom"></div>
+    </div>
+
+    <!-- ===== INSIDE COVER (hard) ===== -->
+    <div class="hard inside-journal">
+      <div class="colophon">
+        <p>This flipbook adopts the visual language of nineteenth-century expedition journals and early photographic plates to document hopeful digital practices across global contexts.</p>
+      </div>
+    </div>
+
+    <!-- ===== SPECIMEN PAGE (FRONT) — matches your reference image ===== -->
+    <div class="page journal">
+      <div class="paper-grain" aria-hidden="true"></div>
+
+      <!-- spec header -->
+      <header class="specimen-head">
+        <div class="specimen-id">SPECIMEN #2025-N</div>
+        <h3 class="specimen-title">The Laboratory of Hope: Digital Habitats of Persistence and Problem-Solving</h3>
+        <div class="rule"></div>
+      </header>
+
+      <!-- optional illustration (line art / cyanotype). replace src with your image -->
+      <img class="illustration" src="images/lab-hope-plate.png" alt="Line drawing of a 3D printer with question mark overlay">
+
+      <!-- meta blocks -->
+      <section class="meta">
+        <h4>CLASSIFICATION:</h4>
+        <p>Participatory Learning; Digital Communities of Practice; Distributed Problem-Solving</p>
+
+        <h4>HABITAT:</h4>
+        <p>Forms complex colonies in specialized territories such as Reddit’s r/3Dprinting, where members gather around shared technical challenges. Most active in response to novice distress signals.</p>
+
+        <h4>CONSERVATION STATUS:</h4>
+        <p>Currently flourishing, with high potential for growth. Most vulnerable to algorithmic disruption, moderation challenges, and invasive species of toxic commentary.</p>
+
+        <h4>FIELD NOTES:</h4>
+        <p>In the digital habitat of r/3Dprinting, I observe a vibrant ecosystem of makers. A first-time maker proudly shares their maiden print: a wobbly but earnest Benchy boat. The comments pour in: <em>“Thank you for this great feedback!”</em> and <em>“[it takes] courage to post failings. Errors are welcomed!”</em> These words are not just polite gestures, but validating lifelines, pulling the newcomer into a <strong>web of shared purpose</strong>.</p>
+
+        <p>In this space, failure is not an end but a beginning. A user posts a photo of a “spaghetti” print—a tangled mess of filament—and instead of ridicule, they receive troubleshooting tips, humorous comments, and empathy: <em>“Nice print though. I was proud of my Benchy on my first print.”</em> The thread becomes a mini-classroom, where <strong>knowledge is exchanged freely, and encouragement is the currency of progress</strong>.</p>
+
+        <p>What strikes me most is the way hope is woven into the fabric of every interaction. A user shares a story of printing a gift for her husband’s birthday. Another posts a whimsical creation—a 3D-printed whistle that sounds like a scream—and the community rallies to refine the design, turning a playful idea into a collaborative project.</p>
+
+        <p><strong>This is the laboratory of hope:</strong> a place where experiments in creativity and kindness yield tangible results. It is not just a forum but a living ecosystem, where every post is a hypothesis, every comment a reagent, and every upvote a spark of encouragement. Here, <strong>the future of learning is not just imagined but built, one thread at a time.</strong></p>
+
+        <p class="documented-by"><span>DOCUMENTED BY:</span> Carolina Soterio, makerspace habitat researcher with extensive field immersion</p>
+      </section>
+    </div>
+
+    <!-- ===== SPECIMEN PAGE (BACK) — space for plate caption or references ===== -->
+    <div class="page journal">
+      <div class="paper-grain" aria-hidden="true"></div>
+      <header class="specimen-head compact">
+        <div class="specimen-id">SPECIMEN #2025-N</div>
+        <div class="rule"></div>
+      </header>
+
+      <section class="backmatter">
+        <figure class="plate">
+          <!-- replace with your cyanotype / diagram -->
+          <img src="images/lab-hope-detail.jpg" alt="Detail plate of troubleshooting thread" />
+          <figcaption>Plate N.2 — Troubleshooting thread morphology (anonymized posts and comments).</figcaption>
+        </figure>
+
+        <div class="notes">
+          <p class="lead">Further Notes</p>
+          <ul>
+            <li>Colony activation correlates with novice distress signals (“help!” + photo of failed print).</li>
+            <li>High density of prosocial responses; moderation steers tone toward repair and learning.</li>
+            <li>Common reagents: empathy, humor, practical fixes, iterative redesign.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===== BACK COVERS (hard) ===== -->
+    <div class="hard inside-journal">
+      <div class="colophon">
+        <p>Printed & bound for exhibition. This field guide is a living document and will evolve as new specimens are collected.</p>
+      </div>
+    </div>
+
+    <div class="hard cover-journal back">
+      <div class="cover-band top"></div>
+      <div class="cover-inner">
+        <p class="byline faint">Finis</p>
+      </div>
+      <div class="cover-band bottom"></div>
+    </div>
+  </div>
+
+  <script src="jquery.js"></script>
+  <script src="turn.js"></script>
+  <script>
+    // initialize turn.js once
+    var $book = $(".flipbook").turn({
+      autoCenter: true,
+      duration: 700,
+      gradients: true,
+      elevation: 50
+    });
+
+    // click any page (left half = previous, right half = next)
+    $book.on("click", ".page, .hard", function (e) {
+      if ($(e.target).closest("a,button,input,textarea,select,[data-no-turn]").length) return;
+      if ($book.turn("animating")) return;
+
+      var off = $book.offset();
+      var x = e.pageX - off.left;
+      var midpoint = $book.width() / 2;
+
+      if (x > midpoint) {
+        $book.turn("next");
+      } else {
+        $book.turn("previous");
+      }
+    });
+
+    // keep centered on resize
+    window.addEventListener("resize", function () {
+      $book.turn("center");
+    });
+  </script>
+</body>
+</html>
+<script>
+  // reduce heavy overlays during the flip to avoid flicker
+  $book.on("turning", function(){ document.documentElement.classList.add("turning"); });
+  $book.on("turned",  function(){ document.documentElement.classList.remove("turning"); });
+</script>

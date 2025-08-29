@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Base styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Type: Garamond + subtle handwritten -->
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+
+  <title>Digital Ecologies</title>
+
+  <style>
+    .butterfly{
+      position:fixed; top:0; left:0; width:80px; height:auto;
+      pointer-events:auto; z-index:9999;
+      transform:translate(8px, calc(100vh - 100px)) rotate(0deg);
+      filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+      will-change:transform;
+    }
+    @media (prefers-reduced-motion: reduce) { .butterfly { transition:none !important; } }
+  </style>
+</head>
+
+<body>
+  <div class="book-wrap">
+    <div class="flipbook">
+      <!-- FRONT COVER -->
+      <div class="hard">
+        <div class="cover-inner" aria-label="Cover">
+          <h1 class="cover-title foil">Digital Ecologies of Hope</h1>
+          <p class="cover-sub foil">A Natural History of Emerging Media Futures</p>
+          <p class="cover-editor foil">2025</p>
+        </div>
+      </div>
+
+      <!-- INSIDE FRONT HARD -->
+      <div class="hard"></div>
+
+      <!-- ABSTRACT — PAGE 1 -->
+      <div class="parchment">
+        <div class="conteudo abstract">
+          <h2 class="abs-title">Abstract</h2>
+          <p class="abs-body">
+            This project presents a collaborative field guide documenting “digital ecologies of hope”: instances where media technologies become instruments of collective imagination, care, and becoming across diverse global contexts. Using the aesthetic and organizational principles of naturalist field guides, fourteen researchers contribute “specimens” from their work, ranging from Sudanese youth maintaining educational networks amid civil war to transgender youth documenting voice transitions as acts of collective becoming.
+          </p>
+          <div class="margem" aria-hidden="true">field notes → abstract</div>
+        </div>
+      </div>
+
+      <!-- ABSTRACT — PAGE 2 -->
+      <div class="parchment">
+        <div class="conteudo abstract">
+          <p class="abs-body">
+            Each specimen follows field guide conventions (i.e., classification, habitat, conservation status, field notes, and visual documentation), treating hopeful practices as living systems worthy of documentation and preservation. Ultimately, by attending to what we call “felt futures”—the emotionally charged visions of possibility that animate research—we seek to demonstrate how research itself can become utopian practice through collaborative authorship and multimodal representation.
+          </p>
+
+          <p class="abs-keys">
+            <span class="keys-label">Keywords:</span>
+            digital hope, digital resilience, networked care, youth digital practices, critical fabulations, field guide
+          </p>
+        </div>
+      </div>
+
+      <!-- SPECIMEN PAGES -->
+      <div class="parchment">
+        <div class="conteudo">
+          <img src="images/img-1.png" alt="Specimen 1" class="placa" />
+          <small class="fig">(specimen sketch)</small>
+        </div>
+      </div>
+
+      <div class="parchment">
+        <div class="conteudo">
+          <img src="images/img-2.png" alt="Specimen 2" class="placa" />
+          <small class="fig">(specimen sketch)</small>
+        </div>
+      </div>
+
+      <div class="parchment">
+        <div class="conteudo">
+          <img src="images/img-3.png" alt="Specimen 3" class="placa" />
+          <small class="fig">(specimen sketch)</small>
+        </div>
+      </div>
+
+      <div class="parchment">
+        <div class="conteudo">
+          <img src="images/img-4.png" alt="Specimen 4" class="placa" />
+          <small class="fig">(specimen sketch)</small>
+        </div>
+      </div>
+
+      <div class="parchment">
+        <div class="conteudo">
+          <img src="images/img-5.png" alt="Specimen 5" class="placa" />
+          <small class="fig">(specimen sketch)</small>
+        </div>
+      </div>
+
+      <!-- BACK COVERS -->
+      <div class="hard"></div>
+      <div class="hard">
+        <div class="cover-inner">
+          <p class="cover-sub foil">Thank you</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="jquery.js"></script>
+  <script src="turn.js"></script>
+  <script>
+    // Initialize Turn.js flipbook
+    var $book = $(".flipbook").turn({
+      autoCenter: true,
+      duration: 700,
+      gradients: true,
+      elevation: 80
+    });
+
+    // ---------- AUDIO ----------
+    const flipSound  = new Audio("page-flip-sound.mp3");
+    const coverSound = new Audio("page-flip-sound.mp3");
+    [flipSound, coverSound].forEach(a => { a.preload = "auto"; });
+
+    let audioUnlocked = false;
+    function unlockAudioOnce() {
+      if (audioUnlocked) return;
+      audioUnlocked = true;
+      try {
+        const v = flipSound.volume;
+        flipSound.volume = 0.0001;
+        const p = flipSound.play();
+        if (p && typeof p.then === "function") {
+          p.then(() => flipSound.pause()).catch(()=>{});
+        }
+        flipSound.volume = v;
+      } catch(e) {}
+      window.removeEventListener("pointerdown", unlockAudioOnce, true);
+      window.removeEventListener("keydown", unlockAudioOnce, true);
+    }
+    window.addEventListener("pointerdown", unlockAudioOnce, true);
+    window.addEventListener("keydown", unlockAudioOnce, true);
+
+    function safePlay(audio) {
+      try {
+        audio.currentTime = 0;
+        const p = audio.play();
+        if (p && typeof p.catch === "function") p.catch(()=>{});
+      } catch(e) {}
+    }
+
+    $book.on("turning", function (e, page) {
+      const total = $book.turn("pages");
+      const isCoverTurn = (page === 1 || page === total);
+      safePlay(isCoverTurn ? coverSound : flipSound);
+    });
+
+    // Click-to-turn
+    $book.on("click", ".page, .hard", function (e) {
+      if ($(e.target).closest("a,button,input,textarea,select,[data-no-turn]").length) return;
+      if ($book.turn("animating")) return;
+      var off = $book.offset();
+      var x = e.pageX - off.left;
+      var midpoint = $book.width() / 2;
+      if (x > midpoint) { $book.turn("next"); } else { $book.turn("previous"); }
+    });
+
+    // Keep centered on resize
+    window.addEventListener("resize", function () { $book.turn("center"); });
+  </script>
+
+  <!-- Butterfly -->
+  <img src="butterfly-closed.png" alt="Butterfly" class="butterfly" />
+
+  <script>
+  (function(){
+    const REST_MS=60000, FLIGHT_MS=3000, FLAP_FPS=8, REST_FLAP_FPS=0, MARGIN=100, WOBBLE_PIX=28, WOBBLE_HZ=2.0;
+    const SCALE_MIN=0.98, SCALE_MAX=1.02;
+    const bf=document.querySelector('.butterfly'), bookEl=document.querySelector('.flipbook');
+    const OPEN_SRC='butterfly-open.png', CLOSED_SRC='butterfly-closed.png';
+    [OPEN_SRC,CLOSED_SRC].forEach(s=>{const i=new Image();i.src=s;});
+    bf.src=CLOSED_SRC;
+
+    let restTimer=null, isResting=false, flapTimer=null, open=false;
+    const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+    const easeInOut=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+    const rnd=()=>({x:Math.random()*Math.max(8,innerWidth-MARGIN), y:Math.random()*Math.max(8,innerHeight-MARGIN)});
+    const overlaps=(r1,r2)=>!(r1.right<r2.left||r1.left>r2.right||r1.bottom<r2.top||r1.top>r2.bottom);
+    function rndAway(){
+      const b=bookEl.getBoundingClientRect(), pad=30, bw=90,bh=70;
+      for(let i=0;i<25;i++){const p=rnd(), r={left:p.x,top:p.y,right:p.x+bw,bottom:p.y+bh}, bb={left:b.left-pad,top:b.top-pad,right:b.right+pad,bottom:b.bottom+pad}; if(!overlaps(r,bb)) return p;}
+      return rnd();
+    }
+    function flap(rate){
+      if(flapTimer){clearInterval(flapTimer);flapTimer=null;}
+      if(rate>0){flapTimer=setInterval(()=>{open=!open; bf.src=open?OPEN_SRC:CLOSED_SRC}, 1000/rate);}
+      else{open=false; bf.src=CLOSED_SRC;}
+    }
+    function flyTo(dest,dur=FLIGHT_MS){
+      return new Promise(res=>{
+        const t0=performance.now(), rect=bf.getBoundingClientRect();
+        let x0=parseFloat(bf.dataset.x??rect.left), y0=parseFloat(bf.dataset.y??rect.top);
+        const dx=dest.x-x0, dy=dest.y-y0, ang=Math.atan2(dy,dx); flap(FLAP_FPS);
+        (function frame(now){
+          const t=clamp((now-t0)/dur,0,1), e=easeInOut(t);
+          const bx=x0+dx*e, by=y0+dy*e;
+          const nx=Math.cos(ang+Math.PI/2), ny=Math.sin(ang+Math.PI/2);
+          const wob=WOBBLE_PIX*Math.sin(2*Math.PI*WOBBLE_HZ*(now/1000));
+          const x=bx+nx*wob, y=by+ny*wob*0.6;
+          const deg=(ang*180/Math.PI)+90 + Math.sin(now/90)*3;
+          const s=SCALE_MIN+(SCALE_MAX-SCALE_MIN)*(0.5+0.5*Math.sin(now/200));
+          bf.style.transform=`translate(${x}px,${y}px) rotate(${deg}deg) scale(${s})`;
+          bf.dataset.x=x.toFixed(2); bf.dataset.y=y.toFixed(2);
+          if(t<1) requestAnimationFrame(frame);
+          else{ flap(REST_FLAP_FPS); bf.style.transform=`translate(${dest.x}px,${dest.y}px) rotate(0deg) scale(1)`; bf.dataset.x=dest.x.toFixed(2); bf.dataset.y=dest.y.toFixed(2); bf.src=CLOSED_SRC; isResting=true; res(); }
+        })(t0);
+      });
+    }
+    async function hop(){ const d=rndAway(); await flyTo(d,FLIGHT_MS); if(restTimer)clearTimeout(restTimer); restTimer=setTimeout(()=>{isResting=false; hop();}, REST_MS); }
+    function start(){ const x=8, y=innerHeight-100; bf.style.transform=`translate(${x}px,${y}px) rotate(0deg) scale(1)`; bf.dataset.x=x; bf.dataset.y=y; bf.src=CLOSED_SRC; hop(); }
+    if(!bf.complete){ bf.addEventListener('load',start,{once:true}); bf.addEventListener('error',()=>{bf.src=CLOSED_SRC; start();},{once:true}); } else start();
+
+    // Shoo on page click if resting on the book
+    bookEl.addEventListener('click',()=>{
+      if(!isResting) return;
+      const br=bookEl.getBoundingClientRect(), rr=bf.getBoundingClientRect();
+      if(!(rr.right<br.left||rr.left>br.right||rr.bottom<br.top||rr.top>br.bottom)){
+        if(restTimer)clearTimeout(restTimer); isResting=false; hop();
+      }
+    });
+
+    // Shoo on hover/click, and forward the click so pages still flip
+    function shooForward(x,y,forward){
+      if(restTimer)clearTimeout(restTimer); isResting=false; hop();
+      if(forward && x!=null && y!=null){
+        bf.style.pointerEvents='none';
+        requestAnimationFrame(()=>{ const el=document.elementFromPoint(x,y); if(el && typeof el.click==='function') el.click(); bf.style.pointerEvents='auto'; });
+      }
+    }
+    bf.addEventListener('pointerenter',()=>shooForward(null,null,false));
+    bf.addEventListener('pointerdown',e=>{ e.preventDefault(); shooForward(e.clientX,e.clientY,true); }, {passive:false});
+
+    // keep within viewport on resize
+    addEventListener('resize',()=>{
+      const x=clamp(parseFloat(bf.dataset.x||0),8,innerWidth-MARGIN);
+      const y=clamp(parseFloat(bf.dataset.y||0),8,innerHeight-MARGIN);
+      bf.style.transform=`translate(${x}px,${y}px) rotate(0deg) scale(1)`;
+      bf.dataset.x=x.toFixed(2); bf.dataset.y=y.toFixed(2); bf.src=CLOSED_SRC;
+    });
+  })();
+  </script>
+</body>
+</html>
