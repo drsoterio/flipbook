@@ -297,3 +297,269 @@ body::after{
   .flipbook .page{ box-shadow:none; border:none; }
   a::after{ content:" (" attr(href) ")"; font-size:10px; }
 }
+
+/* ===== Abstract — Page 2: wider inner text column + outer margin note ===== */
+
+/* Make the text column more spacious by shrinking the ghost (left) column */
+.abstract--inner{
+  /* narrower left ghost column + tighter gap + a bit less left padding */
+  --abs-left-width: 120px;   /* was 200px; try 100–140px to taste */
+  --abs-gap: 10px;           /* was 12px */
+  --abs-pad-left: 28px;      /* was 40px; moves everything slightly left */
+}
+
+/* Keep the two-column structure for page 2 */
+.abstract--inner .abs-grid,
+.abs-grid--left-page{
+  grid-template-columns: var(--abs-left-width) minmax(0, 1fr);
+}
+
+/* Let the text use all available width on page 2 */
+.abstract--inner .abs-text{
+  max-width: none;           /* overrides any global 56–60ch measure */
+}
+
+/* Put the margin note on the OUTER edge (left edge on this left-hand page) */
+.abstract--inner .margem{
+  left: 8px;
+  right: auto;               /* overrides the default right:8px */
+}
+
+/* Abstract — Page 2: add more inner (right) gutter */
+.abstract--inner{
+  --abs-pad-right: 64px;   /* try 56–80px to taste */
+}
+
+/* --- Keywords in Cedarville Cursive (page 2) --- */
+.abs-keys{
+  font-family: "cedarville cursive";
+  font-weight: 400;           /* Cedarville Cursive has one weight */
+  font-size: 20px;            /* tweak 24–32px to taste */
+  line-height: 1.15;
+  letter-spacing: .2px;
+  color: #111;
+}
+
+.abs-keys .keys-label{
+  font-family: inherit;       /* keep Meow Script for the label too */
+  font-weight: 400 !important;/* cancel previous 700 */
+  color: var(--moss);         /* keep your subtle green accent */
+  margin-right: .35ch;
+}
+/* === Specimen 1 styles (append) === */
+.specimen1-page{
+  width:100%;
+  height:100%;
+  padding: var(--padY) var(--padX);
+}
+
+/* Title at top (Cedarville Cursive) with a pencil underline */
+.specimen1-title{
+  font-family: "Cedarville Cursive", cursive;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.05;
+  letter-spacing: .2px;
+  text-align: center;
+  color:#111;
+  margin: 4px 0 16px 0;
+  position: relative;
+}
+.specimen1-title::after{
+  content:"";
+  position:absolute; left:8%; right:8%; bottom:-6px; height:2px;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(34,34,34,.75) 0 14px,
+      rgba(34,34,34,.55) 14px 22px,
+      rgba(34,34,34,.8) 22px 28px);
+  filter: blur(.6px) contrast(1.1);
+  transform: rotate(-.3deg);
+  opacity:.75;
+}
+
+/* Figure + annotations */
+.specimen1-figure{
+  position:relative;
+  width:100%;
+  height: calc(100% - 56px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.specimen1-figure-img{
+  max-width: 100%;
+  height:auto;
+  filter: contrast(1.02);
+}
+
+/* Annotations: place with CSS vars --x / --y (percent of figure box) */
+.specimen1-anno{
+  position:absolute;
+  left: var(--x, 50%);
+  top:  var(--y, 50%);
+  transform: translate(-50%, -50%);
+  pointer-events:none;
+  max-width: 36ch;
+}
+.specimen1-tag{
+  display:inline-block;
+  font-family: "Cedarville Cursive", cursive;
+  font-size: 18px;
+  line-height: 1.05;
+  color:#222;
+  background: transparent;
+  padding: 2px 6px 0 6px;
+  transform: rotate(-.8deg);
+  text-shadow: 0 .25px 0 rgba(0,0,0,.2);
+  filter: contrast(1.05);
+}
+
+/* Sketchy arrows (inline SVG) */
+.specimen1-arrow{
+  width: 120px;
+  height: 60px;
+  display:block;
+  overflow:visible;
+  margin-top: 2px;
+}
+.specimen1-arrow path,
+.specimen1-arrow polyline{
+  fill:none;
+  stroke:#2d2d2d;
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray: 2.4 3.1 1.8 2.2;
+  filter: blur(.15px);
+  opacity:.9;
+}
+/* orientations (nudge the arrow block for rough direction) */
+.specimen1-anno.dir-sw .specimen1-arrow{ transform: rotate(6deg); }
+.specimen1-anno.dir-se .specimen1-arrow{ transform: scaleX(-1) rotate(4deg); }
+.specimen1-anno.dir-ne .specimen1-arrow{ transform: rotate(-8deg); }
+.specimen1-anno.dir-nw .specimen1-arrow{ transform: scaleX(-1) rotate(-6deg); }
+
+/* Description page */
+.specimen1-desc-head{
+  font-family: "Cedarville Cursive", cursive;
+  font-size: 20px;
+  line-height: 1.1;
+  color:#111;
+  margin: 0 0 10px 0;
+  text-align:left;
+  transform: rotate(-.4deg);
+}
+.specimen1-desc{
+  font-family: "EB Garamond", serif;
+  font-size: 14px;
+  line-height: 1.42;
+  color: var(--charcoal);
+  max-width: 64ch;
+}
+.specimen1-desc p + p{ margin-top:.65rem; }
+
+/* Pencil utilities */
+/* ===== Red marker circle (hand-drawn look) ===== */
+.pencil-circle,
+.marker-circle{
+  --marker-color: #e30022;      /* red marker */
+  --marker-thick: 3px;          /* main stroke thickness */
+  --marker-bleed: 1.2px;        /* fuzzy/bleed glow */
+  --pad-x: .28em;               /* horizontal padding around text */
+  --pad-y: .08em;               /* vertical padding around text */
+
+  position: relative;
+  display: inline-block;
+  padding: var(--pad-y) var(--pad-x);
+  margin: 0 .05em;
+  white-space: nowrap;          /* keep the circled word together */
+  vertical-align: baseline;
+  z-index: 0;
+}
+
+/* 1st pass of the marker stroke */
+.pencil-circle::before,
+.marker-circle::before{
+  content: "";
+  position: absolute;
+  inset: calc(-.22em) calc(-.45em);
+  border-radius: 999px;
+  border: var(--marker-thick) solid var(--marker-color);
+  transform: rotate(-3deg);
+  pointer-events: none;
+  filter: drop-shadow(0 0 var(--marker-bleed) rgba(227,0,34,.55));
+  mix-blend-mode: multiply;     /* subtle print-like darkening */
+}
+
+/* 2nd pass (gives a hand-drawn, imperfect double stroke) */
+.pencil-circle::after,
+.marker-circle::after{
+  content: "";
+  position: absolute;
+  inset: calc(-.30em) calc(-.53em);
+  border-radius: 999px;
+  border: calc(var(--marker-thick) * .66) solid rgba(227,0,34,.7);
+  transform: rotate(2deg);
+  pointer-events: none;
+}
+
+
+/* Specimen card (worn field-note look) */
+.specimen1-card{
+  margin-top: 14px;
+  max-width: 640px;
+  border: 1px solid rgba(0,0,0,.35);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.25), rgba(0,0,0,.03)),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.045) 0 1px, transparent 1px 24px),
+    #f6f1e5;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.18),
+    0 0 0 1px rgba(255,255,255,.35) inset;
+  padding: 10px 12px;
+  transform: rotate(-.3deg);
+}
+.specimen1-card-row{
+  display:grid;
+  grid-template-columns: 130px 1fr;
+  gap:10px;
+  align-items:start;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(0,0,0,.18);
+}
+.specimen1-card-row:last-child{ border-bottom:none; }
+.specimen1-card .label{
+  font-family: "EB Garamond", serif;
+  font-variant: small-caps;
+  letter-spacing: .8px;
+  color:#2b2b2b;
+  opacity:.9;
+}
+.specimen1-card .value{
+  font-family: "EB Garamond", serif;
+  color:#1f1f1f;
+}
+
+/* Responsive trims */
+@media (max-width: 900px){
+  .specimen1-figure-img{ max-width: 90%; }
+  .specimen1-card-row{ grid-template-columns: 110px 1fr; }
+}
+
+/* Specimen 1 hero image — make it bigger only here */
+#specimen1-hero{
+  width: 100% !important;          /* fill the figure width */
+  max-height: 100%;
+  height: auto;
+  object-fit: contain !important;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Optional: nudge it a bit beyond the figure for extra presence (no layout shift) */
+.specimen1-page .specimen1-figure { overflow: visible; }  /* so the scale isn't clipped */
+#specimen1-hero{
+  transform: scale(1.20);          /* try 1.04–1.10 to taste */
+  transform-origin: center;
+}
