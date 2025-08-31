@@ -367,11 +367,10 @@
     window.addEventListener("resize", function () { $book.turn("center"); });
   </script>
 
-  <!-- Butterfly (rest ~60s, hover/click + page-turn-start on top of it only) -->
+  <!-- Butterfly (rest ~60s, hover/click/page-turn interactions preserved) -->
   <img src="butterfly-closed.png" alt="Butterfly" class="butterfly" />
   <script>
     (() => {
-      // === Butterfly behavior (scoped) ===
       const BOOK_LAND_CHANCE = 0.55, BOOK_PAD = 38, REST_MS = 60000;
       const FLIGHT_MS = 1500, FLAP_FPS = 7, REST_FLAP_FPS = 0, MARGIN = 100;
 
@@ -384,7 +383,6 @@
       const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
       const easeInOut = t => (t<.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2);
 
-      // Random landing spots
       function rndOnBook() {
         const b = bookEl.getBoundingClientRect();
         return {
@@ -401,7 +399,6 @@
       const pickLandingSpot = () =>
         (Math.random() < BOOK_LAND_CHANCE ? rndOnBook() : rndAnywhere());
 
-      // Flapping
       let flapTimer=null, open=false;
       function flap(rate){
         if (flapTimer){ clearInterval(flapTimer); flapTimer=null; }
@@ -410,7 +407,6 @@
         } else { open=false; bf.src=CLOSED_SRC; }
       }
 
-      // Flight
       function flyTo(dest, dur=FLIGHT_MS){
         return new Promise(res=>{
           const t0 = performance.now();
@@ -435,17 +431,14 @@
         });
       }
 
-      // Hop loop
       let restTimer=null;
       async function hop(){
         const dest = pickLandingSpot();
         await flyTo(dest);
         if (restTimer) clearTimeout(restTimer);
         restTimer = setTimeout(hop, REST_MS);
-        lastHopAt = Date.now();
       }
 
-      // Start position
       function start(){
         const x = 8, y = innerHeight - 100;
         bf.style.transform = `translate(${x}px,${y}px) rotate(0deg)`;
@@ -454,58 +447,26 @@
       }
       if (!bf.complete){ bf.addEventListener("load", start, {once:true}); } else { start(); }
 
-      // ===== Interactions you want =====
-      // 1) Hover on the butterfly => hop
-      bf.addEventListener("pointerenter", () => {
-        if (restTimer) clearTimeout(restTimer);
-        hop();
-      });
-
-      // 2) Click/tap on the butterfly => forward click to page + hop
-      let lastHopAt = 0;
+      // Keep your interactions:
+      bf.addEventListener("pointerenter", () => { if (restTimer) clearTimeout(restTimer); hop(); });
       bf.addEventListener("pointerdown", e => {
         e.preventDefault();
-        e.stopPropagation(); // evita disparos duplicados no flipbook
-        lastPointerDown = { x: e.clientX, y: e.clientY, overButterfly: true, t: Date.now() };
-
-        // encaminha o clique para o elemento abaixo (para virar a página normalmente)
         bf.style.pointerEvents = "none";
         requestAnimationFrame(() => {
           const el = document.elementFromPoint(e.clientX, e.clientY);
           if (el && typeof el.click === "function") el.click();
           bf.style.pointerEvents = "auto";
         });
-
         if (restTimer) clearTimeout(restTimer);
         hop();
       }, { passive:false });
 
-      // 3) EXTRA: se a virada de página começar "em cima" da borboleta, ela voa
-      //    (capturamos o ponto do último pointerdown e checamos no 'turning')
-      let lastPointerDown = null;
-      document.addEventListener("pointerdown", (e) => {
-        const r = bf.getBoundingClientRect();
-        const over =
-          e.clientX >= r.left && e.clientX <= r.right &&
-          e.clientY >= r.top  && e.clientY <= r.bottom;
-        lastPointerDown = { x: e.clientX, y: e.clientY, overButterfly: over, t: Date.now() };
-      }, true);
-
       if (window.jQuery && window.jQuery.fn.turn) {
-        jQuery(".flipbook").on("turning", () => {
-          // sem disparo global; só se começou "em cima" dela
-          const now = Date.now();
-          const recent = lastPointerDown && (now - lastPointerDown.t) < 800 && lastPointerDown.overButterfly;
-          const notDuplicate = (now - lastHopAt) > 350; // evita hop duplo
-          if (recent && notDuplicate) {
-            if (restTimer) clearTimeout(restTimer);
-            hop();
-          }
-        });
+        jQuery(".flipbook").on("turning", () => { if (restTimer) clearTimeout(restTimer); hop(); });
+      } else {
+        bookEl.addEventListener("click", () => { if (restTimer) clearTimeout(restTimer); hop(); });
       }
-      // (Removido o antigo 'bookEl.addEventListener("click", ... hop())' global)
 
-      // Keep inside viewport on resize
       addEventListener("resize", () => {
         const x = clamp(parseFloat(bf.dataset.x || 0), 8, innerWidth - 100);
         const y = clamp(parseFloat(bf.dataset.y || 0), 8, innerHeight - 100);
