@@ -563,3 +563,87 @@ body::after{
   transform: scale(1.20);          /* try 1.04–1.10 to taste */
   transform-origin: center;
 }
+
+/* ============================================
+   ADHESIVE "DUREX" TAPE ON THE FACTS CARD
+   (mais fina + transparente e brilhosa)
+   ============================================ */
+.specimen1-facts{ position: relative; } /* contexto para os pseudos */
+
+/* Faixa principal da fita (transparente) */
+.specimen1-facts.taped::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-10px;                             /* pequena folga acima do cartão */
+  transform: translateX(-50%) rotate(-2.2deg);
+  width: 160px;
+  height: 18px;                          /* MAIS FINA */
+  border-radius: 2px;
+
+  /* Camadas para “plástico/brilho” + leve padronagem */
+  background-image:
+    linear-gradient(180deg,
+      rgba(255,255,255,.58) 0%,
+      rgba(245,245,245,.40) 45%,
+      rgba(210,210,210,.26) 60%,
+      rgba(255,255,255,.36) 100%
+    ),
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,.08) 0 12px,
+      rgba(0,0,0,.06) 12px 24px
+    );
+  background-blend-mode: screen, multiply;
+
+  /* Borda suave e sombra flutuando */
+  box-shadow:
+    0 2px 5px rgba(0,0,0,.20),
+    inset 0 0 0 .75px rgba(0,0,0,.10),
+    inset 0 1px 0 rgba(255,255,255,.35);
+
+  opacity: .78;                          /* deixa ver o papel por baixo */
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Realce de brilho (reflexo diagonal sutil) */
+.specimen1-facts.taped::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-10px;
+  transform: translateX(-50%) rotate(-2.2deg);
+  width: 160px;
+  height: 18px;
+
+  background:
+    linear-gradient( 70deg,
+      rgba(255,255,255,.45) 0%,
+      rgba(255,255,255,.12) 18%,
+      rgba(255,255,255,0) 40%,
+      rgba(255,255,255,.10) 60%,
+      rgba(255,255,255,0) 80%
+    );
+  mix-blend-mode: screen;
+  opacity: .75;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Progressive enhancement — dá “cara de fita” usando o que estiver por baixo */
+@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)){
+  .specimen1-facts.taped::before{
+    -webkit-backdrop-filter: saturate(1.15) brightness(1.06) contrast(1.02);
+            backdrop-filter: saturate(1.15) brightness(1.06) contrast(1.02);
+  }
+}
+
+/* Mobile: fita um pouco menor/mais delicada */
+@media (max-width: 900px){
+  .specimen1-facts.taped::before,
+  .specimen1-facts.taped::after{
+    width: 130px;
+    height: 16px;
+    top: -9px;
+  }
+}
