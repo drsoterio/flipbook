@@ -1,649 +1,499 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+/* =========================================================
+   DIGITAL ECOLOGIES — GRITTY / VINTAGE / INDUSTRIAL THEME
+   (No paths like /images — textures are filenames only)
+   ========================================================= */
 
-/* =========================
-   THEME & TEXTURES
-   ========================= */
+/* ===== Palette & knobs ===== */
 :root{
-  --ink:#0d2b4d;
-  --ink-2:#244f7a;
-  --paper:#ece4d6;
-  --sepia:#6e5b40;
-  --charcoal:#2d2a26;
-  --moss:#566b4f;
-  --accent:#7aa37a;
+  --ink:#101417;
+  --charcoal:#1d1f20;
+  --paper:#e7e0d2;
+  --paper-dark:#d5ccb9;
+  --moss:#5b6a55;
+  --rust:#b24a3b;
+  --steel:#3b474f;
+  --accent:#7e8f80;
 
-  /* Cover cloth */
-  --cloth:#6e8176;
-  --cloth-edge:#55685e;
+  /* page size (each page) */
+  --page-w: 550px;
+  --page-h: 635px;
+  --spread-aspect: 0.5773; /* 635 / (550*2) */
 
-  /* Gold foil */
-  --foil-hi:#f6e7b1;
-  --foil-mid:#d4b16a;
-  --foil-low:#8a6d36;
+  /* leather accents (kept for inner paper look & optional effects) */
+  --leather: #5b3c28;
+  --leather-deep: #3b2618;
+  --leather-warm: #7a563f;
+  --moss-olive: #6b7d4f;
+  --mold-speck: rgba(66,84,54,.22);
+  --leather1:#41281b; --leather2:#5c3a2a; --leather3:#7a5641;
+  --brass:#a88432; --brass-hi:#d6b455; --brass-lo:#533e17;
 
-  /* Archival paper texture */
-  --paper-texture: url("Beige Black Vintage Formal Calligraphy Old Fashioned Letter.jpg");
+  /* spacing */
+  --padX: 72px;
+  --padY: 56px;
 
-  /* Cover inner padding + FINAL floral nudges */
-  --padX: 68px;
-  --padY: 52px;
-  --tr-size: 34%;
-  --bl-size: 38%;
-  --tr-nudge-x: -66px; --tr-nudge-y: -40px;
-  --bl-nudge-x: -68px; --bl-nudge-y: -44px;
-
-  /* ===== ABSTRACT PAGE KNOBS (edit here) ===== */
-  --abs-left-width: 200px;   /* image column width (smaller = more room for text) */
-  --abs-gap: 12px;           /* space between image and text */
-  --abs-pad-left: 40px;      /* page padding */
-  --abs-pad-right: 36px;
-  --abs-img: 70%;            /* image width inside the left column */
-  --abs-art-shift: 8px;      /* + moves image down; - moves up */
-  --abs-title-size: 42px;
-  --abs-body-size: 17.25px;
-  --abs-body-leading: 1.42;  /* tighter line spacing */
-  --abs-text-measure: 60ch;  /* comfortable max line length */
+  /* abstract layout */
+  --abs-left-width: 220px;
+  --abs-gap: 14px;
+  --abs-pad-left: 44px;
+  --abs-pad-right: 38px;
+  --abs-img: 74%;
+  --abs-art-shift: 6px;
+  --abs-title-size: 18px;
+  --abs-body-size: 17px;
+  --abs-body-leading: 1.42;
+  --abs-text-measure: 360px;
 }
 
-/* =========================
-   BASE (desk + noise)
-   ========================= */
-*{ margin:0; padding:0; box-sizing:border-box; font-family:"Poppins",sans-serif; }
+/* ===== Reset-ish ===== */
+*{ box-sizing:border-box; margin:0; padding:0; }
+img{ max-width:100%; display:block; }
 
+/* ===== Desk/Tabletop background (gritty) ===== */
 body{
-  display:grid; place-content:center;
   height:100vh; width:100vw; overflow:hidden;
-  background-image:url("wooden-desk.png");
+  display:grid; place-content:center;
+  color:var(--ink);
+  background-image:url("new-background.png");
   background-position:center center; background-size:cover; background-repeat:no-repeat; background-attachment:fixed;
 }
 body::before{
-  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background:
-    radial-gradient(1300px 700px at 55% 45%, rgba(0,0,0,.22), transparent 60%),
-    linear-gradient(180deg, rgba(30,18,10,.22), rgba(255,255,255,0) 55%, rgba(15,10,8,.22));
-  mix-blend-mode:multiply;
+  content:"";
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image: url("tabletop-grit.png");
+  background-size: 900px 900px;
+  background-repeat: repeat;
+  opacity:.25; mix-blend-mode:multiply;
 }
 body::after{
-  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.05"/></svg>');
+  content:"";
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.05"/></svg>');
   mix-blend-mode:multiply;
 }
 
-/* =========================
-   BOOK CONTAINER
-   ========================= */
-.book-wrap{ position:relative; width:1000px; height:600px; perspective:1800px; perspective-origin:50% 50%; z-index:1; }
+/* ===== Book container ===== */
+.book-wrap{
+  position:relative;
+  width: calc(var(--page-w) * 2);
+  height: var(--page-h);
+  perspective:1800px; z-index:1;
+}
 .book-wrap::before{
-  content:""; position:absolute; left:-3%; right:-3%; top:49%; height:84%;
+  content:""; position:absolute; left:-3%; right:-3%; top:50%; height:86%;
   transform:translateY(-50%);
-  background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.32) 0%, rgba(0,0,0,.18) 35%, rgba(0,0,0,.09) 63%, transparent 90%);
-  filter:blur(24px); z-index:0; pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.35) 0%, rgba(0,0,0,.18) 36%, rgba(0,0,0,.1) 66%, transparent 92%);
+  filter:blur(24px);
 }
-.flipbook{ position:relative; width:100%; height:100%; transform-style:preserve-3d; backface-visibility:hidden; z-index:2; }
-.flipbook .page, .flipbook .hard{ cursor:pointer; transform-style:preserve-3d; backface-visibility:hidden; }
+.flipbook{ position:relative; width:100%; height:100%; }
 
-/* =========================
-   COVERS (cloth + deboss)
-   ========================= */
-.flipbook .page.hard{
-  position:relative; border:none; border-radius:10px; overflow:hidden; color:#fff; font-weight:600;
-  background:
-    radial-gradient(120% 100% at 20% 15%, rgba(255,255,255,.08) 0%, rgba(255,255,255,0) 60%),
-    radial-gradient(120% 120% at 80% 85%, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 60%),
-    repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 1px, rgba(0,0,0,0) 1px 3px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,.035) 0 1px, rgba(0,0,0,0) 1px 3px),
-    var(--cloth) !important;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), inset 6px 6px 18px rgba(255,255,255,.03), inset -10px -10px 22px rgba(0,0,0,.26), 0 10px 26px rgba(0,0,0,.25);
+/* ===== HARD PAGES (covers) — image-mapped & exact fit ===== */
+/* Map each hard page to its artwork and force cover-crop fill */
+.hard.front-cover{
+  background-image:url("flipbook_cover.png");
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:100% 100%; /* exact fit to 550x635 page */
 }
+
+
+.hard.inner-front{
+  background: url("book-cover-leather-inner-front.png") center / 100% 100% no-repeat;
+}
+
+.hard.inner-back{
+  background: url("book-cover-leather-inner-back.png") center / 100% 100% no-repeat;
+}
+
+.hard.back-cover{
+  background: url("flipbook_back_cover.png") center / cover no-repeat !important;
+}
+
+/* keep nice rounded paper edge + physical shadow */
+.flipbook .page.hard{
+  border:none; border-radius:12px; overflow:hidden;
+  color:#eee7d8;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.08),
+    inset 8px 10px 30px rgba(0,0,0,.22),
+    inset -12px -14px 36px rgba(0,0,0,.35),
+    0 18px 40px rgba(0,0,0,.42);
+  position:relative;
+}
+
+/* inner deboss frame (subtle) */
 .flipbook .page.hard::before{
-  content:""; position:absolute; inset:16px; border-radius:8px; z-index:0;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.10), inset 0 0 0 2px rgba(0,0,0,.26), inset 0 0 28px rgba(0,0,0,.28);
+  content:""; position:absolute; inset:16px; border-radius:9px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.10),
+    inset 0 0 0 2px rgba(0,0,0,.25),
+    inset 0 0 28px rgba(0,0,0,.18);
   pointer-events:none;
 }
+
+/* spine edge highlight */
 .flipbook .page.hard::after{
   content:""; position:absolute; top:3%; bottom:3%; width:10px; right:-6px;
-  background:linear-gradient(180deg, var(--cloth-edge), var(--cloth));
-  border-radius:0 8px 8px 0;
-  box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), 3px 0 8px rgba(0,0,0,.22);
+  background:linear-gradient(180deg, var(--leather-deep), var(--leather));
+  border-radius:0 9px 9px 0;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), 3px 0 8px rgba(0,0,0,.28);
   pointer-events:none;
 }
 .flipbook .page.hard:last-child::after,
 .flipbook .page.hard:nth-last-child(2)::after{
-  left:-6px; right:auto; border-radius:8px 0 0 8px;
-  box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), -3px 0 8px rgba(0,0,0,.22);
+  left:-6px; right:auto; border-radius:9px 0 0 9px;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), -3px 0 8px rgba(0,0,0,.28);
 }
 
-/* content box padding */
+/* Hide the HTML title block on outer covers (art already has it) */
+.hard.front-cover .cover-inner,
+.hard.back-cover  .cover-inner{ display:none; }
+
+/* ===== Cover content (kept for accessibility / inner covers) ===== */
 .cover-inner{
   position:relative; z-index:1;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:8px; text-align:center; width:100%; height:100%;
+  gap:10px; text-align:center; width:100%; height:100%;
   padding: var(--padY) var(--padX);
 }
-
-/* =========================
-   GOLD FOIL TYPOGRAPHY
-   ========================= */
-.foil{
-  color:transparent;
-  background-image:
-    linear-gradient(105deg, var(--foil-low) 0%, var(--foil-mid) 30%, var(--foil-hi) 50%, var(--foil-mid) 70%, var(--foil-low) 100%),
-    radial-gradient(120% 120% at 20% 10%, rgba(255,255,255,.40), transparent 60%);
-  background-clip:text; -webkit-background-clip:text;
-  text-shadow:0 1px 0 rgba(255,255,255,.18), 0 1px 8px rgba(0,0,0,.26);
+.cover-title{
+  font-family:"Oswald", system-ui, sans-serif;
+  font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  font-size:38px; line-height:1.02;
+  color:#efe9d5;
+  text-shadow: 0 1px 0 rgba(0,0,0,.6), 0 0 40px rgba(0,0,0,.35);
 }
-.cover-title{ font-family:"Italianno", cursive; font-weight:400; font-size:64px; line-height:1.02; letter-spacing:.2px; margin-bottom:6px; position:relative; z-index:3; }
-.cover-sub{ font-family:"EB Garamond", serif; font-variant:small-caps; letter-spacing:1.2px; opacity:.97; font-size:18px; margin-top:2px; position:relative; z-index:3; }
-.cover-editor{ font-family:"EB Garamond", serif; letter-spacing:.6px; opacity:.92; margin-top:10px; font-size:16px; position:relative; z-index:3; }
-
-/* =========================
-   FLORAL ORNAMENTS (gold)
-   ========================= */
-.cover-florals{
-  position:absolute; pointer-events:none; z-index:2;
-  background:linear-gradient(105deg, var(--foil-low), var(--foil-mid) 34%, var(--foil-hi) 55%, var(--foil-mid) 76%, var(--foil-low));
-  -webkit-mask-image:url("flower-cover.png"); mask-image:url("flower-cover.png");
-  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  -webkit-mask-size:contain; mask-size:contain;
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.35)); opacity:.95;
+.cover-sub, .cover-editor{
+  font-family:"IBM Plex Serif", serif;
+  font-size:16px; letter-spacing:.04em; color:#e9e2cf;
+  opacity:.95;
 }
-.cover-florals.top-right{ width:var(--tr-size); aspect-ratio:1/1; bottom:calc(var(--padY) + var(--tr-nudge-y)); right:calc(var(--padX) + var(--tr-nudge-x)); -webkit-mask-position:100% 100%; mask-position:100% 100%; }
-.cover-florals.bottom-left{ width:var(--bl-size); aspect-ratio:1/1; top:calc(var(--padY) + var(--bl-nudge-y)); left:calc(var(--padX) + var(--bl-nudge-x)); -webkit-mask-position:0% 0%; mask-position:0% 0%; transform:rotate(180deg); }
-@supports not (-webkit-mask-image: url("")) {
-  .cover-florals{
-    background:none; background-image:url("flower-cover.png"); background-repeat:no-repeat; background-size:contain; background-position:center;
-    filter:invert(74%) sepia(56%) saturate(410%) hue-rotate(356deg) brightness(96%) contrast(95%) drop-shadow(0 1px 2px rgba(0,0,0,.35));
-    opacity:.98;
-  }
+.cover-stamp{
+  width:120px; height:120px; margin-bottom:10px; opacity:.9;
+  background-image:url("flipbook-cover-stamp.png");
+  background-size:contain; background-repeat:no-repeat; background-position:center;
+  filter: contrast(1.05) saturate(.9) drop-shadow(0 2px 2px rgba(0,0,0,.35));
 }
 
-/* =========================
-   PAGES (archival paper)
-   ========================= */
+/* ===== Paper pages ===== */
 .flipbook .page:not(.hard){
+  position:relative;
   background:
-    radial-gradient(140% 100% at 50% 10%, rgba(0,0,0,.03), rgba(0,0,0,0) 55%),
-    radial-gradient(120% 140% at 10% 50%, rgba(0,0,0,.05), transparent 60%),
-    radial-gradient(120% 140% at 90% 50%, rgba(0,0,0,.05), transparent 60%),
+    radial-gradient(140% 100% at 50% 10%, rgba(0,0,0,.05), rgba(0,0,0,0) 55%),
+    radial-gradient(120% 140% at 10% 50%, rgba(0,0,0,.06), transparent 60%),
+    radial-gradient(120% 140% at 90% 50%, rgba(0,0,0,.06), transparent 60%),
     var(--paper);
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:6px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.35),
+              0 10px 22px rgba(0,0,0,.24);
+  display:flex; align-items:center; justify-content:center; padding:0;
+  overflow:hidden;
   color:var(--charcoal);
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
-  border:1px solid rgba(0,0,0,.06); border-radius:6px;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35), 0 10px 22px rgba(0,0,0,.22);
-  position:relative; overflow:hidden;
 }
 .flipbook .page:not(.hard)::after{
-  content:""; position:absolute; inset:0; pointer-events:none; opacity:.9;
-  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.02)), var(--paper-texture);
-  background-size:cover; mix-blend-mode:multiply;
+  content:""; position:absolute; inset:0; pointer-events:none; opacity:.95;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.02)),
+    url("paper-fiber.png");
+  background-size:cover;
+  mix-blend-mode:multiply;
 }
 .flipbook .page:not(.hard).even::before,
 .flipbook .page:not(.hard).odd::before{
   content:""; position:absolute; top:0; bottom:0; width:46px; pointer-events:none; z-index:2;
 }
-.flipbook .page:not(.hard).even::before{ right:-1px; background:linear-gradient(90deg, rgba(0,0,0,.22), rgba(0,0,0,.12) 26%, rgba(0,0,0,.05) 60%, transparent 100%); }
-.flipbook .page:not(.hard).odd::before{  left:-1px; background:linear-gradient(270deg, rgba(0,0,0,.22), rgba(0,0,0,.12) 26%, rgba(0,0,0,.05) 60%, transparent 100%); }
+.flipbook .page:not(.hard).even::before{ right:-1px; background:linear-gradient(90deg, rgba(0,0,0,.22), rgba(0,0,0,.12) 26%, rgba(0,0,0,.06) 60%, transparent 100%); }
+.flipbook .page:not(.hard).odd::before{  left:-1px;  background:linear-gradient(270deg, rgba(0,0,0,.22), rgba(0,0,0,.12) 26%, rgba(0,0,0,.06) 60%, transparent 100%); }
 
-.page img{ width:70%; object-fit:cover; margin:auto; }
-.flipbook .page small{ font-size:14px; margin-bottom:10px; }
-
-/* =========================
-   ABSTRACT PAGE (two-column, robust)
-   ========================= */
-.flipbook .page:not(.hard) > .conteudo.abstract{
-  align-self: stretch;
-  width: 100%;
-  height: 100%;
-  margin: 0;
+/* gentle deckled edge mask */
+.flipbook .page:not(.hard) {
+  -webkit-mask-image: radial-gradient(16px 16px at 6px 6px, #000 65%, transparent 70%),
+                      radial-gradient(16px 16px at calc(100% - 6px) 6px, #000 65%, transparent 70%),
+                      radial-gradient(16px 16px at 6px calc(100% - 6px), #000 65%, transparent 70%),
+                      radial-gradient(16px 16px at calc(100% - 6px) calc(100% - 6px), #000 65%, transparent 70%),
+                      linear-gradient(#000,#000);
+  -webkit-mask-composite: source-over, source-over, source-over, source-over, source-in;
+          mask-image: radial-gradient(16px 16px at 6px 6px, #000 65%, transparent 70%),
+                      radial-gradient(16px 16px at calc(100% - 6px) 6px, #000 65%, transparent 70%),
+                      radial-gradient(16px 16px at 6px calc(100% - 6px), #000 65%, transparent 70%),
+                      radial-gradient(16px 16px at calc(100% - 6px) calc(100% - 6px), #000 65%, transparent 70%),
+                      linear-gradient(#000,#000);
 }
 
-.abstract{
+/* shared inner content wrapper */
+.conteudo{
   position:relative;
-  text-align:left;
-  display:block;
   width:100%; height:100%;
-  padding: 36px var(--abs-pad-right) 36px var(--abs-pad-left);
+  padding: var(--padY) var(--padX);
+  display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start;
 }
 
-/* grid: fixed image column + flexible text column */
+/* generic figure */
+.placa{ width:76%; margin:0 auto; filter:contrast(1.03); }
+.fig{ display:block; text-align:center; font: 12px/1 "IBM Plex Serif", serif; color:#5a5245; margin-top:6px; }
+
+/* ===== Abstract (two-column) ===== */
+.abstract{ text-align:left; }
 .abs-grid{
   display:grid;
   grid-template-columns: var(--abs-left-width) minmax(0, 1fr);
   gap: var(--abs-gap);
-  align-items: stretch;   /* enables vertical centering in left column */
+  align-items: stretch;
   height: 100%;
   width:100%;
 }
-
-/* Left art: centered both ways; optional vertical nudge */
-.abs-art{
-  display:flex;
-  align-items:center;          /* vertical centering */
-  justify-content:center;      /* horizontal centering */
-  margin:0;
-  padding:0;
-  background:none !important;
-}
-.abs-art img{
-  display:block;
-  width: var(--abs-img);
-  height: auto;
-  object-fit: contain;
-  object-position: center center;
-  transform: translateY(var(--abs-art-shift));
-}
-
-/* Right column: never clip; slightly smaller text */
+.abs-art{ display:flex; align-items:center; justify-content:center; }
+.abs-art img{ width: var(--abs-img); height: auto; object-fit:contain; transform: translateY(var(--abs-art-shift)); }
 .abs-text{ min-width:0; max-width: var(--abs-text-measure); padding-right:.5rem; }
-/* Meow Script is a single-style font; no bold/italics variants */
 .abs-title{
-  font-family: "Meow Script", cursive;
-  font-weight: 400;
-  font-size: 34px;   /* keep your size or tweak */
-  line-height: 1.05;
-  color: #111;
+  font-family:"Oswald", system-ui, sans-serif;
+  font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  font-size: var(--abs-title-size); color:var(--steel);
   margin: 2px 0 14px 0;
 }
-
 .abs-body{
-  font-family:"EB Garamond", serif;
+  font-family:"IBM Plex Serif", serif;
   font-size: var(--abs-body-size);
   line-height: var(--abs-body-leading);
-  letter-spacing:.1px;
-  hyphens:auto;
-  overflow-wrap:break-word;
+  color:#2a2723;
 }
+.abs-keys{
+  margin-top:16px;
+  font-family:"IBM Plex Serif", serif; font-size:17px; line-height:1.45; color:#2b352b;
+}
+.keys-label{ color:var(--moss); font-weight:600; letter-spacing:.02em; }
 
-/* Abstract page 2 */
-.abstract--text-only{ max-width:720px; }
-.abs-keys{ margin-top:16px; font-family:"EB Garamond", serif; font-size:17px; line-height:1.45; color:var(--ink-2); }
-.keys-label{ color:var(--moss); font-weight:700; }
+/* Abstract page 2 (left page tweaks) */
+.abstract--inner{ --abs-left-width: 120px; --abs-gap: 10px; --abs-pad-left: 28px; --abs-pad-right: 60px; }
+.abs-grid--left-page{ grid-template-columns: var(--abs-left-width) minmax(0, 1fr); }
 
 /* margin note */
 .margem{
   position:absolute; right:8px; top:10px;
   writing-mode:vertical-rl; text-orientation:mixed;
-  font:16px/1.1 "Brush Script MT","Snell Roundhand",cursive;
-  color:var(--sepia); opacity:.82; pointer-events:none;
-  z-index:3;
+  font:14px/1 "Oswald", system-ui, sans-serif; letter-spacing:.12em;
+  color:#7a6c58; opacity:.82; pointer-events:none;
 }
 
-/* =========================
-   INTERACTIONS
-   ========================= */
-.butterfly{ position:fixed; top:0; left:0; width:80px; height:auto; pointer-events:auto; z-index:9999; transform:translate(8px, calc(100vh - 100px)) rotate(0deg); transition:transform 90ms linear; filter:drop-shadow(0 2px 3px rgba(0,0,0,.25)); will-change:transform; }
-@media (prefers-reduced-motion:reduce){ .butterfly{ transition:none !important; } }
-.flipbook .page:active{ filter:brightness(.985); transition:filter 120ms ease; }
+/* Intro placeholder */
+.subtitulo{ text-transform:uppercase; letter-spacing:.15em; font:12px/1 "Oswald", system-ui, sans-serif; color:#6d5d4a; }
+.mono{ font:12px/1 "IBM Plex Serif", serif; color:#3a352e; }
 
-/* =========================
-   RESPONSIVE
-   ========================= */
-@media (max-width:1100px){
-  .book-wrap{ width:92vw; height:calc(92vw * .6); }
-  :root{ --abs-left-width: 170px; --abs-gap: 10px; }
+/* ===== Specimen styles ===== */
+.specimen1-page{ width:100%; height:100%; }
+.specimen1-figure{ position:relative; width:100%; height: calc(100% - 4px); display:flex; align-items:center; justify-content:center; }
+.specimen1-figure-img{ max-width:100%; height:auto; }
+#specimen1-hero{ transform: scale(1.12); transform-origin:center; }
+
+.specimen1-meta{ margin:0 0 4px 0; }
+.specimen1-meta .specimen-id{
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#2e3336;
+}
+.specimen1-meta .specimen-title-line{
+  font-family:"IBM Plex Serif", serif; font-weight:600; font-size:18px; color:#1f1f1f;
+}
+
+.specimen1-facts{
+  margin:6px 0 12px 0;
+  border:1px solid rgba(0,0,0,.28);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.25), rgba(0,0,0,.03)),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.035) 0 1px, transparent 1px 22px),
+    #f3ebdb;
+  box-shadow:0 1px 2px rgba(0,0,0,.18), 0 0 0 1px rgba(255,255,255,.35) inset;
+  padding:10px 12px; position:relative;
+}
+.specimen1-facts .row{
+  display:grid; grid-template-columns:150px 1fr; gap:10px;
+  padding:6px 0; border-bottom:1px dashed rgba(0,0,0,.18);
+}
+.specimen1-facts .row:last-child{ border-bottom:none; }
+.specimen1-facts dt{
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#323634;
+}
+.specimen1-facts dd{ margin:0; font-family:"IBM Plex Serif", serif; color:#1f1f1f; }
+
+/* tape highlight */
+.specimen1-facts.taped::before,
+.specimen1-facts.taped::after{
+  content:""; position:absolute; left:50%; transform: translateX(-50%) rotate(-2.2deg);
+  width: 160px; height: 18px; top: -10px; border-radius:2px; pointer-events:none;
+}
+.specimen1-facts.taped::before{
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.58) 0%, rgba(245,245,245,.40) 45%, rgba(210,210,210,.26) 60%, rgba(255,255,255,.36) 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 12px, rgba(0,0,0,.06) 12px 24px);
+  box-shadow: 0 2px 5px rgba(0,0,0,.20), inset 0 0 0 .75px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.35);
+  opacity:.78;
+}
+.specimen1-facts.taped::after{
+  background: linear-gradient( 70deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,.12) 18%, rgba(255,255,255,0) 40%, rgba(255,255,255,.10) 60%, rgba(255,255,255,0) 80% );
+  opacity:.75;
+}
+
+/* body copy */
+.specimen1-prose{
+  font-family:"IBM Plex Serif", serif;
+  font-size:15px; line-height:1.46; color:#292521;
+  max-width:64ch;
+}
+.specimen1-prose p + p{ margin-top:.7rem; }
+.specimen1-desc-head{
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase; font-size:14px; color:#1f1f1f; margin:0 0 8px 0;
+}
+.specimen1-credit .specimen1-desc-head{ margin-right:.5ch; }
+
+/* marker styles */
+.marker-circle{
+  position:relative; display:inline-block; padding: .02em .28em .06em .28em; margin: 0 .05em; z-index:0;
+}
+.marker-circle::before{
+  content:""; position:absolute; inset:-.18em -.38em; border: 2.5px solid var(--rust); border-radius:999px; transform: rotate(-2deg); filter: drop-shadow(0 0 .6px rgba(178,74,59,.55));
+}
+.marker-underline{ position:relative; display:inline; z-index:0; }
+.marker-underline::after{
+  content:""; position:absolute; left:-.06em; right:-.04em; height:.28em; bottom:-.1em;
+  border-bottom: 3px solid var(--rust); border-radius:2px; transform:rotate(-1.2deg);
+  background:linear-gradient(0deg, rgba(178,74,59,.12), rgba(178,74,59,.12)) padding-box;
+}
+
+/* ===== Responsive ===== */
+@media (max-width:1200px){
+  .book-wrap{
+    width: min(92vw, calc(var(--page-w) * 2));
+    height: calc(min(92vw, calc(var(--page-w) * 2)) * var(--spread-aspect));
+  }
+  :root{ --abs-left-width: 180px; --abs-gap: 12px; }
 }
 @media (max-width:900px){
   .margem{ display:none; }
   .abs-grid{ grid-template-columns:1fr; height:auto; }
   .abs-art{ margin:0 auto 12px; }
-  .abs-body{ font-size:16.75px; line-height:1.45; }
+  .abs-body{ font-size:16.25px; line-height:1.44; }
+  .specimen1-facts .row{ grid-template-columns: 120px 1fr; }
 }
 
-/* =========================
-   PRINT
-   ========================= */
+/* ===== Print ===== */
 @media print{
   body{ background:#fff; }
   .flipbook .page{ box-shadow:none; border:none; }
-  a::after{ content:" (" attr(href) ")"; font-size:10px; }
 }
 
-/* ===== Abstract — Page 2: wider inner text column + outer margin note ===== */
+/* ==== Make back cover darker to match the front ==== */
 
-/* Make the text column more spacious by shrinking the ghost (left) column */
-.abstract--inner{
-  /* narrower left ghost column + tighter gap + a bit less left padding */
-  --abs-left-width: 120px;   /* was 200px; try 100–140px to taste */
-  --abs-gap: 10px;           /* was 12px */
-  --abs-pad-left: 28px;      /* was 40px; moves everything slightly left */
-}
-
-/* Keep the two-column structure for page 2 */
-.abstract--inner .abs-grid,
-.abs-grid--left-page{
-  grid-template-columns: var(--abs-left-width) minmax(0, 1fr);
+/* 1) Make sure we're pointing to the right file */
+.hard.back-cover{
+  background-image: url("flipbook_back_cover.png"); /* <-- your darker back cover source */
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;            /* needed for the overlays below */
 }
 
-/* Let the text use all available width on page 2 */
-.abstract--inner .abs-text{
-  max-width: none;           /* overrides any global 56–60ch measure */
-}
-
-/* Put the margin note on the OUTER edge (left edge on this left-hand page) */
-.abstract--inner .margem{
-  left: 8px;
-  right: auto;               /* overrides the default right:8px */
-}
-
-/* Abstract — Page 2: add more inner (right) gutter */
-.abstract--inner{
-  --abs-pad-right: 64px;   /* try 56–80px to taste */
-}
-
-/* --- Keywords in Cedarville Cursive (page 2) --- */
-.abs-keys{
-  font-family: "cedarville cursive";
-  font-weight: 400;           /* Cedarville Cursive has one weight */
-  font-size: 20px;            /* tweak 24–32px to taste */
-  line-height: 1.15;
-  letter-spacing: .2px;
-  color: #111;
-}
-
-.abs-keys .keys-label{
-  font-family: inherit;       /* keep Meow Script for the label too */
-  font-weight: 400 !important;/* cancel previous 700 */
-  color: var(--moss);         /* keep your subtle green accent */
-  margin-right: .35ch;
-}
-/* === Specimen 1 styles (append) === */
-.specimen1-page{
-  width:100%;
-  height:100%;
-  padding: var(--padY) var(--padX);
-}
-
-/* Title at top (Cedarville Cursive) with a pencil underline */
-.specimen1-title{
-  font-family: "Cedarville Cursive", cursive;
-  font-weight: 400;
-  font-size: 26px;
-  line-height: 1.05;
-  letter-spacing: .2px;
-  text-align: center;
-  color:#111;
-  margin: 4px 0 16px 0;
-  position: relative;
-}
-.specimen1-title::after{
+/* 2) Tone & vignette (darken + warm, like the front) */
+.hard.back-cover::before{
   content:"";
-  position:absolute; left:8%; right:8%; bottom:-6px; height:2px;
+  position:absolute; inset:0; pointer-events:none; border-radius:12px;
+  /* stacked overlays: global darken + warm tint + vignette */
   background:
-    repeating-linear-gradient(90deg,
-      rgba(34,34,34,.75) 0 14px,
-      rgba(34,34,34,.55) 14px 22px,
-      rgba(34,34,34,.8) 22px 28px);
-  filter: blur(.6px) contrast(1.1);
-  transform: rotate(-.3deg);
-  opacity:.75;
+    linear-gradient(0deg, rgba(22,14,9,.22), rgba(22,14,9,.22)),         /* overall darken */
+    radial-gradient(120% 95% at 50% 60%, rgba(0,0,0,.35), transparent 60%), /* soft vignette */
+    linear-gradient(0deg, rgba(120,86,48,.10), rgba(120,86,48,.10));     /* warm leather tint */
+  mix-blend-mode:multiply;
+  opacity:1;
 }
 
-/* Figure + annotations */
-.specimen1-figure{
-  position:relative;
-  width:100%;
-  height: calc(100% - 56px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.specimen1-figure-img{
-  max-width: 100%;
-  height:auto;
-  filter: contrast(1.02);
-}
-
-/* Annotations: place with CSS vars --x / --y (percent of figure box) */
-.specimen1-anno{
-  position:absolute;
-  left: var(--x, 50%);
-  top:  var(--y, 50%);
-  transform: translate(-50%, -50%);
-  pointer-events:none;
-  max-width: 36ch;
-}
-.specimen1-tag{
-  display:inline-block;
-  font-family: "Cedarville Cursive", cursive;
-  font-size: 18px;
-  line-height: 1.05;
-  color:#222;
-  background: transparent;
-  padding: 2px 6px 0 6px;
-  transform: rotate(-.8deg);
-  text-shadow: 0 .25px 0 rgba(0,0,0,.2);
-  filter: contrast(1.05);
-}
-
-/* Sketchy arrows (inline SVG) */
-.specimen1-arrow{
-  width: 120px;
-  height: 60px;
-  display:block;
-  overflow:visible;
-  margin-top: 2px;
-}
-.specimen1-arrow path,
-.specimen1-arrow polyline{
-  fill:none;
-  stroke:#2d2d2d;
-  stroke-width:2.2;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  stroke-dasharray: 2.4 3.1 1.8 2.2;
-  filter: blur(.15px);
+/* 3) Subtle grain so the texture matches the front better */
+.hard.back-cover::after{
+  content:"";
+  position:absolute; inset:0; pointer-events:none; border-radius:12px;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.18"/></svg>');
+  background-size:300px 300px;
+  mix-blend-mode:multiply;
   opacity:.9;
 }
-/* orientations (nudge the arrow block for rough direction) */
-.specimen1-anno.dir-sw .specimen1-arrow{ transform: rotate(6deg); }
-.specimen1-anno.dir-se .specimen1-arrow{ transform: scaleX(-1) rotate(4deg); }
-.specimen1-anno.dir-ne .specimen1-arrow{ transform: rotate(-8deg); }
-.specimen1-anno.dir-nw .specimen1-arrow{ transform: scaleX(-1) rotate(-6deg); }
 
-/* Description page */
-.specimen1-desc-head{
-  font-family: "Cedarville Cursive", cursive;
-  font-size: 20px;
-  line-height: 1.1;
-  color:#111;
-  margin: 0 0 10px 0;
-  text-align:left;
-  transform: rotate(-.4deg);
+/* Optional: push a hair more contrast (comment out if too strong) */
+.hard.back-cover{ filter: contrast(1.08) saturate(.95); }
+
+/* === Tone both covers toward #715027 (rich brown) === */
+:root{
+  --leather-target: #715027;
+  --leather-target-rgb: 113,80,39;  /* same as #715027 */
+  --tone-sat: 1.03;                 /* bump if it feels dull */
+  --tone-ctr: 1.06;                 /* small contrast pop     */
+  --tone-bri: 0.98;                 /* lift/dim globally       */
+  --tone-vignette: .34;             /* edge darken strength    */
 }
-.specimen1-desc{
-  font-family: "EB Garamond", serif;
-  font-size: 14px;
-  line-height: 1.42;
-  color: var(--charcoal);
-  max-width: 64ch;
-}
-.specimen1-desc p + p{ margin-top:.65rem; }
 
-/* Pencil utilities */
-/* ===== Red marker circle (hand-drawn look) ===== */
-.pencil-circle,
-.marker-circle{
-  --marker-color: #e30022;      /* red marker */
-  --marker-thick: 3px;          /* main stroke thickness */
-  --marker-bleed: 1.2px;        /* fuzzy/bleed glow */
-  --pad-x: .28em;               /* horizontal padding around text */
-  --pad-y: .08em;               /* vertical padding around text */
-
+/* ensure we’re layering on top of the art */
+.hard.front-cover,
+.hard.back-cover{
   position: relative;
-  display: inline-block;
-  padding: var(--pad-y) var(--pad-x);
-  margin: 0 .05em;
-  white-space: nowrap;          /* keep the circled word together */
-  vertical-align: baseline;
-  z-index: 0;
+  background-size: 100% 100% !important;  /* exact fit to 550×635 page */
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+
+  /* gentle global tweak before colorizing */
+  filter:
+    saturate(var(--tone-sat))
+    contrast(var(--tone-ctr))
+    brightness(var(--tone-bri));
 }
 
-/* 1st pass of the marker stroke */
-.pencil-circle::before,
-.marker-circle::before{
-  content: "";
-  position: absolute;
-  inset: calc(-.22em) calc(-.45em);
-  border-radius: 999px;
-  border: var(--marker-thick) solid var(--marker-color);
-  transform: rotate(-3deg);
-  pointer-events: none;
-  filter: drop-shadow(0 0 var(--marker-bleed) rgba(227,0,34,.55));
-  mix-blend-mode: multiply;     /* subtle print-like darkening */
-}
-
-/* 2nd pass (gives a hand-drawn, imperfect double stroke) */
-.pencil-circle::after,
-.marker-circle::after{
-  content: "";
-  position: absolute;
-  inset: calc(-.30em) calc(-.53em);
-  border-radius: 999px;
-  border: calc(var(--marker-thick) * .66) solid rgba(227,0,34,.7);
-  transform: rotate(2deg);
-  pointer-events: none;
-}
-
-
-/* Specimen card (worn field-note look) */
-.specimen1-card{
-  margin-top: 14px;
-  max-width: 640px;
-  border: 1px solid rgba(0,0,0,.35);
+/* edge darken + warm lift (keeps relief depth) */
+.hard.front-cover::before,
+.hard.back-cover::before{
+  content:""; position:absolute; inset:0; pointer-events:none; border-radius:12px;
   background:
-    linear-gradient(180deg, rgba(255,255,255,.25), rgba(0,0,0,.03)),
-    repeating-linear-gradient(0deg, rgba(0,0,0,.045) 0 1px, transparent 1px 24px),
-    #f6f1e5;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,.18),
-    0 0 0 1px rgba(255,255,255,.35) inset;
-  padding: 10px 12px;
-  transform: rotate(-.3deg);
-}
-.specimen1-card-row{
-  display:grid;
-  grid-template-columns: 130px 1fr;
-  gap:10px;
-  align-items:start;
-  padding: 6px 0;
-  border-bottom: 1px dashed rgba(0,0,0,.18);
-}
-.specimen1-card-row:last-child{ border-bottom:none; }
-.specimen1-card .label{
-  font-family: "EB Garamond", serif;
-  font-variant: small-caps;
-  letter-spacing: .8px;
-  color:#2b2b2b;
-  opacity:.9;
-}
-.specimen1-card .value{
-  font-family: "EB Garamond", serif;
-  color:#1f1f1f;
+    /* subtle warm lift so shadows don’t go gray */
+    linear-gradient(0deg, rgba(113,80,39,.10), rgba(113,80,39,.10)),
+    /* vignette for depth */
+    radial-gradient(115% 95% at 50% 58%, rgba(0,0,0,var(--tone-vignette)), transparent 60%);
+  mix-blend-mode:multiply;
+  opacity:1;
 }
 
-/* Responsive trims */
-@media (max-width: 900px){
-  .specimen1-figure-img{ max-width: 90%; }
-  .specimen1-card-row{ grid-template-columns: 110px 1fr; }
+/* the actual color wash → forces hue toward #715027 */
+.hard.front-cover::after,
+.hard.back-cover::after{
+  content:""; position:absolute; inset:0; pointer-events:none; border-radius:12px;
+  background: rgba(var(--leather-target-rgb), .48); /* strength of the wash */
+  mix-blend-mode:color;  /* keep luminance from the photo, use this hue/sat */
+  opacity:1;
 }
 
-/* Specimen 1 hero image — make it bigger only here */
-#specimen1-hero{
-  width: 100% !important;          /* fill the figure width */
-  max-height: 100%;
-  height: auto;
-  object-fit: contain !important;
-  display: block;
-  margin: 0 auto;
-}
+/* — If the front and back should differ slightly, you can fine-tune: — */
+/* .hard.back-cover{ filter: saturate(1.02) contrast(1.07) brightness(.99); } */
+/* .hard.back-cover::after{ background: rgba(113,80,39,.52); } */
 
-/* Optional: nudge it a bit beyond the figure for extra presence (no layout shift) */
-.specimen1-page .specimen1-figure { overflow: visible; }  /* so the scale isn't clipped */
-#specimen1-hero{
-  transform: scale(1.20);          /* try 1.04–1.10 to taste */
-  transform-origin: center;
-}
+/* =================================WOODLOUSE ====================================================================*/
+/* woodlouse.css — woodlice crawl on the CURRENT visible surface (cover/page) */
 
-/* ============================================
-   ADHESIVE "DUREX" TAPE ON THE FACTS CARD
-   (mais fina + transparente e brilhosa)
-   ============================================ */
-.specimen1-facts{ position: relative; } /* contexto para os pseudos */
-
-/* Faixa principal da fita (transparente) */
-.specimen1-facts.taped::before{
-  content:"";
+.woodlouse-layer{
   position:absolute;
-  left:50%;
-  top:-10px;                             /* pequena folga acima do cartão */
-  transform: translateX(-50%) rotate(-2.2deg);
-  width: 160px;
-  height: 18px;                          /* MAIS FINA */
-  border-radius: 2px;
-
-  /* Camadas para “plástico/brilho” + leve padronagem */
-  background-image:
-    linear-gradient(180deg,
-      rgba(255,255,255,.58) 0%,
-      rgba(245,245,245,.40) 45%,
-      rgba(210,210,210,.26) 60%,
-      rgba(255,255,255,.36) 100%
-    ),
-    repeating-linear-gradient(90deg,
-      rgba(255,255,255,.08) 0 12px,
-      rgba(0,0,0,.06) 12px 24px
-    );
-  background-blend-mode: screen, multiply;
-
-  /* Borda suave e sombra flutuando */
-  box-shadow:
-    0 2px 5px rgba(0,0,0,.20),
-    inset 0 0 0 .75px rgba(0,0,0,.10),
-    inset 0 1px 0 rgba(255,255,255,.35);
-
-  opacity: .78;                          /* deixa ver o papel por baixo */
-  z-index: 3;
-  pointer-events: none;
+  inset:0;                 /* fill the host surface */
+  pointer-events:none;     /* never block UI */
+  overflow:hidden;         /* partial body shows as they cross out */
+  z-index: 5;              /* above surface content */
 }
 
-/* Realce de brilho (reflexo diagonal sutil) */
-.specimen1-facts.taped::after{
-  content:"";
+.woodlouse{
   position:absolute;
-  left:50%;
-  top:-10px;
-  transform: translateX(-50%) rotate(-2.2deg);
-  width: 160px;
-  height: 18px;
-
-  background:
-    linear-gradient( 70deg,
-      rgba(255,255,255,.45) 0%,
-      rgba(255,255,255,.12) 18%,
-      rgba(255,255,255,0) 40%,
-      rgba(255,255,255,.10) 60%,
-      rgba(255,255,255,0) 80%
-    );
-  mix-blend-mode: screen;
-  opacity: .75;
-  z-index: 4;
-  pointer-events: none;
+  width:46px; height:46px;
+  background-size:contain;
+  background-repeat:no-repeat;
+  /* matte down specular differences across frames */
+  filter: brightness(.88) contrast(.95) saturate(.9) drop-shadow(0 1px 1px rgba(0,0,0,.35));
+  opacity:.97;
+  will-change: transform, opacity, background-image;
+  transform-origin:50% 50%;
 }
 
-/* Progressive enhancement — dá “cara de fita” usando o que estiver por baixo */
-@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)){
-  .specimen1-facts.taped::before{
-    -webkit-backdrop-filter: saturate(1.15) brightness(1.06) contrast(1.02);
-            backdrop-filter: saturate(1.15) brightness(1.06) contrast(1.02);
-  }
+.woodlouse--despawn{ opacity:0; transition:opacity .25s ease; }
+
+@media (prefers-reduced-motion: reduce){
+  .woodlouse{ transition:none !important; }
 }
 
-/* Mobile: fita um pouco menor/mais delicada */
-@media (max-width: 900px){
-  .specimen1-facts.taped::before,
-  .specimen1-facts.taped::after{
-    width: 130px;
-    height: 16px;
-    top: -9px;
-  }
-}

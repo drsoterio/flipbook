@@ -1,325 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="woodlouse.css">
+<script src="woodlouse.js"></script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Your main stylesheet stays in charge -->
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Google Fonts (one request, includes your set + handwriting/serifs you asked for) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2
-?family=EB+Garamond:wght@400;500;600;700
-&family=Italianno
-&family=Meow+Script
-&family=Cedarville+Cursive
-&family=Ms+Madi
-&family=Kalam
-&family=Caveat
-&family=Patrick+Hand
-&family=Reenie+Beanie
-&family=Homemade+Apple
-&family=Gochi+Hand
-&family=La+Belle+Aurore
-&family=Shantell+Sans
-&family=Nanum+Pen+Script
-&family=Gloria+Hallelujah
-&family=Alegreya
-&family=Crimson+Pro
-&family=Cormorant+Garamond
-&family=Spectral
-&family=Gentium+Book+Plus
-&family=Cardo
-&family=Literata
-&family=Libre+Baskerville
-&family=Vollkorn
-&family=Newsreader
-&display=swap"
-    rel="stylesheet"
-  />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet"/>
   <title>Digital Ecologies</title>
-
-  <!-- Butterfly element style (unchanged) -->
-  <style>
-    .butterfly{
-      position:fixed; top:0; left:0; width:80px; height:auto;
-      pointer-events:auto; z-index:9999;
-      transform:translate(8px, calc(100vh - 100px)) rotate(0deg);
-      filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
-      will-change:transform;
-    }
-    @media (prefers-reduced-motion: reduce){ .butterfly{ transition:none !important; } }
-  </style>
-
-  <!-- Minimal, additive styles for Specimen 1 + red-marker accents -->
-  <style>
-    /* Specimen page wrapper (uses your global paddings/variables) */
-    .specimen1-page{
-      width:100%;
-      height:100%;
-      padding: var(--padY) var(--padX);
-    }
-
-    /* Page 1 title (handwritten) */
-    .specimen1-title{
-      font-family: "Cedarville Cursive", cursive;
-      font-weight:400; font-size:26px; line-height:1.05;
-      text-align:center; color:#111; margin:4px 0 14px 0;
-      transform: rotate(-.2deg);
-    }
-
-    /* Figure block */
-    .specimen1-figure{
-      position:relative; width:100%; height: calc(100% - 40px);
-      display:flex; align-items:center; justify-content:center;
-    }
-    .specimen1-figure-img{ max-width:82%; height:auto; filter:contrast(1.02); }
-
-    /* Page 2/3 meta + facts */
-    .specimen1-meta{ margin:0 0 8px 0; transform:rotate(-.25deg); }
-    .specimen1-meta .specimen-id{
-      font-family:"EB Garamond", serif; font-variant:small-caps;
-      letter-spacing:.8px; color:var(--ink); opacity:.9; margin-bottom:2px;
-    }
-    .specimen1-meta .specimen-title-line{
-      font-family:"Cedarville Cursive", cursive; font-size:26px; color:#111;
-    }
-
-    .specimen1-facts{
-      margin:6px 0 12px 0;
-      border:1px solid rgba(0,0,0,.28);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.25), rgba(0,0,0,.03)),
-        repeating-linear-gradient(0deg, rgba(0,0,0,.045) 0 1px, transparent 1px 24px),
-        #f6f1e5;
-      box-shadow:0 1px 2px rgba(0,0,0,.18), 0 0 0 1px rgba(255,255,255,.35) inset;
-      padding:8px 10px;
-    }
-    .specimen1-facts .row{
-      display:grid; grid-template-columns:150px 1fr; gap:10px;
-      padding:6px 0; border-bottom:1px dashed rgba(0,0,0,.15);
-    }
-    .specimen1-facts .row:last-child{ border-bottom:none; }
-    .specimen1-facts dt{
-      font-family:"EB Garamond", serif; font-variant:small-caps; letter-spacing:.8px; color:#2b2b2b;
-    }
-    .specimen1-facts dd{ margin:0; font-family:"EB Garamond", serif; color:#1f1f1f; }
-
-    .specimen1-prose{
-      font-family:"EB Garamond", serif;
-      font-size:14px; line-height:1.42; color:var(--charcoal);
-      max-width:64ch;
-    }
-    .specimen1-prose p + p{ margin-top:.65rem; }
-    .specimen1-section{
-      font-family:"Meow Script", cursive; font-size:28px; color:#111;
-      margin:0 0 6px 0; transform:rotate(-.4deg);
-    }
-    .specimen1-credit{ margin-top:.85rem; }
-    .specimen1-credit .credit-label{
-      font-variant:small-caps; letter-spacing:.8px; color:var(--ink);
-    }
-
-    /* Red marker circle (aliases your old .pencil-circle too) */
-    .marker-circle, .pencil-circle{
-      --marker-color:#e30022; --marker-thick:3px; --marker-bleed:1.2px;
-      --pad-x:.28em; --pad-y:.08em;
-      position:relative; display:inline-block;
-      padding:var(--pad-y) var(--pad-x); margin:0 .05em; white-space:nowrap; z-index:0;
-    }
-    .marker-circle::before, .pencil-circle::before{
-      content:""; position:absolute; inset:calc(-.22em) calc(-.45em);
-      border-radius:999px; border:var(--marker-thick) solid var(--marker-color);
-      transform:rotate(-3deg); pointer-events:none;
-      filter:drop-shadow(0 0 var(--marker-bleed) rgba(227,0,34,.55));
-      mix-blend-mode:multiply;
-    }
-    .marker-circle::after, .pencil-circle::after{
-      content:""; position:absolute; inset:calc(-.30em) calc(-.53em);
-      border-radius:999px; border:calc(var(--marker-thick)*.66) solid rgba(227,0,34,.7);
-      transform:rotate(2deg); pointer-events:none;
-    }
-
-    /* Red marker underline (aliases your old .pencil-underline too) */
-    .marker-underline, .pencil-underline{
-      position:relative; display:inline; z-index:0;
-    }
-    .marker-underline::after, .pencil-underline::after{
-      content:""; position:absolute; left:-.08em; right:-.06em;
-      height:.28em; bottom:-.08em; border-bottom:3px solid #e30022; border-radius:2px;
-      background:linear-gradient(0deg, rgba(227,0,34,.18), rgba(227,0,34,.18)) padding-box;
-      transform:rotate(-1.2deg); pointer-events:none; mix-blend-mode:multiply;
-      box-shadow:0 0 .6px rgba(227,0,34,.6);
-    }
-
-    @media (max-width:900px){
-      .specimen1-facts .row{ grid-template-columns:120px 1fr; }
-      .specimen1-figure-img{ max-width:90%; }
-    }
-  </style>
 </head>
-
 <body>
   <div class="book-wrap">
     <div class="flipbook">
-      <!-- FRONT COVER -->
-      <div class="hard">
+      <!-- FRONT COVER (art PNG fills the page) -->
+      <div class="hard front-cover">
         <div class="cover-inner" aria-label="Cover">
-          <div class="cover-florals top-right" aria-hidden="true"></div>
-          <div class="cover-florals bottom-left" aria-hidden="true"></div>
-          <br />
-          <h1 class="cover-title foil">Digital Ecologies of Hope</h1>
-          <p class="cover-sub foil">A Natural History of Emerging Media Futures</p>
-          <p class="cover-editor foil">By __________</p>
+          <div class="cover-stamp" aria-hidden="true"></div>
+          <h1 class="cover-title">DIGITAL ECOLOGIES OF HOPE</h1>
+          <p class="cover-sub">A Natural History of Emerging Media Futures</p>
+          <p class="cover-editor">By __________</p>
         </div>
       </div>
 
       <!-- INSIDE FRONT HARD -->
-      <div class="hard"></div>
+      <div class="hard inner-front"></div>
 
       <!-- ABSTRACT — PAGE 1 -->
       <div class="parchment">
         <div class="conteudo abstract">
-          <div class="abs-grid">
-            <figure class="abs-art">
-              <img
-                src="abstract-left-1.png?v=6"
-                onerror="this.onerror=null; this.src='abstract-left-1?v=6';"
-                alt="Botanical + digital sketch"
-              />
-            </figure>
-
+          <div>
             <section class="abs-text">
-              <h2 class="abs-title">Abstract</h2>
+              <h2 class="abs-title">ABSTRACT</h2>
               <p class="abs-body">
-                This project presents a collaborative field guide documenting “digital ecologies of hope”: instances where media technologies become instruments of collective imagination, care, and becoming across diverse global contexts. Using the aesthetic and organizational principles of naturalist field guides, fourteen researchers contribute “specimens” from their work, ranging from Sudanese youth maintaining educational networks amid civil war to transgender youth documenting voice transitions as acts of collective becoming.
+                This project presents a collaborative field guide documenting “digital ecologies of hope”: instances
+                where media technologies become instruments of collective imagination, care, and becoming across diverse
+                global contexts. Using the aesthetic and organizational principles of naturalist field guides, fourteen
+                researchers contribute “specimens” from their work, ranging from Sudanese youth maintaining educational
+                networks amid civil war to transgender youth documenting voice transitions as acts of collective
+                becoming. Each specimen follows field guide conventions (i.e., classification, habitat, conservation
+                status, field notes, and visual documentation), treating hopeful practices as living systems worthy of
+                documentation and preservation.
               </p>
             </section>
           </div>
-
           <div class="margem" aria-hidden="true">field notes → abstract</div>
         </div>
       </div>
 
-      <!-- ABSTRACT — PAGE 2 (inner column layout preserved by your CSS) -->
+      <!-- ABSTRACT — PAGE 2 -->
       <div class="parchment">
         <div class="conteudo abstract abstract--inner">
           <div class="abs-grid abs-grid--left-page">
             <div class="abs-art abs-art--ghost" aria-hidden="true"></div>
             <section class="abs-text">
               <p class="abs-body">
-                Each specimen follows field guide conventions (i.e., classification, habitat, conservation status, field notes, and visual documentation), treating hopeful practices as living systems worthy of documentation and preservation. Ultimately, by attending to what we call “felt futures”—the emotionally charged visions of possibility that animate research—we seek to demonstrate how research itself can become utopian practice through collaborative authorship and multimodal representation.
+                Each specimen follows field guide conventions (i.e., classification, habitat, conservation status, field
+                notes, and visual documentation), treating hopeful practices as living systems worthy of documentation
+                and preservation. Ultimately, by attending to what we call “felt futures”—the emotionally charged
+                visions of possibility that animate research—we seek to demonstrate how research itself can become
+                utopian practice through collaborative authorship and multimodal representation.
               </p>
               <br />
               <p class="abs-keys">
                 <span class="keys-label">Keywords:</span>
-                digital hope, digital resilience, networked care, youth digital practices, critical fabulations, field guide
+                digital hope, digital resilience, networked care, youth digital practices, critical fabulations, field
+                guide
               </p>
             </section>
           </div>
         </div>
       </div>
 
-      <!-- INTRODUCTION (placeholder) -->
+      <!-- INTRODUCTION -->
       <div class="parchment">
-        <div class="conteudo">
-          <small class="subtitulo">word word word</small><br />
-          <small class="mono">word</small>
+        <div class="conteudo intro">
+          <small class="subtitulo">introduction</small><br />
+          <small class="mono">This is a placeholder for intro text &mdash; swap in your copy.</small>
         </div>
         <div class="margem" aria-hidden="true">field notes → introduction</div>
       </div>
 
-      <!-- SPECIMEN 1 — PAGE 1 (FIGURE + handwritten title) -->
+      <!-- SPECIMEN 1 — PAGE 1 (figure/hero) -->
       <div class="parchment">
         <div class="conteudo specimen1-page">
           <figure class="specimen1-figure">
-            <img
-            id="specimen1-hero"
-            src="transparent-aspirational self-imaging.png"
-            alt="Specimen 1: Aspirational AI Self-Imaging"
-            class="specimen1-figure-img placa"
-            />
+            <img id="specimen1-hero" src="transparent-aspirational self-imaging.png"
+                 alt="Specimen 1: Aspirational AI Self-Imaging" class="specimen1-figure-img placa" />
           </figure>
         </div>
       </div>
-      
 
-      <!-- SPECIMEN 1 — PAGE 2 (meta + field notes, part 1) -->
+      <!-- SPECIMEN 1 — PAGE 2 (meta + facts) -->
       <div class="parchment">
         <div class="conteudo specimen1-page">
           <div class="margem" aria-hidden="true">field notes → specimen #1</div>
-
           <header class="specimen1-meta">
-            <div class="specimen-id">SPECIMEN #1: Aspirational AI Self-Imaging</div>
-            <!--<div class="specimen-title-line">Aspirational AI Self-Imaging</div>-->
+            <div class="specimen-id">SPECIMEN #1</div>
+            <div class="specimen-title-line">Aspirational AI Self-Imaging</div>
           </header>
           <br />
-
           <dl class="specimen1-facts taped" role="list">
             <div class="row"><dt>Classification</dt><dd>Techno-Social Ritual; Future Self Visualization</dd></div>
-            <div class="row"><dt>Habitat</dt><dd>Thrives in youth-focused social media spaces. Particularly abundant in the fertile grounds of TikTok, where this specimen was collected.</dd></div>
-            <div class="row"><dt>Conservation Status</dt><dd>Currently flourishing, though sensitive to algorithmic climate changes. Regular monitoring recommended.</dd></div>
-          </dl> <br />
-
+            <div class="row"><dt>Habitat</dt><dd>Thrives in youth-focused social media spaces. Particularly abundant in TikTok.</dd></div>
+            <div class="row"><dt>Conservation Status</dt><dd>Currently flourishing, though sensitive to algorithmic climate changes.</dd></div>
+          </dl>
+          <br />
           <section class="specimen1-prose">
             <h4 class="specimen1-desc-head">Field Notes</h4>
-            <p>
-              She stands in the harsh fluorescence of a <span class="marker-underline">bathroom</span>, phone raised, purple hoodie, uncertain pose. 
-            </p>
-          
+            <p>She stands in the harsh fluorescence of a <span class="marker-underline">bathroom</span>, phone raised, purple hoodie, uncertain pose.</p>
           </section>
         </div>
       </div>
 
-      <!-- SPECIMEN 1 — PAGE 3 (field notes, part 2 + credit) -->
+      <!-- SPECIMEN 1 — PAGE 3 -->
       <div class="parchment">
         <div class="conteudo specimen1-page">
-
           <section class="specimen1-prose">
-           <p>
-              What catches my attention isn’t the mirror selfie (these are common enough specimens), but what she does next: using <span class="marker-circle">Remini</span> to cast herself forward in time, to try on the <span class="marker-underline">white coat</span> and <span class="marker-underline">stethoscope</span> she’s studying for. "Using this trend to stay motivated,” she writes, but I see something more specific here: a young person using AI not just to dream, but to <span class="marker-circle">endure</span>. The scrubs, the stethoscope, the confident smile—these aren’t costumes she’s trying on. They’re <span class="marker-underline">coordinates</span> on a map she’s drawing for herself, marking the distance between today’s school bathroom and tomorrow’s hospital corridor.
-            </p>
-             <p>
-              In this quiet digital ritual, I recognize something raw and honest: how sometimes we need to <span class="marker-underline">see it to believe it</span>—to picture ourselves there to keep going. Not a grand statement about technology or society, just one student’s small act of <span class="marker-circle">hope-crafting</span> during a long journey. She transforms the mirror from a space of self-scrutiny into one of self-possibility, and shares it—perhaps so others might recognize their own reflections in hers.
-            </p>
+            <p>What catches my attention isn’t the mirror selfie, but what she does next: using <span class="marker-circle">Remini</span> to cast herself forward in time…</p>
+            <p>In this quiet digital ritual, I recognize something raw and honest…</p>
           </section>
         </div>
       </div>
 
-       <!-- SPECIMEN 1 — PAGE 4 (field notes, part 2 + credit) -->
+      <!-- SPECIMEN 1 — PAGE 4 -->
       <div class="parchment">
         <div class="conteudo specimen1-page">
           <div class="margem" aria-hidden="true">field notes → specimen #1</div>
-
           <section class="specimen1-prose">
-            <p>
-              In an era often dark with technological dystopias, these emergent practices suggest a different evolutionary path—one where AI tools become instruments not of surveillance but of <span class="marker-underline">collective imagination</span>, helping young dreamers bridge the delicate gap between who they are and who they might become.
-            </p>
-            <p class="specimen1-credit">
-              <br/>  <span class="specimen1-desc-head">Documented by:</span> [Anonymized], researcher studying the intersection of youth, creativity, and digital participation
-            </p>
+            <p>In an era often dark with technological dystopias, these emergent practices suggest a different path…</p>
+            <p class="specimen1-credit"><br/><span class="specimen1-desc-head">Documented by:</span> [Anonymized]</p>
           </section>
         </div>
       </div>
 
-      <!-- OTHER PAGES (unchanged placeholders) -->
-      <div class="parchment"><div class="conteudo"><img src="images/img-1.png" alt="Specimen 2 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-      <div class="parchment"><div class="conteudo"><img src="images/img-2.png" alt="Specimen 3 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-      <div class="parchment"><div class="conteudo"><img src="images/img-3.png" alt="Specimen 4 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-      <div class="parchment"><div class="conteudo"><img src="images/img-4.png" alt="Specimen 5 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-      <div class="parchment"><div class="conteudo"><img src="images/img-5.png" alt="Specimen 6 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+      <!-- OTHER PAGES / PLACEHOLDERS -->
+      <div class="parchment"><div class="conteudo"><img src="img-1.png" alt="Specimen 2 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+      <div class="parchment"><div class="conteudo"><img src="img-2.png" alt="Specimen 3 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+      <div class="parchment"><div class="conteudo"><img src="img-3.png" alt="Specimen 4 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+      <div class="parchment"><div class="conteudo"><img src="img-4.png" alt="Specimen 5 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+      <div class="parchment"><div class="conteudo"><img src="img-5.png" alt="Specimen 6 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
 
       <!-- BACK COVERS -->
-      <div class="hard"></div>
-      <div class="hard"><div class="cover-inner"><p class="cover-sub foil">Thank you</p></div></div>
+      <div class="hard inner-back"></div>
+      <div class="hard back-cover"><div class="cover-inner"><p class="cover-sub"></p></div></div>
     </div>
   </div>
 
-  <!-- JS (Turn.js + audio unchanged) -->
+  <!-- JS -->
   <script src="jquery.js"></script>
   <script src="turn.js"></script>
   <script>
@@ -359,123 +188,15 @@
       const isCoverTurn = (page === 1 || page === total);
       safePlay(isCoverTurn ? coverSound : flipSound);
     });
+
     $book.on("click", ".page, .hard", function (e) {
       if ($(e.target).closest("a,button,input,textarea,select,[data-no-turn]").length) return;
       if ($book.turn("animating")) return;
       var off = $book.offset(), x = e.pageX - off.left, mid = $book.width()/2;
       $book.turn(x > mid ? "next" : "previous");
     });
+
     window.addEventListener("resize", function () { $book.turn("center"); });
-  </script>
-
-  <!-- Butterfly (rest ~60s, hover/click/page-turn interactions preserved) -->
-  <img src="butterfly-closed.png" alt="Butterfly" class="butterfly" />
-  <script>
-    (() => {
-      const BOOK_LAND_CHANCE = 0.55, BOOK_PAD = 38, REST_MS = 60000;
-      const FLIGHT_MS = 1500, FLAP_FPS = 7, REST_FLAP_FPS = 0, MARGIN = 100;
-
-      const bf = document.querySelector(".butterfly");
-      const bookEl = document.querySelector(".flipbook");
-      const OPEN_SRC = "butterfly-open.png";
-      const CLOSED_SRC = "butterfly-closed.png";
-      [OPEN_SRC, CLOSED_SRC].forEach(s => { const i = new Image(); i.src = s; });
-
-      const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
-      const easeInOut = t => (t<.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2);
-
-      function rndOnBook() {
-        const b = bookEl.getBoundingClientRect();
-        return {
-          x: b.left + BOOK_PAD + Math.random() * Math.max(20, b.width  - BOOK_PAD*2),
-          y: b.top  + BOOK_PAD + Math.random() * Math.max(20, b.height - BOOK_PAD*2),
-        };
-      }
-      function rndAnywhere() {
-        return {
-          x: MARGIN + Math.random() * Math.max(8, innerWidth  - MARGIN*2),
-          y: MARGIN + Math.random() * Math.max(8, innerHeight - MARGIN*2),
-        };
-      }
-      const pickLandingSpot = () =>
-        (Math.random() < BOOK_LAND_CHANCE ? rndOnBook() : rndAnywhere());
-
-      let flapTimer=null, open=false;
-      function flap(rate){
-        if (flapTimer){ clearInterval(flapTimer); flapTimer=null; }
-        if (rate>0){
-          flapTimer=setInterval(()=>{ open=!open; bf.src=open?OPEN_SRC:CLOSED_SRC; }, 1000/rate);
-        } else { open=false; bf.src=CLOSED_SRC; }
-      }
-
-      function flyTo(dest, dur=FLIGHT_MS){
-        return new Promise(res=>{
-          const t0 = performance.now();
-          const rect = bf.getBoundingClientRect();
-          const x0 = parseFloat(bf.dataset.x ?? rect.left);
-          const y0 = parseFloat(bf.dataset.y ?? rect.top);
-          const dx = dest.x - x0, dy = dest.y - y0;
-          const ang = Math.atan2(dy, dx);
-          flap(FLAP_FPS);
-          (function frame(now){
-            const t = clamp((now - t0) / dur, 0, 1);
-            const e = easeInOut(t);
-            const x = x0 + dx * e;
-            const y = y0 + dy * e;
-            const deg = (ang * 180/Math.PI) + 90 + Math.sin(now/90)*3;
-            bf.style.transform = `translate(${x}px,${y}px) rotate(${deg}deg)`;
-            bf.dataset.x = x.toFixed(2);
-            bf.dataset.y = y.toFixed(2);
-            if (t < 1) requestAnimationFrame(frame);
-            else { flap(REST_FLAP_FPS); bf.src = CLOSED_SRC; res(); }
-          })(t0);
-        });
-      }
-
-      let restTimer=null;
-      async function hop(){
-        const dest = pickLandingSpot();
-        await flyTo(dest);
-        if (restTimer) clearTimeout(restTimer);
-        restTimer = setTimeout(hop, REST_MS);
-      }
-
-      function start(){
-        const x = 8, y = innerHeight - 100;
-        bf.style.transform = `translate(${x}px,${y}px) rotate(0deg)`;
-        bf.dataset.x = x; bf.dataset.y = y; bf.src = CLOSED_SRC;
-        hop();
-      }
-      if (!bf.complete){ bf.addEventListener("load", start, {once:true}); } else { start(); }
-
-      // Keep your interactions:
-      bf.addEventListener("pointerenter", () => { if (restTimer) clearTimeout(restTimer); hop(); });
-      bf.addEventListener("pointerdown", e => {
-        e.preventDefault();
-        bf.style.pointerEvents = "none";
-        requestAnimationFrame(() => {
-          const el = document.elementFromPoint(e.clientX, e.clientY);
-          if (el && typeof el.click === "function") el.click();
-          bf.style.pointerEvents = "auto";
-        });
-        if (restTimer) clearTimeout(restTimer);
-        hop();
-      }, { passive:false });
-
-      if (window.jQuery && window.jQuery.fn.turn) {
-        jQuery(".flipbook").on("turning", () => { if (restTimer) clearTimeout(restTimer); hop(); });
-      } else {
-        bookEl.addEventListener("click", () => { if (restTimer) clearTimeout(restTimer); hop(); });
-      }
-
-      addEventListener("resize", () => {
-        const x = clamp(parseFloat(bf.dataset.x || 0), 8, innerWidth - 100);
-        const y = clamp(parseFloat(bf.dataset.y || 0), 8, innerHeight - 100);
-        bf.style.transform = `translate(${x}px,${y}px) rotate(0deg)`;
-        bf.dataset.x = x.toFixed(2);
-        bf.dataset.y = y.toFixed(2);
-      });
-    })();
   </script>
 </body>
 </html>
