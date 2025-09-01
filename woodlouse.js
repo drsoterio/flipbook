@@ -1,43 +1,32 @@
-// woodlouse.js — Faster, natural/random directions ON the current visible page/cover.
-// - 2 bugs per burst, every 20s
-// - Each spawn: random edge -> random opposite edge (varied directions)
-// - Gentle wander + soft steering (no straight-line gliding, no billiard bounces)
-// - Despawn only after fully outside the page/cover
+// woodlouse.js — spawn on ANY visible page/cover (not just the cover)
+// - Maintains layers for all visible .page elements (usually 1–2 at a time)
+// - Each burst picks a random visible surface to spawn bugs on
+// - Natural non-linear walk; despawn only after fully exiting that surface
 
 (function () {
   const CFG = {
-    burstEveryMs: 15000,       // 15s
-    burstSize: 2,              // try to add up to 2 (respects active cap)
-    activeMax: 2,              // never more than 2 alive at once
-
+    burstEveryMs: 15000,
+    burstSize: 2,
+    activeMaxPerSurface: 2,   // cap per surface (keeps things tidy)
     size: 46,
     imgs: ["craw-2.png", "craw-3.png"],
-    frameMs: 90,               // slightly quicker leg cycle
-
-    // Speed / dynamics (faster than before)
-    speedMin: 320,             // min
-    speedMax: 460,             // max
-    baseSpeed: [360, 440],     // initial speed (px/s)
-    accelMax: 900,             // steering accel cap (px/s^2)
-    inertia: 0.86,             // 0..1 (lower = snappier turns)
-
-    // Organic wandering
-    wanderStrength: 240,       // px/s^2
-    wanderTurnRate: 2.6,       // rad/s (how quickly wander angle can drift)
-    wanderJitter: 0.9,         // 0..1 extra randomness
-
-    edgePad: 6,                // spawn padding
-    scatterBoost: 1.9          // mild speed-up on page turn
+    frameMs: 90,
+    // faster + organic motion
+    speedMin: 240, speedMax: 340, baseSpeed: [260, 320],
+    accelMax: 900, inertia: 0.86,
+    wanderStrength: 240, wanderTurnRate: 2.6, wanderJitter: 0.9,
+    edgePad: 6, scatterBoost: 1.6
   };
 
-  let $flip, hostSurface = null, layer = null;
-  let lice = new Set(), running = false, lastT = 0, frameClock = 0, spawnTimerId = null;
+  let $flip, running = false, lastT = 0, frameClock = 0, spawnTimerId = null;
 
-  const q=(s)=>document.querySelector(s);
-  const qa=(s)=>Array.from(document.querySelectorAll(s));
+  // Track multiple surfaces
+  const surfaces = new Map(); // element -> { layer, lice:Set<L> }
+
+  const q  = (s)=>document.querySelector(s);
+  const qa = (s)=>Array.from(document.querySelectorAll(s));
   const rnd=(a,b)=>a+Math.random()*(b-a);
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-  const nowMs=()=>performance.now ? performance.now() : Date.now();
 
   // ---------- preload ----------
   function preloadImages(urls){
@@ -46,63 +35,72 @@
     })));
   }
 
-  // ---------- find visible page/cover ----------
-  function resolveCurrentSurface() {
-    const book = q(".flipbook");
-    if (!book) return null;
-    const br = book.getBoundingClientRect();
-    const cx = br.left + br.width/2, cy = br.top + br.height/2;
-
-    const candidates = qa(".flipbook .page").filter(el=>{
+  // ---------- visible pages/covers ----------
+  function getVisiblePages() {
+    // Pick all .page nodes with a real box on screen
+    const pages = qa(".flipbook .page").filter(el=>{
       const r = el.getBoundingClientRect();
-      return r.width > 0 && r.height > 0 && r.top < innerHeight && r.bottom > 0;
+      // visible in viewport and not zero-sized
+      return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight;
     });
-
-    for (const el of candidates){
-      const r = el.getBoundingClientRect();
-      if (cx >= r.left && cx <= r.right && cy >= r.top && cy <= r.bottom) return el;
-    }
-    const byArea = (a,b)=> (b.getBoundingClientRect().width*b.getBoundingClientRect().height) -
-                           (a.getBoundingClientRect().width*a.getBoundingClientRect().height);
-    const hards = candidates.filter(el=>el.classList.contains("hard")).sort(byArea);
-    if (hards[0]) return hards[0];
-    candidates.sort(byArea);
-    return candidates[0] || null;
+    // Prefer the two largest (typical turn.js view shows two)
+    pages.sort((a,b)=>{
+      const ra=a.getBoundingClientRect(), rb=b.getBoundingClientRect();
+      return (rb.width*rb.height) - (ra.width*ra.height);
+    });
+    return pages.slice(0, 2);
   }
 
-  function mountLayerToCurrentSurface() {
-    const target = resolveCurrentSurface();
-    if (!target) return;
-    if (hostSurface === target && layer && layer.parentElement === hostSurface) return;
-    hostSurface = target;
+  function ensureLayersOnVisiblePages() {
+    const vis = getVisiblePages();
 
-    if (!layer) {
-      layer = document.createElement("div");
-      layer.className = "woodlouse-layer";
-    } else {
-      layer.remove();
+    // Remove layers from pages that are no longer visible
+    for (const [el, info] of Array.from(surfaces.entries())) {
+      if (!vis.includes(el)) {
+        // Keep existing lice until they leave; just leave layer mounted
+        // If you prefer to remove immediately, uncomment next lines:
+        // info.lice.forEach(L => { L.alive = false; L.el.remove(); info.lice.delete(L); });
+        // info.layer.remove(); surfaces.delete(el);
+      }
     }
-    hostSurface.appendChild(layer);
+
+    // Ensure each visible page has a layer
+    vis.forEach(el=>{
+      if (!surfaces.has(el)) {
+        const layer = document.createElement("div");
+        layer.className = "woodlouse-layer";
+        el.appendChild(layer);
+        surfaces.set(el, { layer, lice: new Set() });
+      } else {
+        // Re-append to keep on top of page contents if DOM changed
+        const info = surfaces.get(el);
+        if (info.layer.parentElement !== el) el.appendChild(info.layer);
+      }
+    });
+
+    return vis;
   }
 
   // ---------- entity ----------
-  function makeLouse() {
+  function makeLouse(surfaceInfo) {
     const el = document.createElement("div");
     el.className = "woodlouse";
     el.style.width = el.style.height = CFG.size + "px";
     el.style.backgroundImage = `url("${CFG.imgs[0]}")`;
-    layer.appendChild(el);
+    surfaceInfo.layer.appendChild(el);
     return {
-      el, x:0, y:0,
-      vx:0, vy:0,
+      el, surfaceInfo,
+      x:0, y:0, vx:0, vy:0,
       frame:0, alive:true,
       wanderAngle: rnd(0, Math.PI*2),
       exit:{x:0,y:0}
     };
   }
 
-  // Configure random edge->opposite edge (varied directions, incl. diagonals)
-  function configureRoute(L, side, W, H, S, pad){
+  // Configure route: random edge → random opposite edge on this surface
+  function configureRoute(L, W, H) {
+    const S = CFG.size, pad = CFG.edgePad;
+    const side = Math.floor(Math.random()*4); // 0=bottom,1=top,2=left,3=right
     if (side === 0) { // bottom -> up
       L.x = clamp(rnd(pad, W - S - pad), pad, W - S - pad);
       L.y = H - S;
@@ -125,34 +123,53 @@
       L.exit.y = clamp(rnd(pad, H - S - pad), pad, H - S - pad);
     }
 
-    // initial velocity toward exit, with your faster baseline
+    // initial velocity toward exit
     const dx = (L.exit.x - L.x), dy = (L.exit.y - L.y);
     const ang = Math.atan2(dy, dx);
     const spd = rnd(...CFG.baseSpeed);
     L.vx = Math.cos(ang) * spd;
     L.vy = Math.sin(ang) * spd;
-    L.wanderAngle = ang + rnd(-0.6, 0.6); // start with slight bias
+    L.wanderAngle = ang + rnd(-0.6, 0.6);
 
     L.el.style.transform = `translate3d(${L.x}px,${L.y}px,0) rotate(${ang + Math.PI/2}rad)`;
   }
 
-  function spawnOne(){
-    if (!layer) return null;
-    if (lice.size >= CFG.activeMax) return null;
+  function spawnOneOn(surfaceEl) {
+    const info = surfaces.get(surfaceEl);
+    if (!info) return null;
+    if (info.lice.size >= CFG.activeMaxPerSurface) return null;
 
-    const W = layer.clientWidth, H = layer.clientHeight, S = CFG.size, pad = CFG.edgePad;
-    const L = makeLouse();
-    const side = Math.floor(Math.random()*4); // random edge each time
-    configureRoute(L, side, W, H, S, pad);
-    lice.add(L);
+    const W = info.layer.clientWidth, H = info.layer.clientHeight;
+    const L = makeLouse(info);
+    configureRoute(L, W, H);
+    info.lice.add(L);
     return L;
   }
 
   function spawnBurst() {
-    mountLayerToCurrentSurface();
-    const need = Math.max(0, CFG.activeMax - lice.size);
-    const toSpawn = Math.min(CFG.burstSize, need);
-    for (let i=0; i<toSpawn; i++) spawnOne();
+    const vis = ensureLayersOnVisiblePages();
+    if (vis.length === 0) return;
+
+    // Spawn up to burstSize across random visible surfaces,
+    // respecting per-surface cap
+    let remaining = CFG.burstSize;
+    // Shuffle visible surfaces for variety
+    const shuffled = vis.slice().sort(()=>Math.random()-0.5);
+
+    for (const el of shuffled) {
+      if (remaining <= 0) break;
+      const L = spawnOneOn(el);
+      if (L) remaining--;
+    }
+
+    // If still need more and we have capacity, loop again
+    if (remaining > 0) {
+      for (const el of shuffled) {
+        if (remaining <= 0) break;
+        const L = spawnOneOn(el);
+        if (L) remaining--;
+      }
+    }
   }
 
   // ---------- helpers ----------
@@ -180,17 +197,19 @@
     const maxDelta = CFG.wanderTurnRate * dt;
     const delta = rnd(-maxDelta, maxDelta) * (0.5 + 0.5*CFG.wanderJitter);
     L.wanderAngle += delta;
-    const ax = Math.cos(L.wanderAngle) * CFG.wanderStrength;
-    const ay = Math.sin(L.wanderAngle) * CFG.wanderStrength;
-    return {ax, ay};
+    return {
+      ax: Math.cos(L.wanderAngle) * CFG.wanderStrength,
+      ay: Math.sin(L.wanderAngle) * CFG.wanderStrength
+    };
   }
 
   function maybeDespawn(L){
+    const { layer } = L.surfaceInfo;
     const W = layer.clientWidth, H = layer.clientHeight, S = CFG.size;
     if (L.x < -S || L.x > W || L.y < -S || L.y > H) {
       L.alive = false;
       L.el.classList.add("woodlouse--despawn");
-      setTimeout(()=>{ L.el.remove(); lice.delete(L); }, 200);
+      setTimeout(()=>{ L.el.remove(); L.surfaceInfo.lice.delete(L); }, 180);
     }
   }
 
@@ -201,46 +220,37 @@
 
   // ---------- main loop ----------
   function tick(dt){
-    if (!layer) return;
-    lice.forEach(L=>{
-      if (!L.alive) return;
+    surfaces.forEach(({ layer, lice: set })=>{
+      set.forEach(L=>{
+        if (!L.alive) return;
 
-      // Wander + soft steering toward exit → naturally curved paths
-      const w = wanderForce(L, dt);
-      const s = steerToward(L, L.exit.x, L.exit.y, CFG.accelMax);
+        // forces: wander + steer to exit
+        const w = wanderForce(L, dt);
+        const s = steerToward(L, L.exit.x, L.exit.y, CFG.accelMax);
 
-      // Combine, cap accel
-      let ax = w.ax + s.ax, ay = w.ay + s.ay;
-      ({x:ax, y:ay} = limit(ax, ay, CFG.accelMax));
+        // combine, cap accel
+        let ax = w.ax + s.ax, ay = w.ay + s.ay;
+        ({x:ax, y:ay} = limit(ax, ay, CFG.accelMax));
 
-      // Integrate velocity with a bit of inertia
-      L.vx = L.vx * CFG.inertia + ax * dt;
-      L.vy = L.vy * CFG.inertia + ay * dt;
+        // integrate velocity with inertia
+        L.vx = L.vx * CFG.inertia + ax * dt;
+        L.vy = L.vy * CFG.inertia + ay * dt;
 
-      // Clamp speed
-      const sp = Math.hypot(L.vx, L.vy) || 1;
-      const spClamped = clamp(sp, CFG.speedMin, CFG.speedMax);
-      if (sp !== spClamped) { L.vx *= spClamped / sp; L.vy *= spClamped / sp; }
+        // clamp speed
+        const sp = Math.hypot(L.vx, L.vy) || 1;
+        const spClamped = clamp(sp, CFG.speedMin, CFG.speedMax);
+        if (sp !== spClamped) { L.vx *= spClamped / sp; L.vy *= spClamped / sp; }
 
-      // Integrate position
-      L.x += L.vx * dt;
-      L.y += L.vy * dt;
+        // integrate position
+        L.x += L.vx * dt;
+        L.y += L.vy * dt;
 
-      // Face velocity; sprites oriented "up"
-      const ang = Math.atan2(L.vy, L.vx) + Math.PI/2;
-      L.el.style.transform = `translate3d(${L.x}px,${L.y}px,0) rotate(${ang}rad)`;
+        // orient sprite (sprites point "up")
+        const ang = Math.atan2(L.vy, L.vx) + Math.PI/2;
+        L.el.style.transform = `translate3d(${L.x}px,${L.y}px,0) rotate(${ang}rad)`;
 
-      maybeDespawn(L);
-    });
-  }
-
-  function scatterAll(mult = CFG.scatterBoost){
-    lice.forEach(L=>{
-      if (!L.alive) return;
-      const sp = Math.hypot(L.vx, L.vy) * mult;
-      const ang = Math.atan2(L.vy, L.vx);
-      L.vx = Math.cos(ang) * sp;
-      L.vy = Math.sin(ang) * sp;
+        maybeDespawn(L);
+      });
     });
   }
 
@@ -251,7 +261,7 @@
 
     frameClock += dt*1000;
     if (frameClock >= CFG.frameMs){
-      lice.forEach(stepFrame);
+      surfaces.forEach(({lice})=> lice.forEach(stepFrame));
       frameClock = 0;
     }
 
@@ -259,17 +269,20 @@
     requestAnimationFrame(loop);
   }
 
+  // ---------- bootstrap ----------
+  function bindFlipbookEvents(){
+    window.addEventListener("resize", ensureLayersOnVisiblePages);
+    $flip.on("turning", ()=>{ /* small burst of speed on turn */ });
+    $flip.on("turned",  ()=>{ ensureLayersOnVisiblePages(); });
+  }
+
   async function start(){
     $flip = $(".flipbook");
     if (!$flip.length) return;
 
     await preloadImages(CFG.imgs);
-    mountLayerToCurrentSurface();
-
-    // Keep layer on current page/cover
-    window.addEventListener("resize", mountLayerToCurrentSurface);
-    $flip.on("turning", ()=>{ scatterAll(1.2); });
-    $flip.on("turned",  ()=>{ mountLayerToCurrentSurface(); scatterAll(1.2); });
+    ensureLayersOnVisiblePages();
+    bindFlipbookEvents();
 
     // First burst, then every 20s
     setTimeout(spawnBurst, 800);
@@ -280,8 +293,8 @@
     if (running) requestAnimationFrame(loop);
   }
 
-  // Optional tiny API
-  window.woodlouse = { start, burst: ()=>spawnBurst(), scatter: ()=>scatterAll() };
+  // tiny API
+  window.woodlouse = { start, burst: ()=>spawnBurst() };
 
   document.addEventListener("DOMContentLoaded", start);
 })();
