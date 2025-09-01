@@ -15,9 +15,9 @@
     frameMs: 90,               // slightly quicker leg cycle
 
     // Speed / dynamics (faster than before)
-    speedMin: 240,             // clamp min speed (px/s)
-    speedMax: 340,             // clamp max speed (px/s)
-    baseSpeed: [260, 320],     // initial speed (px/s)
+    speedMin: 320,             // min
+    speedMax: 460,             // max
+    baseSpeed: [360, 440],     // initial speed (px/s)
     accelMax: 900,             // steering accel cap (px/s^2)
     inertia: 0.86,             // 0..1 (lower = snappier turns)
 
