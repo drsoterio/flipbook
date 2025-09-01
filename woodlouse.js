@@ -6,7 +6,7 @@
 
 (function () {
   const CFG = {
-    burstEveryMs: 20000,       // 20s
+    burstEveryMs: 15000,       // 15s
     burstSize: 2,              // try to add up to 2 (respects active cap)
     activeMax: 2,              // never more than 2 alive at once
 
@@ -27,7 +27,7 @@
     wanderJitter: 0.9,         // 0..1 extra randomness
 
     edgePad: 6,                // spawn padding
-    scatterBoost: 1.6          // mild speed-up on page turn
+    scatterBoost: 1.9          // mild speed-up on page turn
   };
 
   let $flip, hostSurface = null, layer = null;
