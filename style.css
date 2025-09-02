@@ -554,3 +554,25 @@ body::after{
   z-index:6;                          /* above paper fiber ::after */
   mix-blend-mode:multiply;
 }
+
+
+/* woodlouse layer & sprite */
+.woodlouse-layer{
+  position:absolute;
+  inset:0;              /* fill the page/cover */
+  pointer-events:none;
+  overflow:hidden;
+  z-index: 9;           /* above page content and cover overlays */
+}
+
+.woodlouse{
+  position:absolute;
+  width:46px; height:46px;
+  background-size:contain;
+  background-repeat:no-repeat;
+  filter: brightness(.88) contrast(.95) saturate(.9) drop-shadow(0 1px 1px rgba(0,0,0,.35));
+  opacity:.97;
+  will-change: transform, opacity, background-image;
+  transform-origin:50% 50%;
+}
+.woodlouse--despawn{ opacity:0; transition:opacity .2s ease; }
