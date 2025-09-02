@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <link rel="stylesheet" href="woodlouse.css">
-<script src="woodlouse.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="style.css"/>
@@ -47,6 +46,7 @@
           </div>
           <div class="margem" aria-hidden="true">field notes → abstract</div>
         </div>
+        <i class="fx fx--oily"></i>        
       </div>
 
       <!-- ABSTRACT — PAGE 2 -->
@@ -73,13 +73,15 @@
         </div>
       </div>
 
-      <!-- INTRODUCTION -->
+      <!-- INTRODUCTION (FIXED: removed page-stamp from container; added child stamp) -->
       <div class="parchment">
         <div class="conteudo intro">
           <small class="subtitulo">introduction</small><br />
           <small class="mono">This is a placeholder for intro text...</small>
         </div>
         <div class="margem" aria-hidden="true">field notes → introduction</div>
+        <!-- optional stamp as a CHILD, not on the page element -->
+        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
       </div>
 
       <!-- SPECIMEN 1 — PAGE 1 (figure/hero) -->
@@ -122,6 +124,7 @@
             <p>In this quiet digital ritual, I recognize something raw and honest…</p>
           </section>
         </div>
+        <i class="fx fx--oily"></i>
       </div>
 
       <!-- SPECIMEN 1 — PAGE 4 -->
@@ -198,5 +201,9 @@
 
     window.addEventListener("resize", function () { $book.turn("center"); });
   </script>
+
+  <!-- Load after Turn.js so it can target .flipbook .page -->
+  <script src="woodlouse.js"></script>
+  <script src="page-variation.js"></script>
 </body>
 </html>
