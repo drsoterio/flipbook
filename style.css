@@ -542,6 +542,17 @@ body::after{
   filter: blur(.35px) contrast(1.02);
 }
 
+/* MOLD — scattered specks of mildew */
+.fx--mold {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: url("mold-specks.png") center/cover no-repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.45;
+}
+
 
 /* REQUIRED: base overlay box */
 .flipbook .page:not(.hard){ position:relative; isolation:isolate; }
@@ -576,3 +587,4 @@ body::after{
   transform-origin:50% 50%;
 }
 .woodlouse--despawn{ opacity:0; transition:opacity .2s ease; }
+
