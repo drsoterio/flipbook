@@ -1,197 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="woodlouse.css">
   <meta charset="UTF-8" />
+  <title>Digital Ecologies</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="style.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet"/>
-  <title>Digital Ecologies</title>
+  <!-- theme (leave as-is) -->
+  <!-- put style.css first, woodlouse.css last -->
+<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="woodlouse.css?v=2"/>
+
 </head>
 <body>
   <div class="book-wrap">
     <div class="flipbook">
-      <!-- FRONT COVER (art PNG fills the page) -->
-      <div class="hard front-cover">
-        <div class="cover-inner" aria-label="Cover">
-          <div class="cover-stamp" aria-hidden="true"></div>
-          <h1 class="cover-title">DIGITAL ECOLOGIES OF HOPE</h1>
-          <p class="cover-sub">A Natural History of Emerging Media Futures</p>
-          <p class="cover-editor">By __________</p>
-        </div>
-      </div>
 
-      <!-- INSIDE FRONT HARD -->
+      <!-- HARD COVERS -->
+      <div class="hard front-cover"><div class="cover-inner" aria-label="Cover"></div></div>
       <div class="hard inner-front"></div>
 
-      <!-- ABSTRACT — PAGE 1 -->
+      <!-- PAGE 1 — FRONTIS IMAGE -->
+      <div class="parchment">
+        <div class="conteudo frontis">
+          <img src="frontispiece.png" alt="Frontispiece placeholder" class="frontis-img placa"/>
+        </div>
+        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
+      </div>
+
+      <!-- PAGE 2 — ABSTRACT -->
       <div class="parchment">
         <div class="conteudo abstract">
-          <div>
-            <section class="abs-text">
-              <h2 class="abs-title">ABSTRACT</h2>
-              <p class="abs-body">
-                This project presents a collaborative field guide documenting “digital ecologies of hope”: instances
-                where media technologies become instruments of collective imagination, care, and becoming across diverse
-                global contexts. Using the aesthetic and organizational principles of naturalist field guides, fourteen
-                researchers contribute “specimens” from their work, ranging from Sudanese youth maintaining educational
-                networks amid civil war to transgender youth documenting voice transitions as acts of collective
-                becoming. Each specimen follows field guide conventions (i.e., classification, habitat, conservation
-                status, field notes, and visual documentation), treating hopeful practices as living systems worthy of
-                documentation and preservation.
-              </p>
-            </section>
-          </div>
-          <div class="margem" aria-hidden="true">field notes → abstract</div>
+          <section class="abs-text">
+            <h2 class="abs-title">ABSTRACT</h2>
+            <p class="abs-body">
+              This project presents a collaborative field guide documenting “digital ecologies of hope”: instances
+              where media technologies become instruments of collective imagination, care, and becoming across diverse
+              global contexts. Using the aesthetic and organizational principles of naturalist field guides, fourteen
+              researchers contribute “specimens” from their work, ranging from Sudanese youth maintaining educational
+              networks amid civil war to transgender youth documenting voice transitions as acts of collective
+              becoming. Each specimen follows field guide conventions (i.e., classification, habitat, conservation
+              status, field notes, and visual documentation), treating hopeful practices as living systems worthy of
+              documentation and preservation. Ultimately, by attending to what we call “felt futures”—the emotionally
+              charged visions of possibility that animate research—we seek to demonstrate how research itself can
+              become utopian practice through collaborative authorship and multimodal representation.
+            </p>
+            <p class="abs-keys">
+              <span class="keys-label">Keywords:</span> digital hope, digital resilience, networked care, youth digital
+              practices, critical fabulations, field guide
+            </p>
+          </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → abstract</div>
         </div>
-        <i class="fx fx--oily"></i>
-        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>        
       </div>
 
-      <!-- ABSTRACT — PAGE 2 -->
-      <div class="parchment">
-        <div class="conteudo abstract abstract--inner">
-          <div class="abs-grid abs-grid--left-page">
-            <div class="abs-art abs-art--ghost" aria-hidden="true"></div>
-            <section class="abs-text">
-              <p class="abs-body">
-                Each specimen follows field guide conventions (i.e., classification, habitat, conservation status, field
-                notes, and visual documentation), treating hopeful practices as living systems worthy of documentation
-                and preservation. Ultimately, by attending to what we call “felt futures”—the emotionally charged
-                visions of possibility that animate research—we seek to demonstrate how research itself can become
-                utopian practice through collaborative authorship and multimodal representation.
-              </p>
-              <br />
-              <p class="abs-keys">
-                <span class="keys-label">Keywords:</span>
-                digital hope, digital resilience, networked care, youth digital practices, critical fabulations, field
-                guide
-              </p>
-            </section>
-          </div>
-        </div>
-        <i class="fx fx--oily"></i>
-      </div>
+      <!-- ===================== INTRODUCTION — 4 PAGES ===================== -->
 
-      <!-- INTRODUCTION (FIXED: removed page-stamp from container; added child stamp) -->
+      <!-- INTRO p.1 -->
       <div class="parchment">
         <div class="conteudo intro">
-          <small class="subtitulo">introduction</small><br />
-          <small class="mono">This is a placeholder for intro text...</small>
-        </div>
-        <div class="margem" aria-hidden="true">field notes → introduction</div>
-        <!-- optional stamp as a CHILD, not on the page element -->
-        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
-      </div>
-
-      <!-- SPECIMEN 1 — PAGE 1 (figure/hero) -->
-      <div class="parchment">
-        <div class="conteudo specimen1-page">
-          <figure class="specimen1-figure">
-            <img id="specimen1-hero" src="transparent-aspirational self-imaging.png"
-                 alt="Specimen 1: Aspirational AI Self-Imaging" class="specimen1-figure-img placa" />
-          </figure>
-        </div>
-        <i class="fx fx--mold"></i>
-      </div>
-
-      <!-- SPECIMEN 1 — PAGE 2 (meta + facts) -->
-      <div class="parchment">
-        <div class="conteudo specimen1-page">
-          <div class="margem" aria-hidden="true">field notes → specimen #1</div>
-          <header class="specimen1-meta">
-            <div class="specimen-id">SPECIMEN #1</div>
-            <div class="specimen-title-line">Aspirational AI Self-Imaging</div>
+          <header class="section-head">
+            <h2 class="abs-title">INTRODUCTION</h2>
           </header>
-          <br />
-          <dl class="specimen1-facts taped" role="list">
-            <div class="row"><dt>Classification</dt><dd>Techno-Social Ritual; Future Self Visualization</dd></div>
-            <div class="row"><dt>Habitat</dt><dd>Thrives in youth-focused social media spaces. Particularly abundant in TikTok.</dd></div>
-            <div class="row"><dt>Conservation Status</dt><dd>Currently flourishing, though sensitive to algorithmic climate changes.</dd></div>
-          </dl>
-          <br />
-          <section class="specimen1-prose">
-            <h4 class="specimen1-desc-head">Field Notes</h4>
-            <p>She stands in the harsh fluorescence of a <span class="marker-underline">bathroom</span>, phone raised, purple hoodie, uncertain pose.</p>
+          <section class="intro-body">
+            <p>Media studies finds itself responding to an accelerating cascade of technological crises—from surveillance capitalism and algorithmic bias to disinformation and democratic erosion—that understandably focuses scholarly attention on how digital systems amplify harm and concentrate power (Arora, 2024; Sebastián-Martín, 2024; Srnicek, 2017; Zuboff, 2019). In such moments, critical frameworks become essential tools for understanding these urgent threats. Yet this necessary hermeneutics of suspicion can obscure other dynamics within the same systems. Alongside exploitation and control, we continue to witness emergent practices of care, imagination, and collective becoming—practices that offer crucial insight into how people navigate technological constraints while opening up possibilities for different futures.</p>
+
+            <p>Building on Rosner’s (2018) formulation of critical fabulations, this project attends to these hopeful practices without abandoning critique. By fabulation, we do not mean fabrication. Rather, following Rosner, we use the term to describe methods of reinterpreting and representing real-world practices in ways that surface alternative meanings, suppressed histories, and collective aspirations. Rosner writes of “telling stories that awaken alternative histories” and “shift according to the aspirations of those who absorb them” (p. 119). In extending Hartman’s (2008) concept of “writing against the archive,” she positions fabulation as a strategy of collective meaning-making that surfaces possibilities suppressed by dominant techno-narratives.</p>
           </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → introduction</div>
         </div>
-        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
-        <i class="fx fx--mold"></i>
       </div>
 
-      <!-- ===================== SPECIMEN 1 — TWO-PAGE TEMPLATE (REPLACES old 4 pages) ===================== -->
-
-<!-- LEFT PAGE: title + big image + taxonomy name-tag -->
-<div class="parchment specimen-spread">
-  <div class="conteudo specimen-left">
-    <header class="specimen-head">
-      <div class="specimen-id">SPECIMEN #1</div>
-      <h2 class="specimen-title">Aspirational AI Self-Imaging</h2>
-    </header>
-
-    <figure class="specimen-hero">
-      <img
-        src="transparent-aspirational self-imaging.png"
-        alt="Specimen 1: Aspirational AI Self-Imaging"
-        class="specimen-hero-img"
-      />
-    </figure>
-
-    <!-- taxonomy name-tag (same vibe as cover subtitle panel) -->
-    <section class="taxonomy-tag taped">
-      <dl class="taxonomy-grid">
-        <div class="row"><dt>Classification</dt><dd>Techno-Social Ritual; Future Self Visualization</dd></div>
-        <div class="row"><dt>Habitat</dt><dd>Thrives in youth-focused social media spaces; abundant on TikTok.</dd></div>
-        <div class="row"><dt>Conservation Status</dt><dd>Flourishing; sensitive to algorithmic climate changes.</dd></div>
-      </dl>
-    </section>
-  </div>
-  <!-- keep your page variation -->
-  <i class="fx fx--mold"></i>
-</div>
-
-<!-- RIGHT PAGE: Field Notes (full text) -->
-<div class="parchment specimen-spread">
-  <div class="conteudo specimen-right">
-    <section class="specimen-notes">
-      <h3 class="notes-head">Field Notes</h3>
-      <p>She stands in the harsh fluorescence of a <span class="marker-underline">bathroom</span>, phone raised, purple hoodie, uncertain pose.</p>
-      <p>What catches my attention isn’t the mirror selfie, but what she does next: using <span class="marker-circle">Remini</span> to cast herself forward in time to try on the white coat and stethoscope she’s studying for.</p>
-      <p><em>“Using this trend to stay motivated,”</em> she writes, but I see something more specific here: a young person using AI not just to dream, but to endure. The scrubs, the stethoscope, the confident smile—these aren’t costumes she’s trying on. They’re <span class="marker-underline">coordinates on a map she’s drawing for herself</span>, marking the distance between today’s school bathroom and tomorrow’s hospital corridor.</p>
-      <p>In this quiet digital ritual, I recognize something raw and honest: <span class="marker-underline">how sometimes we need to see it to believe it, to picture ourselves there to keep going</span>. Not a grand statement about technology or society, just one student’s small act of hope-crafting during a long journey. <span class="marker-underline">She transforms the mirror from a space of self-scrutiny into one of possibility</span>, and shares it—perhaps so others might recognize their own reflections in hers.</p>
-      <p>In an era often dark with technological dystopias, these emergent practices suggest a different evolutionary path—one where AI tools become <span class="marker-underline">instruments of collective imagination</span>, helping young dreamers bridge the delicate gap between who they are and who they might become.</p>
-      <p class="specimen-credit"><span class="notes-head">Documented by:</span> [Anonymized]</p>
-    </section>
-  </div>
-  <!-- keep your page variation -->
-  <i class="fx fx--oily"></i>
-</div>
-<!-- =================== END SPECIMEN 1 TWO-PAGE TEMPLATE ===================== -->
-
-
-      <!-- SPECIMEN 1 — PAGE 4 -->
+      <!-- INTRO p.2 -->
       <div class="parchment">
-        <div class="conteudo specimen1-page">
-          <div class="margem" aria-hidden="true">field notes → specimen #1</div>
-          <section class="specimen1-prose">
-            <p>In an era often dark with technological dystopias, these emergent practices suggest a different path…</p>
-            <p class="specimen1-credit"><br/><span class="specimen1-desc-head">Documented by:</span> [Anonymized]</p>
+        <div class="conteudo intro">
+          <header class="section-head">
+            <h2 class="abs-title">INTRODUCTION</h2>
+          </header>
+          <section class="intro-body">
+            <p>Drawing inspiration from naturalist field guides—which serve as “invitation[s] not just to look, but to discover” (Rajendra-Nicolucci &amp; Zuckerman, 2021, p. 7)—our field guide enacts this strategy by weaving together rigorous observation, creative representation, and multimodal storytelling in ways that privilege care and imagination over academic convention. We do so by mapping these critical fabulations in an intentionally accessible, visual artifact, allowing them to take up their space in—and bridging the gap between—public and academic conversations around media. Our field guide also rises up to a critical challenge in contemporary utopias where, rather than only creating fictional maps of the future, there is a pressing need of producing “adequate maps of the present which permit images of a connected but transformed future” (Levitas, 1993, p. 257).</p>
+
+            <p>Developed collaboratively within [anonymized lab name]—an international research collective exploring global intersections of media and social justice—this project brings together 14 researchers working across diverse cultural and methodological contexts. Each researcher contributes “specimens” from their work, representing instances where media practices foster agency, resilience, and collective imagination amid intersecting technological, social, political, and economic constraints. Reflecting our own backgrounds and sites of inquiry, these specimens span diverse contexts: Sudanese youth using social media to maintain educational communities amid civil war; Afro-Brazilian students finding identity affirmation through Instagram; transgender youth documenting voice transitions as acts of collective becoming; among others.</p>
+          </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → introduction</div>
+        </div>
+      </div>
+
+      <!-- INTRO p.3 -->
+      <div class="parchment">
+        <div class="conteudo intro">
+          <header class="section-head">
+            <h2 class="abs-title">INTRODUCTION</h2>
+          </header>
+          <section class="intro-body">
+            <p>The field guide format afforded us to carefully strike a fine balance between presenting difference and commonality—through identifying, classifying, and juxtaposing these diverse practices. With each entry authentically depicted and annotated with field notes, we embrace the nuances in each context. At the same time, we heed Fenton’s (2008, p. 245) advice of not showcasing hope as “disparate acts of resistance” and rather find a “binding solidarity” that is required to challenge the social and economic injustices on a global scale. We bind these practices and contexts in our field guide, offering a contemporary account on how utopia is collectively realized “into practical political realities” (Fenton, 2008, p. 244).</p>
+
+            <p>Each specimen is documented using field guide conventions, including:</p>
+            <ul class="intro-list">
+              <li><em>Classification</em> – connecting the practice to broader taxonomies of digital hope</li>
+              <li><em>Habitat</em> – mapping the sociotechnical conditions enabling its emergence</li>
+              <li><em>Conservation Status</em> – assessing resilience against algorithmic and political threats</li>
+              <li><em>Field Notes</em> – offering situated, qualitative observations from researchers</li>
+              <li><em>Visual Documentation</em> – providing visual cohesion and ethical anonymization through hand-drawn illustrations</li>
+            </ul>
+          </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → introduction</div>
+        </div>
+      </div>
+
+      <!-- INTRO p.4 -->
+      <div class="parchment">
+        <div class="conteudo intro">
+          <header class="section-head">
+            <h2 class="abs-title">INTRODUCTION</h2>
+          </header>
+          <section class="intro-body">
+            <p>As we have argued elsewhere, “doing research is not only a process of inquiry, data collection and analysis, but also an imaginative act that in itself is civic and political” (Authors, forthcoming). We are driven by a belief that researchers must attend to the affective and imaginative orientations embedded in scholarly work—what we term “felt futures,” the emotionally charged visions of possibility that animate research. Our field guide project embodies this understanding, treating the documentation of hopeful practices as itself a practice of imagination oriented toward different technological futures. Echoing Benjamin’s (2024) charge to dismantle dominant imaginaries and cultivate forms of imagination rooted in solidarity, we are treating hope not merely as an object of study but as a sustainable and equitable way of conducting research itself.</p>
+            <p>Significantly, our approach also responds to what Arora (2024) identifies as the Western-centrism of techno-pessimism. Drawing on extensive fieldwork across the Global South, she notes that “pessimism is a privilege for those who can afford to live in despair. The rest of the world has little choice but to be optimistic as their future depends on it” (p. 15). Her critique underscores how dominant academic frameworks often marginalize the innovative and resilient ways in which people use technology to sustain community, create opportunity, and build change under precarious conditions perpetuated by systemic inequities. Keenly attuned to this critique, our specimens deliberately center perspectives often marginalized in dominant media studies discourse, particularly from the Global South and diasporic communities. </p>
+          </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → introduction</div>
+        </div>
+      </div>
+
+<!-- INTRO p.5 -->
+      <div class="parchment">
+        <div class="conteudo intro">
+          <header class="section-head">
+            <h2 class="abs-title">INTRODUCTION</h2>
+          </header>
+          <section class="intro-body">
+            <p>Rather than defaulting to Western platforms or narratives, the practices we document span a range of sociotechnical environments—from conflict zones and diasporic classrooms to transnational activist networks—revealing how digital hope emerges within, and perhaps because of, conditions of constraint.</p>
+            <p>Finally, this project embraces a collaborative model of knowledge production (Literat et al., 2017). Developing this project collaboratively, our approach mirrors the very practices we document: networks of care, collective meaning-making, and distributed agency. Just as our specimens reveal how digital media enables new forms of collective becoming, our authorship model exemplifies how academic knowledge production might “become otherwise” through more collaborative, inclusive, and equitable structures.</p>
+          </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → introduction</div>
+        </div>
+      </div>
+
+
+      <!-- =============== SPECIMEN 1 — Aspirational AI Self-Imaging =============== -->
+      <!-- LEFT PAGE -->
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-left">
+          <header class="specimen-head">
+            <div class="specimen-id">SPECIMEN #1</div>
+            <h2 class="specimen-title">Aspirational AI Self-Imaging</h2>
+          </header>
+          <figure class="specimen-hero">
+            <img src="specimen1.png" alt="Specimen 1: Aspirational AI Self-Imaging" class="specimen-hero-img"/>
+          </figure>
+          <p class="doc-by"><span class="notes-head">Documented by:</span> [Anonymized]</p>
+        </div>
+      </div>
+      <!-- RIGHT PAGE -->
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-right">
+          <section class="specimen-notes">
+            <h3 class="notes-head">Field Notes</h3>
+            <p>She stands in the harsh fluorescence of a <span class="marker-underline">bathroom</span>, phone raised, purple hoodie, uncertain pose. What catches my attention isn’t the mirror selfie, but what she does next: using <span class="marker-circle">Remini</span> to cast herself forward in time to try on the white coat and stethoscope she’s studying for.</p>
+            <p><em>“Using this trend to stay motivated,”</em> she writes, but I see something more specific here: a young person using AI not just to dream, but to endure. The scrubs, the stethoscope, the confident smile—these aren’t costumes; they’re <span class="marker-underline">coordinates on a map</span> from today’s school bathroom to tomorrow’s hospital corridor.</p>
+            <p>In this quiet digital ritual, she turns the mirror from self-scrutiny into possibility, sharing it so others might recognize their own reflections. These practices suggest AI as an instrument of collective imagination, helping bridge the gap between who we are and who we might become.</p>
+          </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → specimen #1</div>
+
+          <!-- Handwritten/sketch contour taxonomy (transparent) -->
+          <section class="taxonomy-tag taxonomy--bottom">
+            <dl class="taxonomy-grid">
+              <div class="row"><dt>Classification</dt><dd>Techno-Social Ritual; Future Self Visualization</dd></div>
+              <div class="row"><dt>Habitat</dt><dd>Youth-focused social media; abundant on TikTok</dd></div>
+              <div class="row"><dt>Conservation Status</dt><dd>Flourishing; sensitive to algorithmic climate changes</dd></div>
+            </dl>
           </section>
         </div>
       </div>
 
-      <!-- OTHER PAGES / PLACEHOLDERS -->
-      <div class="parchment"><div class="conteudo"><img src="img-1.png" alt="Specimen 2 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-      <div class="parchment"><div class="conteudo"><img src="img-2.png" alt="Specimen 3 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div><div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div></div>
-      <div class="parchment"><div class="conteudo"><img src="img-3.png" alt="Specimen 4 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-      <div class="parchment"><div class="conteudo"><img src="img-4.png" alt="Specimen 5 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-      <div class="parchment"><div class="conteudo"><img src="img-5.png" alt="Specimen 6 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
+      <!-- =============== SPECIMEN 2 — Identity affirmation =============== -->
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-left">
+          <header class="specimen-head">
+            <div class="specimen-id">SPECIMEN #2</div>
+            <h2 class="specimen-title">Identity Affirmation via Instagram</h2>
+          </header>
+          <figure class="specimen-hero">
+            <img src="specimen2.png" alt="Specimen 2 placeholder" class="specimen-hero-img"/>
+          </figure>
+          <p class="doc-by"><span class="notes-head">Documented by:</span> [Anonymized]</p>
+        </div>
+      </div>
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-right">
+          <section class="specimen-notes">
+            <h3 class="notes-head">Field Notes</h3>
+            <p>At an elite U.S. campus, a first-generation Afro-Brazilian student contends with daily questions of belonging. Without proximate peers, she turns to Instagram as a space of connection and self-reference. Feeds of Black women intellectuals, influencers, and activists become a vital community, offering frameworks to process emotions and affirm identity.</p>
+            <p>These connections extend beyond the screen as she crafts handmade dolls that reconnect her to cultural roots. Digital encounters and creative practice work together, transforming displacement into self-affirmation and carving alternative pathways to belonging.</p>
+          </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → specimen #2</div>
+          <section class="taxonomy-tag taxonomy--bottom">
+            <dl class="taxonomy-grid">
+              <div class="row"><dt>Classification</dt><dd>Phenomenological Meaning-Making; Narrative Resilience Networks</dd></div>
+              <div class="row"><dt>Habitat</dt><dd>Video-first social platforms</dd></div>
+              <div class="row"><dt>Conservation Status</dt><dd>Established; threatened by commercial/algorithmic pressures</dd></div>
+            </dl>
+          </section>
+        </div>
+      </div>
 
-      <!-- BACK COVERS -->
+      <!-- =============== SPECIMEN 3 — Teacher debate =============== -->
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-left">
+          <header class="specimen-head">
+            <div class="specimen-id">SPECIMEN #3</div>
+            <h2 class="specimen-title">Teacher-Led Debate on AI-Assisted Teaching</h2>
+          </header>
+          <figure class="specimen-hero">
+            <img src="specimen2.png" alt="Specimen 3 placeholder" class="specimen-hero-img"/>
+          </figure>
+          <p class="doc-by"><span class="notes-head">Documented by:</span> [Anonymized]</p>
+        </div>
+      </div>
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-right">
+          <section class="specimen-notes">
+            <h3 class="notes-head">Field Notes</h3>
+            <p>A fourth-grade English teacher reports a breakthrough: AI-generated images help students visualize adjectives; engagement spikes. An art teacher pushes back: AI art is theft. The thread becomes a site of friction—not only about tools, but about labor, creativity, and ownership in education.</p>
+          </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → specimen #3</div>
+          <section class="taxonomy-tag taxonomy--bottom">
+            <dl class="taxonomy-grid">
+              <div class="row"><dt>Classification</dt><dd>Pedagogical Innovation; Peer Support Networks; Ethical Friction as Generative Practice</dd></div>
+              <div class="row"><dt>Habitat</dt><dd>Online educator communities (e.g., r/Teachers)</dd></div>
+              <div class="row"><dt>Conservation Status</dt><dd>Actively evolving yet vulnerable to commercial influence</dd></div>
+            </dl>
+          </section>
+        </div>
+      </div>
+
+      <!-- =============== SPECIMEN 4 — AI as rehearsal =============== -->
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-left">
+          <header class="specimen-head">
+            <div class="specimen-id">SPECIMEN #4</div>
+            <h2 class="specimen-title">AI as a Rehearsal Space for Relational Agency</h2>
+          </header>
+          <figure class="specimen-hero">
+            <img src="specimen2.png" alt="Specimen 4 placeholder" class="specimen-hero-img"/>
+          </figure>
+          <p class="doc-by"><span class="notes-head">Documented by:</span> [Anonymized]</p>
+        </div>
+      </div>
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-right">
+          <section class="specimen-notes">
+            <h3 class="notes-head">Field Notes</h3>
+            <p>For someone raised to treat trust as a liability, a responsive AI companion becomes a low-risk space to rehearse vulnerability. Over time, consistent feedback softens defenses—not replacing human connection but preparing the ground for it. AI here scaffolds agency and the possibility of relational change.</p>
+          </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → specimen #4</div>
+          <section class="taxonomy-tag taxonomy--bottom">
+            <dl class="taxonomy-grid">
+              <div class="row"><dt>Classification</dt><dd>Algorithmic Companionship; Computational Emotional Scaffolding</dd></div>
+              <div class="row"><dt>Habitat</dt><dd>AI companion apps; mental-health chatbots; mediated affective spaces</dd></div>
+              <div class="row"><dt>Conservation Status</dt><dd>Contested and precarious; risks of dependency and commodified intimacy</dd></div>
+            </dl>
+          </section>
+        </div>
+      </div>
+
+      <!-- CONCLUSION -->
+      <div class="parchment">
+        <div class="conteudo conclusion">
+          <header class="section-head">
+            <small class="subtitulo">Conclusion</small>
+          </header>
+          <section class="intro-body">
+            <p>Echoing Jackson’s (2023) argument that “the patient nurturing and mutual transmission of hope” is the central task of critical scholarship today, we see hope as both a methodological and epistemological stance: slow, collective, and deliberate. It is not a refusal to see constraints, but a commitment to nurturing possibilities within them.</p>
+            <p>This field guide contributes to utopian media studies by showing how documentation and preservation can re-orient research toward affirmative, future-making commitments. We foreground how people improvise, adapt, and imagine otherwise—often from the margins of visibility—and offer tools for recognizing, sustaining, and joining these practices as they evolve with shifting conditions.</p>
+          </section>
+          <div class="margem margem--right" aria-hidden="true">field notes → conclusion</div>
+        </div>
+      </div>
+
+      <!-- HARD BACKS -->
       <div class="hard inner-back"></div>
-      <div class="hard back-cover"><div class="cover-inner"><p class="cover-sub"></p></div></div>
+      <div class="hard back-cover"><div class="cover-inner"></div></div>
     </div>
   </div>
 
@@ -199,43 +289,27 @@
   <script src="jquery.js"></script>
   <script src="turn.js"></script>
   <script>
+    // Turn.js — keep size stable during flips, avoid shrink/bounce, smooth perf
     var $book = $(".flipbook").turn({
       autoCenter: true,
-      duration: 700,
+      duration: 640,
       gradients: true,
-      elevation: 80
+      elevation: 70,
+      acceleration: true
     });
 
-    const flipSound  = new Audio("page-flip-sound.mp3");
-    const coverSound = new Audio("page-flip-sound.mp3");
-    [flipSound, coverSound].forEach(a => { a.preload = "auto"; });
-
-    let audioUnlocked = false;
-    function unlockAudioOnce() {
-      if (audioUnlocked) return;
-      audioUnlocked = true;
-      try {
-        const v = flipSound.volume;
-        flipSound.volume = 0.0001;
-        const p = flipSound.play();
-        if (p && typeof p.then === "function") p.then(() => flipSound.pause()).catch(()=>{});
-        flipSound.volume = v;
-      } catch(e) {}
-      window.removeEventListener("pointerdown", unlockAudioOnce, true);
-      window.removeEventListener("keydown", unlockAudioOnce, true);
-    }
-    window.addEventListener("pointerdown", unlockAudioOnce, true);
-    window.addEventListener("keydown", unlockAudioOnce, true);
-
-    function safePlay(audio) {
-      try { audio.currentTime = 0; const p = audio.play(); if (p && p.catch) p.catch(()=>{}); } catch(e) {}
-    }
-    $book.on("turning", function (e, page) {
-      const total = $book.turn("pages");
-      const isCoverTurn = (page === 1 || page === total);
-      safePlay(isCoverTurn ? coverSound : flipSound);
+    const $wrap = $(".book-wrap");
+    $book.on("turning", function(){
+      $wrap.addClass("lock-size");
+      document.body.classList.add("perf-turn");
+    });
+    $book.on("turned",  function(){
+      $wrap.removeClass("lock-size");
+      document.body.classList.remove("perf-turn");
+      $book.turn("center");
     });
 
+    // Click to turn
     $book.on("click", ".page, .hard", function (e) {
       if ($(e.target).closest("a,button,input,textarea,select,[data-no-turn]").length) return;
       if ($book.turn("animating")) return;
@@ -243,10 +317,29 @@
       $book.turn(x > mid ? "next" : "previous");
     });
 
-    window.addEventListener("resize", function () { $book.turn("center"); });
+    // Flip sound (lightweight & safe)
+    const flipSound  = new Audio("page-flip-sound.mp3");
+    flipSound.preload = "auto";
+    let audioUnlocked=false;
+    function unlock(){
+      if(audioUnlocked) return; audioUnlocked=true;
+      try{
+        flipSound.volume=0.0001;
+        const p=flipSound.play(); if(p&&p.then) p.then(()=>flipSound.pause()).catch(()=>{});
+        flipSound.volume=1;
+      }catch(e){}
+      window.removeEventListener("pointerdown",unlock,true);
+      window.removeEventListener("keydown",unlock,true);
+    }
+    window.addEventListener("pointerdown",unlock,true);
+    window.addEventListener("keydown",unlock,true);
+    function safePlay(a){ try{ a.currentTime=0; const p=a.play(); if(p&&p.catch) p.catch(()=>{});}catch(e){} }
+    $book.on("turning", function(){ safePlay(flipSound); });
+
+    window.addEventListener("resize", function(){ $book.turn("center"); });
   </script>
 
-  <!-- Load after Turn.js so it can target .flipbook .page -->
+  <!-- After Turn.js so it can target .flipbook .page -->
   <script src="woodlouse.js"></script>
   <script src="page-variation.js"></script>
 </body>

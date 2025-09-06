@@ -1,28 +1,24 @@
 /* =========================================================
    DIGITAL ECOLOGIES — GRITTY / VINTAGE / INDUSTRIAL THEME
-   (No paths like /images — textures are filenames only)
    ========================================================= */
 
 /* ===== Palette & knobs ===== */
- :root{
-   --ink:#101417;
-   --charcoal:#1d1f20;
-   --paper:#e7e0d2;
-   --paper-dark:#d5ccb9;
-   --moss:#5b6a55;
-   --rust:#b24a3b;
-   --steel:#3b474f;
-   --accent:#7e8f80;
-+  /* black ballpoint for markers */
-+  --marker-black:#111;
+:root{
+  --ink:#101417;
+  --charcoal:#1d1f20;
+  --paper:#e7e0d2;
+  --paper-dark:#d5ccb9;
+  --moss:#5b6a55;
+  --rust:#b24a3b;         /* RED MARKER color */
+  --steel:#3b474f;
+  --accent:#7e8f80;
 
+  /* page size (each page) — slightly smaller */
+  --page-w: 592px;
+  --page-h: 692px;
+  --spread-aspect: 0.5849; /* 692 / (592*2) */
 
-  /* page size (each page) */
-  --page-w: 550px;
-  --page-h: 635px;
-  --spread-aspect: 0.5773; /* 635 / (550*2) */
-
-  /* leather accents (kept for inner paper look & optional effects) */
+  /* leather accents */
   --leather: #5b3c28;
   --leather-deep: #3b2618;
   --leather-warm: #7a563f;
@@ -31,28 +27,30 @@
   --leather1:#41281b; --leather2:#5c3a2a; --leather3:#7a5641;
   --brass:#a88432; --brass-hi:#d6b455; --brass-lo:#533e17;
 
-  /* spacing */
-  --padX: 72px;
-  --padY: 56px;
+  /* inner padding */
+  --padX: 36px;
+  --padY: 28px;
 
-  /* abstract layout */
+  /* abstract + body sizing — unified with field notes (15px) */
   --abs-left-width: 220px;
   --abs-gap: 14px;
-  --abs-pad-left: 44px;
-  --abs-pad-right: 38px;
   --abs-img: 74%;
   --abs-art-shift: 6px;
   --abs-title-size: 18px;
-  --abs-body-size: 17px;
-  --abs-body-leading: 1.42;
+  --abs-body-size: 15px;   /* ← same size as field notes body */
+  --abs-body-leading: 1.44;
   --abs-text-measure: 360px;
+
+  /* taxonomy table line colors */
+  --tax-line: rgba(109, 88, 62, .62);   /* strong dashed contour */
+  --tax-line-soft: rgba(109, 88, 62, .35);
 }
 
 /* ===== Reset-ish ===== */
 *{ box-sizing:border-box; margin:0; padding:0; }
 img{ max-width:100%; display:block; }
 
-/* ===== Desk/Tabletop background (gritty) ===== */
+/* ===== Desk/Tabletop background ===== */
 body{
   height:100vh; width:100vw; overflow:hidden;
   display:grid; place-content:center;
@@ -61,19 +59,21 @@ body{
   background-position:center center; background-size:cover; background-repeat:no-repeat; background-attachment:fixed;
 }
 body::before{
-  content:"";
-  position:fixed; inset:0; pointer-events:none; z-index:0;
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
   background-image: url("tabletop-grit.png");
-  background-size: 900px 900px;
-  background-repeat: repeat;
+  background-size: 900px 900px; background-repeat: repeat;
   opacity:.25; mix-blend-mode:multiply;
 }
 body::after{
-  content:"";
-  position:fixed; inset:0; pointer-events:none; z-index:0;
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
   background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.05"/></svg>');
   mix-blend-mode:multiply;
 }
+
+/* Perf hint while turning: avoid repaint cost of fixed backgrounds */
+body.perf-turn{ background-attachment:scroll; }
+body.perf-turn::before{ opacity:.2; }
+body.perf-turn::after{ opacity:.04; }
 
 /* ===== Book container ===== */
 .book-wrap{
@@ -82,38 +82,47 @@ body::after{
   height: var(--page-h);
   perspective:1800px; z-index:1;
 }
+.book-wrap.lock-size{        /* prevent size changes while turning */
+  width: calc(var(--page-w) * 2) !important;
+  height: var(--page-h) !important;
+}
 .book-wrap::before{
   content:""; position:absolute; left:-3%; right:-3%; top:50%; height:86%;
   transform:translateY(-50%);
   background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.35) 0%, rgba(0,0,0,.18) 36%, rgba(0,0,0,.1) 66%, transparent 92%);
   filter:blur(24px);
 }
-.flipbook{ position:relative; width:100%; height:100%; }
+.flipbook{
+  position:relative; width:100%; height:100%;
+  user-select:none;
+  /* stability hints */
+  transform: translateZ(0); will-change: transform;
+}
+.flipbook .page{
+  /* force exact page size so Turn.js never reflows during the turn */
+  width: var(--page-w) !important;
+  height: var(--page-h) !important;
+  backface-visibility:hidden;
+  transform: translateZ(0);
+}
 
-/* ===== HARD PAGES (covers) — image-mapped & exact fit ===== */
+/* ===== HARD PAGES (covers) ===== */
 .hard.front-cover{
-  background-image:url("flipbook_cover.png");
-  background-position:center;
-  background-repeat:no-repeat;
-  background-size:100% 100%; /* exact fit to 550x635 page */
+  background:url("flipbook_cover.png") center/100% 100% no-repeat;
 }
-
 .hard.inner-front{
-  background: url("book-cover-leather-inner-front.png") center / 100% 100% no-repeat;
+  background:url("book-cover-leather-inner-front.png") center/100% 100% no-repeat;
 }
-
 .hard.inner-back{
-  background: url("book-cover-leather-inner-back.png") center / 100% 100% no-repeat;
+  background:url("book-cover-leather-inner-back.png") center/100% 100% no-repeat;
 }
-
 .hard.back-cover{
-  background: url("flipbook_back_cover.png") center / cover no-repeat !important;
+  background:url("flipbook_back_cover.png") center/cover no-repeat !important;
 }
 
-/* keep nice rounded paper edge + physical shadow */
+/* cover chrome */
 .flipbook .page.hard{
-  border:none; border-radius:12px; overflow:hidden;
-  color:#eee7d8;
+  border:none; border-radius:12px; overflow:hidden; color:#eee7d8;
   box-shadow:
     inset 0 0 0 1px rgba(255,255,255,.08),
     inset 8px 10px 30px rgba(0,0,0,.22),
@@ -121,8 +130,6 @@ body::after{
     0 18px 40px rgba(0,0,0,.42);
   position:relative;
 }
-
-/* inner deboss frame (subtle) */
 .flipbook .page.hard::before{
   content:""; position:absolute; inset:16px; border-radius:9px;
   box-shadow:
@@ -131,8 +138,6 @@ body::after{
     inset 0 0 28px rgba(0,0,0,.18);
   pointer-events:none;
 }
-
-/* spine edge highlight */
 .flipbook .page.hard::after{
   content:""; position:absolute; top:3%; bottom:3%; width:10px; right:-6px;
   background:linear-gradient(180deg, var(--leather-deep), var(--leather));
@@ -145,36 +150,8 @@ body::after{
   left:-6px; right:auto; border-radius:9px 0 0 9px;
   box-shadow:inset 0 0 0 1px rgba(0,0,0,.12), -3px 0 8px rgba(0,0,0,.28);
 }
-
-/* Hide the HTML title block on outer covers (art already has it) */
 .hard.front-cover .cover-inner,
 .hard.back-cover  .cover-inner{ display:none; }
-
-/* ===== Cover content ===== */
-.cover-inner{
-  position:relative; z-index:1;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:10px; text-align:center; width:100%; height:100%;
-  padding: var(--padY) var(--padX);
-}
-.cover-title{
-  font-family:"Oswald", system-ui, sans-serif;
-  font-weight:700; letter-spacing:.12em; text-transform:uppercase;
-  font-size:38px; line-height:1.02;
-  color:#efe9d5;
-  text-shadow: 0 1px 0 rgba(0,0,0,.6), 0 0 40px rgba(0,0,0,.35);
-}
-.cover-sub, .cover-editor{
-  font-family:"IBM Plex Serif", serif;
-  font-size:16px; letter-spacing:.04em; color:#e9e2cf;
-  opacity:.95;
-}
-.cover-stamp{
-  width:120px; height:120px; margin-bottom:10px; opacity:.9;
-  background-image:url("flipbook-cover-stamp.png");
-  background-size:contain; background-repeat:no-repeat; background-position:center;
-  filter: contrast(1.05) saturate(.9) drop-shadow(0 2px 2px rgba(0,0,0,.35));
-}
 
 /* ===== Paper pages ===== */
 .flipbook .page:not(.hard){
@@ -188,61 +165,69 @@ body::after{
   border-radius:6px;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.35),
               0 10px 22px rgba(0,0,0,.24);
-  display:flex; align-items:center; justify-content:center; padding:0;
-  overflow:hidden;
-  color:var(--charcoal);
+  display:flex; align-items:flex-start; justify-content:flex-start;
+  padding: var(--padY) var(--padX);
+  overflow:hidden; color:var(--charcoal);
+  z-index:1;
+}
+/* Mold + paper fiber overlays now applied to ALL internal pages */
+.flipbook .page:not(.hard)::before{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+  background:url("mold-specks.png") center/cover no-repeat;
+  mix-blend-mode:multiply; opacity:.42;
 }
 .flipbook .page:not(.hard)::after{
-  content:""; position:absolute; inset:0; pointer-events:none; opacity:.95;
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:2; opacity:.95;
   background:
     linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.02)),
     url("paper-fiber.png");
-  background-size:cover;
-  mix-blend-mode:multiply;
-}
-.flipbook .page:not(.hard).even::before,
-.flipbook .page:not(.hard).odd::before{
-  content:""; position:absolute; top:0; bottom:0; width:46px; pointer-events:none; z-index:2;
-}
-.flipbook .page:not(.hard).even::before{ right:-1px; background:linear-gradient(90deg, rgba(0,0,0,.22), rgba(0,0,0,.12) 26%, rgba(0,0,0,.06) 60%, transparent 100%); }
-.flipbook .page:not(.hard).odd::before{  left:-1px;  background:linear-gradient(270deg, rgba(0,0,0,.22), rgba(0,0,0,.12) 26%, rgba(0,0,0,.06) 60%, transparent 100%); }
-
-/* gentle deckled edge mask */
-.flipbook .page:not(.hard) {
-  -webkit-mask-image: radial-gradient(16px 16px at 6px 6px, #000 65%, transparent 70%),
-                      radial-gradient(16px 16px at calc(100% - 6px) 6px, #000 65%, transparent 70%),
-                      radial-gradient(16px 16px at 6px calc(100% - 6px), #000 65%, transparent 70%),
-                      radial-gradient(16px 16px at calc(100% - 6px) calc(100% - 6px), #000 65%, transparent 70%),
-                      linear-gradient(#000,#000);
-  -webkit-mask-composite: source-over, source-over, source-over, source-over, source-in;
-          mask-image: radial-gradient(16px 16px at 6px 6px, #000 65%, transparent 70%),
-                      radial-gradient(16px 16px at calc(100% - 6px) 6px, #000 65%, transparent 70%),
-                      radial-gradient(16px 16px at 6px calc(100% - 6px), #000 65%, transparent 70%),
-                      radial-gradient(16px 16px at calc(100% - 6px) calc(100% - 6px), #000 65%, transparent 70%),
-                      linear-gradient(#000,#000);
+  background-size:cover; mix-blend-mode:multiply;
 }
 
-/* shared inner content wrapper */
+/* deckled corners */
+.flipbook .page:not(.hard){
+  -webkit-mask-image:
+    radial-gradient(16px 16px at 6px 6px, #000 65%, transparent 70%),
+    radial-gradient(16px 16px at calc(100% - 6px) 6px, #000 65%, transparent 70%),
+    radial-gradient(16px 16px at 6px calc(100% - 6px), #000 65%, transparent 70%),
+    radial-gradient(16px 16px at calc(100% - 6px) calc(100% - 6px), #000 65%, transparent 70%),
+    linear-gradient(#000,#000);
+          mask-image:
+    radial-gradient(16px 16px at 6px 6px, #000 65%, transparent 70%),
+    radial-gradient(16px 16px at calc(100% - 6px) 6px, #000 65%, transparent 70%),
+    radial-gradient(16px 16px at 6px calc(100% - 6px), #000 65%, transparent 70%),
+    radial-gradient(16px 16px at calc(100% - 6px) calc(100% - 6px), #000 65%, transparent 70%),
+    linear-gradient(#000,#000);
+}
+
+/* Light-weight mode DURING a turn (restores after) */
+body.perf-turn .page:not(.hard){
+  /* simpler shadow to reduce GPU overdraw while animating */
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), 0 6px 12px rgba(0,0,0,.18) !important;
+  /* temporarily drop the expensive corner masks while turning */
+  -webkit-mask-image: linear-gradient(#000,#000) !important;
+          mask-image: linear-gradient(#000,#000) !important;
+}
+body.perf-turn .page:not(.hard)::after{ opacity:.85 !important; }
+body.perf-turn .page:not(.hard)::before{ opacity:.28 !important; }
+
+/* shared inner wrapper */
 .conteudo{
-  position:relative;
-  width:100%; height:100%;
-  padding: var(--padY) var(--padX);
+  position:relative; width:100%; height:100%; z-index:3;
   display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start;
 }
 
-/* generic figure */
-.placa{ width:76%; margin:0 auto; filter:contrast(1.03); }
-.fig{ display:block; text-align:center; font: 12px/1 "IBM Plex Serif", serif; color:#5a5245; margin-top:6px; }
+/* ===== Frontispiece ===== */
+.frontis-img{ width:100%; height:100%; object-fit:contain; }
 
-/* ===== Abstract (two-column) ===== */
+/* ===== Abstract ===== */
 .abstract{ text-align:left; }
 .abs-grid{
   display:grid;
   grid-template-columns: var(--abs-left-width) minmax(0, 1fr);
   gap: var(--abs-gap);
   align-items: stretch;
-  height: 100%;
-  width:100%;
+  height: 100%; width:100%;
 }
 .abs-art{ display:flex; align-items:center; justify-content:center; }
 .abs-art img{ width: var(--abs-img); height: auto; object-fit:contain; transform: translateY(var(--abs-art-shift)); }
@@ -259,407 +244,165 @@ body::after{
   line-height: var(--abs-body-leading);
   color:#2a2723;
 }
-.abs-keys{
-  margin-top:16px;
-  font-family:"IBM Plex Serif", serif; font-size:17px; line-height:1.45; color:#2b352b;
-}
+.abs-keys{ margin-top:16px; font-family:"IBM Plex Serif", serif; font-size:15px; line-height:1.45; color:#2b352b; }
 .keys-label{ color:var(--moss); font-weight:600; letter-spacing:.02em; }
 
-/* Abstract page 2 (left page tweaks) */
-.abstract--inner{ --abs-left-width: 120px; --abs-gap: 10px; --abs-pad-left: 28px; --abs-pad-right: 60px; }
-.abs-grid--left-page{ grid-template-columns: var(--abs-left-width) minmax(0, 1fr); }
+/* ===== Section heads ===== */
+.section-head .subtitulo{
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.18em; text-transform:uppercase; color:#2e3336; font-size:14px;
+}
+.intro-body, .conclusion .intro-body{
+  max-width: 56ch;
+  font-family:"IBM Plex Serif", serif;
+  font-size:15px; line-height:1.44; color:#2a2723;
+}
+.intro-body p + p{ margin-top:.75rem; }
+.intro-list{ margin:.5rem 0 0 1rem; padding:0; }
+.intro-list li{ font-size:15px; line-height:1.44; margin:.35rem 0; }
 
-/* margin note */
+/* ===== Margin note — ALWAYS on the right, closer to edge ===== */
 .margem{
-  position:absolute; right:8px; top:10px;
+  position:absolute; right:4px; top:8px;   /* closer to edge */
   writing-mode:vertical-rl; text-orientation:mixed;
   font:14px/1 "Oswald", system-ui, sans-serif; letter-spacing:.12em;
   color:#7a6c58; opacity:.82; pointer-events:none;
 }
 
-/* Intro placeholder */
-.subtitulo{ text-transform:uppercase; letter-spacing:.15em; font:12px/1 "Oswald", system-ui, sans-serif; color:#6d5d4a; }
-.mono{ font:12px/1 "IBM Plex Serif", serif; color:#3a352e; }
-
-/* ===== Specimen styles ===== */
-.specimen1-page{ width:100%; height:100%; }
-.specimen1-figure{ position:relative; width:100%; height: calc(100% - 4px); display:flex; align-items:center; justify-content:center; }
-.specimen1-figure-img{ max-width:100%; height:auto; }
-#specimen1-hero{ transform: scale(1.12); transform-origin:center; }
-
-.specimen1-meta{ margin:0 0 4px 0; }
-.specimen1-meta .specimen-id{
-  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#2e3336;
-}
-.specimen1-meta .specimen-title-line{
-  font-family:"IBM Plex Serif", serif; font-weight:600; font-size:18px; color:#1f1f1f;
-}
-
-.specimen1-facts{
-  margin:6px 0 12px 0;
-  border:1px solid rgba(0,0,0,.28);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.25), rgba(0,0,0,.03)),
-    repeating-linear-gradient(0deg, rgba(0,0,0,.035) 0 1px, transparent 1px 22px),
-    #f3ebdb;
-  box-shadow:0 1px 2px rgba(0,0,0,.18), 0 0 0 1px rgba(255,255,255,.35) inset;
-  padding:10px 12px; position:relative;
-}
-.specimen1-facts .row{
-  display:grid; grid-template-columns:150px 1fr; gap:10px;
-  padding:6px 0; border-bottom:1px dashed rgba(0,0,0,.18);
-}
-.specimen1-facts .row:last-child{ border-bottom:none; }
-.specimen1-facts dt{
-  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#323634;
-}
-.specimen1-facts dd{ margin:0; font-family:"IBM Plex Serif", serif; color:#1f1f1f; }
-
-/* tape highlight */
-.specimen1-facts.taped::before,
-.specimen1-facts.taped::after{
-  content:""; position:absolute; left:50%; transform: translateX(-50%) rotate(-2.2deg);
-  width: 160px; height: 18px; top: -10px; border-radius:2px; pointer-events:none;
-}
-.specimen1-facts.taped::before{
-  background-image:
-    linear-gradient(180deg, rgba(255,255,255,.58) 0%, rgba(245,245,245,.40) 45%, rgba(210,210,210,.26) 60%, rgba(255,255,255,.36) 100%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 12px, rgba(0,0,0,.06) 12px 24px);
-  box-shadow: 0 2px 5px rgba(0,0,0,.20), inset 0 0 0 .75px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.35);
-  opacity:.78;
-}
-.specimen1-facts.taped::after{
-  background: linear-gradient( 70deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,.12) 18%, rgba(255,255,255,0) 40%, rgba(255,255,255,.10) 60%, rgba(255,255,255,0) 80% );
-  opacity:.75;
-}
-
-/* body copy */
-.specimen1-prose{
-  font-family:"IBM Plex Serif", serif;
-  font-size:15px; line-height:1.46; color:#292521;
-  max-width:64ch;
-}
-.specimen1-prose p + p{ margin-top:.7rem; }
-.specimen1-desc-head{
-  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase; font-size:14px; color:#1f1f1f; margin:0 0 8px 0;
-}
-.specimen1-credit .specimen1-desc-head{ margin-right:.5ch; }
-
- /* marker styles */
- .marker-circle{
-   position:relative; display:inline-block; padding: .02em .28em .06em .28em; margin: 0 .05em; z-index:0;
- }
-
-.marker-circle::before{
-  content:"";
-  position:absolute; inset:-.18em -.38em;
-  border: 2.5px solid var(--marker-black);  /* black ink */
-  border-radius:999px; transform: rotate(-2deg);
-  filter: drop-shadow(0 0 .6px rgba(0,0,0,.55));
-}
-
-.marker-underline::after{
-  content:"";
-  position:absolute; left:-.06em; right:-.04em; height:.28em; bottom:-.1em;
-  border-bottom: 3px solid var(--marker-black);  /* black ink */
-  border-radius:2px; transform:rotate(-1.2deg);
-  background:linear-gradient(0deg, rgba(0,0,0,.10), rgba(0,0,0,.10)) padding-box;
-}
-
-/* ===== Responsive ===== */
-@media (max-width:1200px){
-  .book-wrap{
-    width: min(92vw, calc(var(--page-w) * 2));
-    height: calc(min(92vw, calc(var(--page-w) * 2)) * var(--spread-aspect));
-  }
-  :root{ --abs-left-width: 180px; --abs-gap: 12px; }
-}
-@media (max-width:900px){
-  .margem{ display:none; }
-  .abs-grid{ grid-template-columns:1fr; height:auto; }
-  .abs-art{ margin:0 auto 12px; }
-  .abs-body{ font-size:16.25px; line-height:1.44; }
-  .specimen1-facts .row{ grid-template-columns: 120px 1fr; }
-}
-
-/* ===== Print ===== */
-@media print{
-  body{ background:#fff; }
-  .flipbook .page{ box-shadow:none; border:none; }
-}
-
-/* ==== Make back cover darker to match the front ==== */
-.hard.back-cover{
-  background-image: url("flipbook_back_cover.png");
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
-}
-.hard.back-cover::before{
-  content:"";
-  position:absolute; inset:0; pointer-events:none; border-radius:12px;
-  background:
-    linear-gradient(0deg, rgba(22,14,9,.22), rgba(22,14,9,.22)),
-    radial-gradient(120% 95% at 50% 60%, rgba(0,0,0,.35), transparent 60%),
-    linear-gradient(0deg, rgba(120,86,48,.10), rgba(120,86,48,.10));
-  mix-blend-mode:multiply;
-  opacity:1;
-}
-.hard.back-cover::after{
-  content:"";
-  position:absolute; inset:0; pointer-events:none; border-radius:12px;
-  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.18"/></svg>');
-  background-size:300px 300px;
-  mix-blend-mode:multiply;
-  opacity:.9;
-}
-.hard.back-cover{ filter: contrast(1.08) saturate(.95); }
-:root{
-  --leather-target: #715027;
-  --leather-target-rgb: 113,80,39;
-  --tone-sat: 1.03;
-  --tone-ctr: 1.06;
-  --tone-bri: 0.98;
-  --tone-vignette: .34;
-}
-.hard.front-cover,
-.hard.back-cover{
-  position: relative;
-  background-size: 100% 100% !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  filter:
-    saturate(var(--tone-sat))
-    contrast(var(--tone-ctr))
-    brightness(var(--tone-bri));
-}
-.hard.front-cover::before,
-.hard.back-cover::before{
-  content:""; position:absolute; inset:0; pointer-events:none; border-radius:12px;
-  background:
-    linear-gradient(0deg, rgba(113,80,39,.10), rgba(113,80,39,.10)),
-    radial-gradient(115% 95% at 50% 58%, rgba(0,0,0,var(--tone-vignette)), transparent 60%);
-  mix-blend-mode:multiply;
-  opacity:1;
-}
-.hard.front-cover::after,
-.hard.back-cover::after{
-  content:""; position:absolute; inset:0; pointer-events:none; border-radius:12px;
-  background: rgba(var(--leather-target-rgb), .48);
-  mix-blend-mode:color;
-  opacity:1;
-}
-
-/* =================================WOODLOUSE ====================================================================*/
-/* ——— everything you already had above remains unchanged ——— */
-
-/* =================================WOODLOUSE ====================================================================*/
-.woodlouse{
-  position:absolute;
-  width:46px; height:46px;
-  background-size:contain;
-  background-repeat:no-repeat;
-  filter: brightness(.88) contrast(.95) saturate(.9) drop-shadow(0 1px 1px rgba(0,0,0,.35));
-  opacity:.97;
-  will-change: transform, opacity, background-image;
-  transform-origin:50% 50%;
-}
-.woodlouse--despawn{ opacity:0; transition:opacity .25s ease; }
-@media (prefers-reduced-motion: reduce){
-  .woodlouse{ transition:none !important; }
-}
-
-/* ===================== APPENDED: PAGE VARIATION OVERLAYS (MASKS ONLY) ===================== */
-/* =========================================================
-   DIGITAL ECOLOGIES — GRITTY / VINTAGE / INDUSTRIAL THEME
-   (No paths like /images — textures are filenames only)
-   ========================================================= */
-
-/* ...[everything you already had above remains unchanged]... */
-
-/* Stamp & crease (used by JS) */
-.page-stamp{
-  position:absolute; right:18px; bottom:14px; z-index:6; pointer-events:none;
-  font: 11px/1.1 "Oswald", system-ui, sans-serif; letter-spacing:.18em; text-transform:uppercase;
-  color:#612; opacity:.6;
-  filter: drop-shadow(0 1px 0 rgba(0,0,0,.35));
-  mix-blend-mode:multiply;
-  transform: rotate(-2.4deg);
-}
-
-/* === SAFETY PATCH ===
-   If .page-stamp is accidentally added to the page element itself,
-   neutralize positioning so the page doesn't go "misplaced". */
-.flipbook .page.page-stamp{
-  position: static !important;
-  inset: auto !important;
-  right: auto !important;
-  bottom: auto !important;
-  transform: none !important;
-}
-
-/* OILY — smaller, scattered puddles */
-.fx--oily{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:4;
-  mix-blend-mode:multiply;
-
-  /* warm, translucent oil tint */
-  background: rgba(60, 44, 28, .95);
-  opacity: 0.28;
-
-  -webkit-mask-image:
-    /* roughen edges with turbulence */
-    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="12"/></filter>  <rect width="100%" height="100%" filter="url(%23n)"/></svg>'),
-
-    /* scattered small puddles */
-    radial-gradient(circle at 20% 22%, #000 0 10%, transparent 24%),
-    radial-gradient(ellipse 30% 20% at 68% 18%, #000 0 12%, transparent 28%),
-    radial-gradient(circle at 76% 64%, #000 0 9%, transparent 22%),
-    radial-gradient(ellipse 22% 28% at 32% 72%, #000 0 11%, transparent 26%),
-
-    /* tiny satellite drops */
-    radial-gradient(circle at 12% 42%, #000 0 5%, transparent 14%),
-    radial-gradient(circle at 48% 28%, #000 0 4%, transparent 12%),
-    radial-gradient(circle at 58% 82%, #000 0 5%, transparent 14%),
-    radial-gradient(circle at 84% 42%, #000 0 6%, transparent 15%);
-
-          mask-image:
-    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="12"/></filter>  <rect width="100%" height="100%" filter="url(%23n)"/></svg>'),
-    radial-gradient(circle at 20% 22%, #000 0 10%, transparent 24%),
-    radial-gradient(ellipse 30% 20% at 68% 18%, #000 0 12%, transparent 28%),
-    radial-gradient(circle at 76% 64%, #000 0 9%, transparent 22%),
-    radial-gradient(ellipse 22% 28% at 32% 72%, #000 0 11%, transparent 26%),
-    radial-gradient(circle at 12% 42%, #000 0 5%, transparent 14%),
-    radial-gradient(circle at 48% 28%, #000 0 4%, transparent 12%),
-    radial-gradient(circle at 58% 82%, #000 0 5%, transparent 14%),
-    radial-gradient(circle at 84% 42%, #000 0 6%, transparent 15%);
-
-  -webkit-mask-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat,
-                       no-repeat, no-repeat, no-repeat, no-repeat;
-          mask-repeat:  repeat, no-repeat, no-repeat, no-repeat, no-repeat,
-                       no-repeat, no-repeat, no-repeat, no-repeat;
-
-  -webkit-mask-size: 280px 280px, 100% 100%, 100% 100%, 100% 100%, 
-                     100% 100%, 100% 100%, 100% 100%, 100% 100%;
-          mask-size:  280px 280px, 100% 100%, 100% 100%, 100% 100%, 
-                     100% 100%, 100% 100%, 100% 100%, 100% 100%;
-
-  /* softer, wet edges */
-  filter: blur(.35px) contrast(1.02);
-}
-
-/* MOLD — scattered specks of mildew */
-.fx--mold {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 5;
-  background: url("mold-specks.png") center/cover no-repeat;
-  mix-blend-mode: multiply;
-  opacity: 0.45;
-}
-
-
-/* REQUIRED: base overlay box */
-.flipbook .page:not(.hard){ position:relative; isolation:isolate; }
-
-.fx{
-  position:absolute;
-  top:0; right:0; bottom:0; left:0;   /* use explicit edges for full support */
-  display:block;
-  pointer-events:none;
-  z-index:6;                          /* above paper fiber ::after */
-  mix-blend-mode:multiply;
-}
-
-
-/* woodlouse layer & sprite */
-.woodlouse-layer{
-  position:absolute;
-  inset:0;              /* fill the page/cover */
-  pointer-events:none;
-  overflow:hidden;
-  z-index: 9;           /* above page content and cover overlays */
-}
-
-.woodlouse{
-  position:absolute;
-  width:46px; height:46px;
-  background-size:contain;
-  background-repeat:no-repeat;
-  filter: brightness(.88) contrast(.95) saturate(.9) drop-shadow(0 1px 1px rgba(0,0,0,.35));
-  opacity:.97;
-  will-change: transform, opacity, background-image;
-  transform-origin:50% 50%;
-}
-.woodlouse--despawn{ opacity:0; transition:opacity .2s ease; }
-
-/* ===== Specimen two-page layout ===== */ /* CHANGED */
+/* ===== Specimen spread ===== */
 .specimen-left, .specimen-right{
-  width:100%; height:100%;
-  display:flex; flex-direction:column; gap:12px;
+  width:100%; height:100%; display:flex; flex-direction:column; gap:10px;
 }
-
-.specimen-head{ margin-bottom:2px; }
+.specimen-head{ margin-bottom:2px; z-index:3; }
 .specimen-id{
-  font-family:"Oswald", system-ui, sans-serif;
-  letter-spacing:.14em; text-transform:uppercase; color:#2e3336; font-size:12px;
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.14em;
+  text-transform:uppercase; color:#2e3336; font-size:12px;
 }
 .specimen-title{
-  font-family:"IBM Plex Serif", serif; font-weight:600; font-size:20px; color:#1f1f1f; line-height:1.1;
+  font-family:"IBM Plex Serif", serif; font-weight:600; font-size:20px;
+  color:#1f1f1f; line-height:1.1; margin-top:2px;
 }
 
+/* ensure title never overlaps the hero image */
 .specimen-hero{
-  margin-top:6px; margin-bottom:6px;
-  display:flex; align-items:center; justify-content:center; min-height:52%;
+  margin-top:6px; display:flex; align-items:center; justify-content:center;
+  min-height:50%; flex:1 1 auto;
 }
 .specimen-hero-img{ width:88%; height:auto; object-fit:contain; filter:contrast(1.03); }
 
-/* taxonomy name-tag (echoes cover panel) */
-.taxonomy-tag{
-  position:relative;
-  border:1px solid rgba(0,0,0,.28);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.25), rgba(0,0,0,.03)),
-    repeating-linear-gradient(0deg, rgba(0,0,0,.035) 0 1px, transparent 1px 22px),
-    #f3ebdb;
-  box-shadow:0 1px 2px rgba(0,0,0,.18),
-             0 0 0 1px rgba(255,255,255,.35) inset,
-             inset 0 0 0 2px rgba(0,0,0,.08);
-  border-radius:8px;
-  padding:10px 12px;
+/* 'Documented by' pinned to bottom of left page */
+.doc-by{
+  margin-top:auto; padding-top:4px;
+  font-family:"IBM Plex Serif", serif; font-size:14px; color:#292521;
 }
+
+/* ===== Right page notes (unified size) ===== */
+.notes-head{
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase;
+  font-size:14px; color:#1f1f1f; margin:0 0 8px 0;
+}
+.specimen-notes{
+  max-width:56ch; padding-right:6px;
+}
+.specimen-notes p{
+  font-family:"IBM Plex Serif", serif;
+  font-size:15px; line-height:1.44; color:#292521;   /* unified with abstract/intro */
+}
+.specimen-notes p + p{ margin-top:.66rem; }
+
+/* ===== Contour-only taxonomy card (handwritten-ish, matches row dashes) ===== */
+.taxonomy-tag{
+  position: relative;
+  background: transparent !important;          /* contour-only */
+  border: 3px dashed var(--tax-line);
+  border-radius: 11px;
+  padding: 12px 14px;
+  box-shadow: none !important;
+  transform: rotate(-.35deg);                   /* sketch vibe */
+}
+/* eliminate any previous frames */
+.taxonomy-tag::before,
+.taxonomy-tag::after{ content:none !important; }
+
+/* bottom placement helper (on right pages) */
+.taxonomy--bottom{ margin-top:auto; align-self:stretch; }
+
+/* rows — dashed separators consistent with contour */
 .taxonomy-grid .row{
   display:grid; grid-template-columns:150px 1fr; gap:10px;
-  padding:6px 0; border-bottom:1px dashed rgba(0,0,0,.18);
+  padding:8px 0; border-bottom:2px dashed var(--tax-line-soft);
 }
 .taxonomy-grid .row:last-child{ border-bottom:none; }
 .taxonomy-grid dt{
-  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#323634;
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.08em;
+  text-transform:uppercase; color:#323634;
 }
 .taxonomy-grid dd{ margin:0; font-family:"IBM Plex Serif", serif; color:#1f1f1f; }
 
-/* right-page notes */
-.specimen-notes{ max-width:66ch; }
-  line-height:1.42;   /* a touch tighter */
-  padding-right:6px;  /* breathing room at gutter */
-
-.notes-head{
-  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase; font-size:14px; color:#1f1f1f; margin:0 0 8px 0;
+/* ===== Marker highlights ===== */
+.marker-circle{ position:relative; display:inline-block; padding:.02em .28em .06em .28em; margin:0 .05em; z-index:0; }
+.marker-circle::before{
+  content:""; position:absolute; inset:-.18em -.38em;
+  border: 2.5px solid var(--rust); border-radius:999px;
+  transform: rotate(-2deg);
+  filter: drop-shadow(0 0 1px rgba(178,74,59,.65));
 }
-.specimen-notes p{
-  font-family:"IBM Plex Serif", serif; font-size:15px; line-height:1.46; color:#292521;
+.marker-underline{ position:relative; display:inline; z-index:0; }
+.marker-underline::after{
+  content:""; position:absolute; left:-.06em; right:-.04em; height:.28em; bottom:-.1em;
+  border-bottom: 3px solid var(--rust); border-radius:2px; transform:rotate(-1.2deg);
+  background:linear-gradient(0deg, rgba(178,74,59,.18), rgba(178,74,59,.18)) padding-box;
 }
-.specimen-notes p + p{ margin-top:.7rem; }
-.specimen-credit{ margin-top:.7rem; }
+/* Safety: no accidental full-width rule lines on containers */
+.specimen-notes::after, .conteudo::after{ content:none !important; }
 
+/* ===== Page stamp ===== */
+.page-stamp{
+  position:absolute; right:18px; bottom:14px; z-index:6; pointer-events:none;
+  font: 11px/1.1 "Oswald", system-ui, sans-serif; letter-spacing:.18em; text-transform:uppercase;
+  color:#612; opacity:.6; filter: drop-shadow(0 1px 0 rgba(0,0,0,.35));
+  mix-blend-mode:multiply; transform: rotate(-2.4deg);
+}
+.flipbook .page.page-stamp{
+  position: static !important; inset:auto !important; right:auto !important; bottom:auto !important; transform:none !important;
+}
 
-/* responsive nudge */
+/* ===== Legacy overlays (still available if you add <i class="fx …">) ===== */
+.fx{ position:absolute; inset:0; pointer-events:none; z-index:6; mix-blend-mode:multiply; }
+.fx--oily{
+  background: rgba(60, 44, 28, .95); opacity:.28;
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="12"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>'),
+                      radial-gradient(circle at 20% 22%, #000 0 10%, transparent 24%),
+                      radial-gradient(ellipse 30% 20% at 68% 18%, #000 0 12%, transparent 28%),
+                      radial-gradient(circle at 76% 64%, #000 0 9%, transparent 22%),
+                      radial-gradient(ellipse 22% 28% at 32% 72%, #000 0 11%, transparent 26%),
+                      radial-gradient(circle at 12% 42%, #000 0 5%, transparent 14%),
+                      radial-gradient(circle at 48% 28%, #000 0 4%, transparent 12%),
+                      radial-gradient(circle at 58% 82%, #000 0 5%, transparent 14%),
+                      radial-gradient(circle at 84% 42%, #000 0 6%, transparent 15%);
+          mask-image:   url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="12"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>'),
+                      radial-gradient(circle at 20% 22%, #000 0 10%, transparent 24%),
+                      radial-gradient(ellipse 30% 20% at 68% 18%, #000 0 12%, transparent 28%),
+                      radial-gradient(circle at 76% 64%, #000 0 9%, transparent 22%),
+                      radial-gradient(ellipse 22% 28% at 32% 72%, #000 0 11%, transparent 26%),
+                      radial-gradient(circle at 12% 42%, #000 0 5%, transparent 14%),
+                      radial-gradient(circle at 48% 28%, #000 0 4%, transparent 12%),
+                      radial-gradient(circle at 58% 82%, #000 0 5%, transparent 14%),
+                      radial-gradient(circle at 84% 42%, #000 0 6%, transparent 15%);
+  -webkit-mask-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+          mask-repeat:  repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  -webkit-mask-size: 280px 280px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+          mask-size:   280px 280px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  filter: blur(.35px) contrast(1.02);
+}
+.fx--mold{ background:url("mold-specks.png") center/cover no-repeat; mix-blend-mode:multiply; opacity:.45; }
+
+/* ===== Responsive ===== */
+@media (max-width:1200px){
+  .book-wrap{ width: calc(var(--page-w) * 2); height: var(--page-h); }
+}
 @media (max-width:900px){
+  .margem{ display:none; }
   .taxonomy-grid .row{ grid-template-columns:120px 1fr; }
-  .specimen-hero-img{ width:92%; }
+  .specimen-notes{ max-width: 48ch; font-size: 15px; }
 }
