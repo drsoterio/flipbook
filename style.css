@@ -4,15 +4,18 @@
    ========================================================= */
 
 /* ===== Palette & knobs ===== */
-:root{
-  --ink:#101417;
-  --charcoal:#1d1f20;
-  --paper:#e7e0d2;
-  --paper-dark:#d5ccb9;
-  --moss:#5b6a55;
-  --rust:#b24a3b;
-  --steel:#3b474f;
-  --accent:#7e8f80;
+ :root{
+   --ink:#101417;
+   --charcoal:#1d1f20;
+   --paper:#e7e0d2;
+   --paper-dark:#d5ccb9;
+   --moss:#5b6a55;
+   --rust:#b24a3b;
+   --steel:#3b474f;
+   --accent:#7e8f80;
++  /* black ballpoint for markers */
++  --marker-black:#111;
+
 
   /* page size (each page) */
   --page-w: 550px;
@@ -342,18 +345,25 @@ body::after{
 }
 .specimen1-credit .specimen1-desc-head{ margin-right:.5ch; }
 
-/* marker styles */
-.marker-circle{
-  position:relative; display:inline-block; padding: .02em .28em .06em .28em; margin: 0 .05em; z-index:0;
-}
+ /* marker styles */
+ .marker-circle{
+   position:relative; display:inline-block; padding: .02em .28em .06em .28em; margin: 0 .05em; z-index:0;
+ }
+
 .marker-circle::before{
-  content:""; position:absolute; inset:-.18em -.38em; border: 2.5px solid var(--rust); border-radius:999px; transform: rotate(-2deg); filter: drop-shadow(0 0 .6px rgba(178,74,59,.55));
+  content:"";
+  position:absolute; inset:-.18em -.38em;
+  border: 2.5px solid var(--marker-black);  /* black ink */
+  border-radius:999px; transform: rotate(-2deg);
+  filter: drop-shadow(0 0 .6px rgba(0,0,0,.55));
 }
-.marker-underline{ position:relative; display:inline; z-index:0; }
+
 .marker-underline::after{
-  content:""; position:absolute; left:-.06em; right:-.04em; height:.28em; bottom:-.1em;
-  border-bottom: 3px solid var(--rust); border-radius:2px; transform:rotate(-1.2deg);
-  background:linear-gradient(0deg, rgba(178,74,59,.12), rgba(178,74,59,.12)) padding-box;
+  content:"";
+  position:absolute; left:-.06em; right:-.04em; height:.28em; bottom:-.1em;
+  border-bottom: 3px solid var(--marker-black);  /* black ink */
+  border-radius:2px; transform:rotate(-1.2deg);
+  background:linear-gradient(0deg, rgba(0,0,0,.10), rgba(0,0,0,.10)) padding-box;
 }
 
 /* ===== Responsive ===== */
@@ -588,3 +598,68 @@ body::after{
 }
 .woodlouse--despawn{ opacity:0; transition:opacity .2s ease; }
 
+/* ===== Specimen two-page layout ===== */ /* CHANGED */
+.specimen-left, .specimen-right{
+  width:100%; height:100%;
+  display:flex; flex-direction:column; gap:12px;
+}
+
+.specimen-head{ margin-bottom:2px; }
+.specimen-id{
+  font-family:"Oswald", system-ui, sans-serif;
+  letter-spacing:.14em; text-transform:uppercase; color:#2e3336; font-size:12px;
+}
+.specimen-title{
+  font-family:"IBM Plex Serif", serif; font-weight:600; font-size:20px; color:#1f1f1f; line-height:1.1;
+}
+
+.specimen-hero{
+  margin-top:6px; margin-bottom:6px;
+  display:flex; align-items:center; justify-content:center; min-height:52%;
+}
+.specimen-hero-img{ width:88%; height:auto; object-fit:contain; filter:contrast(1.03); }
+
+/* taxonomy name-tag (echoes cover panel) */
+.taxonomy-tag{
+  position:relative;
+  border:1px solid rgba(0,0,0,.28);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.25), rgba(0,0,0,.03)),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.035) 0 1px, transparent 1px 22px),
+    #f3ebdb;
+  box-shadow:0 1px 2px rgba(0,0,0,.18),
+             0 0 0 1px rgba(255,255,255,.35) inset,
+             inset 0 0 0 2px rgba(0,0,0,.08);
+  border-radius:8px;
+  padding:10px 12px;
+}
+.taxonomy-grid .row{
+  display:grid; grid-template-columns:150px 1fr; gap:10px;
+  padding:6px 0; border-bottom:1px dashed rgba(0,0,0,.18);
+}
+.taxonomy-grid .row:last-child{ border-bottom:none; }
+.taxonomy-grid dt{
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#323634;
+}
+.taxonomy-grid dd{ margin:0; font-family:"IBM Plex Serif", serif; color:#1f1f1f; }
+
+/* right-page notes */
+.specimen-notes{ max-width:66ch; }
+  line-height:1.42;   /* a touch tighter */
+  padding-right:6px;  /* breathing room at gutter */
+
+.notes-head{
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase; font-size:14px; color:#1f1f1f; margin:0 0 8px 0;
+}
+.specimen-notes p{
+  font-family:"IBM Plex Serif", serif; font-size:15px; line-height:1.46; color:#292521;
+}
+.specimen-notes p + p{ margin-top:.7rem; }
+.specimen-credit{ margin-top:.7rem; }
+
+
+/* responsive nudge */
+@media (max-width:900px){
+  .taxonomy-grid .row{ grid-template-columns:120px 1fr; }
+  .specimen-hero-img{ width:92%; }
+}
