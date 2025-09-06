@@ -284,6 +284,8 @@ body::after{
 .specimen1-figure-img{ max-width:100%; height:auto; }
 #specimen1-hero{ transform: scale(1.12); transform-origin:center; }
 
+.specimen2-figure-img{ max-width:20%; height:auto; }
+
 .specimen1-meta{ margin:0 0 4px 0; }
 .specimen1-meta .specimen-id{
   font-family:"Oswald", system-ui, sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#2e3336;
