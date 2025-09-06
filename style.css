@@ -406,3 +406,17 @@ body.perf-turn .page:not(.hard)::before{ opacity:.28 !important; }
   .taxonomy-grid .row{ grid-template-columns:120px 1fr; }
   .specimen-notes{ max-width: 48ch; font-size: 15px; }
 }
+
+.woodlouse{
+  position:absolute;
+  width:46px; height:46px;
+  background-size:contain;
+  background-repeat:no-repeat;  filter: brightness(.88) contrast(.95) saturate(.9) drop-shadow(0 1px 1px rgba(0,0,0,.35));
+  opacity:.97;
+  will-change: transform, opacity, background-image;
+  transform-origin:50% 50%;
+}
+.woodlouse--despawn{ opacity:0; transition:opacity .25s ease; }
+@media (prefers-reduced-motion: reduce){
+  .woodlouse{ transition:none !important; }
+}
