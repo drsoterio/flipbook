@@ -1005,7 +1005,7 @@ body .book-wrap .flipbook .page:not(.hard).odd::before{
 /* ==== Ultra-compact taxonomy (near single-line spacing) ==== */
 .taxonomy-tag.taxonomy--compact.tax-tight{
   /* small global shrink; adjust if needed */
-  transform: scale(.95) rotate(-.1deg);
+  transform: scale(.97) rotate(-.1deg);
   transform-origin: left bottom;
   border-width: 1px !important;
   border-radius: 7px !important;
