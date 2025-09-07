@@ -13,6 +13,13 @@
   --rust:#b24a3b;
   --steel:#3b474f;
   --accent:#7e8f80;
+  --page-w: 650px;  /* +8% from 550 */
+  --page-h: 735px;  /* +8% from 635 */
+  
+  /* viewport caps for responsive book sizing */
+  --book-vw-cap: 98vw;  /* was effectively 92vw via media rule */
+  --book-vh-cap: 92vh;  /* new: prevents vertical overflow */
+
 
   /* page size (each page) */
   --page-w: 550px;
@@ -424,6 +431,19 @@ body::after{
   margin: 0.45rem 0;             /* tighter paragraph spacing */
 }
 
+/* Free a few pixels for the taxonomy card below */
+.specimen-right .specimen-notes{ padding-bottom: 6px; }
+
+/* References-only smaller type (overrides the global !important body size) */
+.flipbook .page:not(.hard) .specimen-notes.refs{
+  font-size: 12px !important;   /* tweak: try 11.5–13px */
+  line-height: 1.32 !important; /* slightly tighter */
+}
+
+/* Tighten paragraph spacing for references */
+.flipbook .page:not(.hard) .specimen-notes.refs p{
+  margin: 0.25rem 0 !important; /* was ~0.4–0.45rem */
+}
 
 /* Contour-only taxonomy to match your dashed rows */
 .taxonomy-tag{
@@ -484,11 +504,14 @@ body::after{
 /* ===== Responsive ===== */
 @media (max-width:1200px){
   .book-wrap{
-    width: min(92vw, calc(var(--page-w) * 2));
-    height: calc(min(92vw, calc(var(--page-w) * 2)) * var(--spread-aspect));
+    /* allow the book to occupy more of the viewport, but keep aspect and avoid overflow */
+    width:  min(var(--book-vw-cap), calc(var(--page-w) * 2));
+    height: min(calc(var(--book-vw-cap) * var(--spread-aspect)), var(--book-vh-cap));
   }
-  :root{ --abs-left-width: 180px; --abs-gap: 12px; }
 }
+
+  :root{ --abs-left-width: 180px; --abs-gap: 12px; }
+
 @media (max-width:900px){
   .margem{ display:none; }
   .abs-grid{ grid-template-columns:1fr; height:auto; }
@@ -916,6 +939,43 @@ body .book-wrap .flipbook .page:not(.hard).odd::before{
   .taxonomy-mini{ column-count: 1; }
 }
 
+/* === Fit taxonomy tighter for Specimen #1 === */
+.tax-fit{
+  --tax-fs: clamp(11px, 1.1vw, 12.5px);   /* smaller font */
+  --tax-label-w: 92px;                    /* narrower label column */
+  --tax-gap: 5px;                         /* smaller gap */
+  --tax-row-pad: 1px;                     /* thinner row padding */
+
+  font-size: var(--tax-fs);
+  line-height: 1.18;
+  max-height: 36%;                        /* cap height lower */
+  overflow: hidden;
+  padding: 5px 7px;                       /* tighter card padding */
+}
+
+.tax-fit .taxonomy-grid{
+  font-size: var(--tax-fs);
+  line-height: 1.15;
+}
+
+.tax-fit .taxonomy-grid .row{
+  grid-template-columns: var(--tax-label-w) 1fr;
+  gap: var(--tax-gap);
+  padding: var(--tax-row-pad) 0;
+  border-bottom: 1px dashed rgba(109,88,62,.28);
+}
+.tax-fit .taxonomy-grid .row:last-child{ border-bottom: none; }
+
+.tax-fit dt{
+  font-size: calc(var(--tax-fs) - 0.5px);
+  letter-spacing: .04em;
+  line-height: 1.12;
+}
+.tax-fit dd{
+  font-size: var(--tax-fs);
+  line-height: 1.15;
+}
+.tax-fit dd p{ margin: .1rem 0 !important; } /* ultra-tight */
 
 
 /* ENABLE HTML mold overlay (above the paper fiber) */
@@ -1075,4 +1135,69 @@ body .book-wrap .flipbook .page:not(.hard).odd::before{
 @media (max-width: 900px){
   .authors-page .specimen-hero{ place-items: center; }
   .authors-page .specimen-hero-img{ transform: none; max-width: 92%; }
+}
+
+/* ==== FIX: Stable taxonomy on LEFT page only (no HTML edits) ==== */
+
+/* 0) If you previously added a global :has(...) grid rule, neutralize it for RIGHT pages */
+.specimen-right:has(.taxonomy-tag){
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 1) Left page becomes a 4-row grid ONLY when a taxonomy is present */
+.specimen-left:has(.taxonomy-tag){
+  display: grid !important;                     /* override the flex utility */
+  grid-template-rows: auto minmax(0,1fr) auto auto;  /* head | hero | taxonomy | footer */
+  row-gap: 8px;
+}
+
+/* 2) Pin elements to their rows and keep hero flexible */
+.specimen-left:has(.taxonomy-tag) .specimen-head{ grid-row: 1; }
+.specimen-left:has(.taxonomy-tag) .specimen-hero{ grid-row: 2; min-height: 0; }
+.specimen-left:has(.taxonomy-tag) .doc-by{ grid-row: 4; margin-top: 0; }
+
+/* 3) Taxonomy: fixed row, compact typography, capped height so it never clips */
+.specimen-left:has(.taxonomy-tag) .taxonomy-tag{
+  grid-row: 3;
+  align-self: end;
+  max-height: 32%;                      /* <= tweak to 30–34% if needed */
+  overflow: hidden;
+
+  /* compact card */
+  font-size: 12.5px;
+  line-height: 1.18;
+  padding: 6px 8px;
+  border-width: 1px;
+}
+
+/* 4) Tighter inner grid so long lines wrap cleanly */
+.specimen-left:has(.taxonomy-tag) .taxonomy-grid .row{
+  grid-template-columns: 104px 1fr;     /* label | value */
+  gap: 6px;
+  padding: 2px 0;
+  border-bottom: 1px dashed rgba(109,88,62,.28);
+}
+.specimen-left:has(.taxonomy-tag) .taxonomy-grid .row:last-child{ border-bottom:none; }
+
+.specimen-left:has(.taxonomy-tag) .taxonomy-grid dt{
+  font-size: 12px;
+  letter-spacing: .04em;
+  line-height: 1.12;
+}
+.specimen-left:has(.taxonomy-tag) .taxonomy-grid dd{
+  font-size: 12.5px;
+  line-height: 1.18;
+  word-break: break-word;               /* avoid overflow from long terms */
+  hyphens: auto;
+}
+.specimen-left:has(.taxonomy-tag) .taxonomy-grid dd p{
+  margin: .12rem 0 !important;
+}
+
+/* 5) Safety: hero image can’t steal the taxonomy’s space */
+.specimen-left:has(.taxonomy-tag) .specimen-hero-img{
+  max-height: 100%;
+  object-fit: contain;
+  transform: none;                      /* neutralize any page-specific scaling */
 }
