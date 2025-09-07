@@ -1040,3 +1040,39 @@ body .book-wrap .flipbook .page:not(.hard).odd::before{
 .taxonomy-tag.taxonomy--compact.tax-tight .taxonomy-grid dd p{
   margin: .15rem 0 !important;       /* minimal paragraph spacing */
 }
+
+/* AUTHORS page — clean layout, centered vertically, nudged right & up */
+.authors-page .conteudo{
+  display: grid;                      /* header | art | footer */
+  grid-template-rows: auto 1fr auto;
+  padding-top: 10px;
+  padding-bottom: 24px;
+}
+
+.authors-page .specimen-head{ 
+  margin-bottom: 4px;                 /* tighter header */
+}
+
+.authors-page .specimen-hero{
+  margin: 0;
+  min-height: 0;
+  display: grid;
+  place-items: center end;            /* center vertically, align right */
+}
+
+.authors-page .specimen-hero-img{
+  max-width: min(90%, 540px);
+  max-height: 90%;
+  width: auto; 
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  margin: 0;
+  transform: translate(10%, -7%);     /* → move right 10%, ↑ move up 7% */
+}
+
+/* Small screens: recentre and remove nudge */
+@media (max-width: 900px){
+  .authors-page .specimen-hero{ place-items: center; }
+  .authors-page .specimen-hero-img{ transform: none; max-width: 92%; }
+}
