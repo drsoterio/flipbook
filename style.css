@@ -231,6 +231,13 @@ body::after{
 .placa{ width:76%; margin:0 auto; filter:contrast(1.03); }
 .fig{ display:block; text-align:center; font: 12px/1 "IBM Plex Serif", serif; color:#5a5245; margin-top:6px; }
 
+/* === Tighter page margins (content padding) === */
+.flipbook .page:not(.hard) .conteudo{
+  /* was var(--padY) var(--padX); */
+  padding: 18px 22px;
+}
+
+
 /* ===== Abstract (two-column) ===== */
 .abstract{ text-align:left; }
 .abs-grid{
@@ -261,6 +268,11 @@ body::after{
   font-family:"IBM Plex Serif", serif; font-size:17px; line-height:1.45; color:#2b352b;
 }
 .keys-label{ color:var(--moss); font-weight:600; letter-spacing:.02em; }
+
+/* Abstract right-side image sizing */
+.abs-side-figure{ margin:0; display:flex; align-items:flex-start; justify-content:center; }
+.abs-side-img{ width:100%; max-height:78%; object-fit:contain; }
+
 
 /* Abstract page 2 (left page tweaks) */
 .abstract--inner{ --abs-left-width: 120px; --abs-gap: 10px; --abs-pad-left: 28px; --abs-pad-right: 60px; }
@@ -356,6 +368,117 @@ body::after{
   content:""; position:absolute; left:-.06em; right:-.04em; height:.28em; bottom:-.1em;
   border-bottom: 3px solid var(--rust); border-radius:2px; transform:rotate(-1.2deg);
   background:linear-gradient(0deg, rgba(178,74,59,.12), rgba(178,74,59,.12)) padding-box;
+}
+
+
+/* === Specimen Spread Utilities (safe) === */
+.specimen-spread .conteudo{ display:flex; flex-direction:column; gap:10px; }
+
+.specimen-head{ margin-bottom:2px; z-index:3; }
+.specimen-id{
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.14em;
+  text-transform:uppercase; color:#2e3336; font-size:12px;
+}
+.specimen-title{
+  font-family:"IBM Plex Serif", serif; font-weight:600; font-size:20px;
+  color:#1f1f1f; line-height:1.1; margin-top:2px;
+}
+
+.specimen-hero{
+  margin-top:6px; display:flex; align-items:center; justify-content:center;
+  min-height:50%; flex:1 1 auto;
+}
+.specimen-hero-img{ width:88%; height:auto; object-fit:contain; filter:contrast(1.03); }
+
+/* 'Documented by' pinned to bottom of left page */
+.doc-by{
+  margin-top:auto; padding-top:4px;
+  font-family:"IBM Plex Serif", serif; font-size:14px; color:#292521;
+}
+
+.notes-head{
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase;
+  font-size:14px; color:#1f1f1f; margin:0 0 8px 0;
+}
+.specimen-notes{ max-width: none; padding:8px 14px; margin: 0;}
+.specimen-notes p{
+  font-family:"IBM Plex Serif", serif; font-size:14px; line-height:1.4; color:#292521;
+}
+.specimen-notes p {
+  margin-top: 0.4rem;   /* was ~1rem */
+  margin-bottom: 0.4rem;
+}
+
+/* === Field Notes: smaller, denser, wider === */
+.specimen-notes{
+  /* allow more horizontal room */
+  max-width: none;
+  /* smaller but readable; responsive across screens */
+  font-size: clamp(12.5px, 1.6vw, 13.5px);
+  line-height: 1.36;
+  padding-right: 4px;            /* reclaim a few px from the right */
+}
+.specimen-notes p{
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0.45rem 0;             /* tighter paragraph spacing */
+}
+
+
+/* Contour-only taxonomy to match your dashed rows */
+.taxonomy-tag{
+  position:relative; background:transparent !important;
+  border:3px dashed rgba(109,88,62,.62);
+  border-radius:11px; padding:12px 14px; box-shadow:none !important;
+  transform: rotate(-.35deg);
+}
+.taxonomy-tag::before, .taxonomy-tag::after{ content:none !important; }
+.taxonomy--bottom{ margin-top:auto; align-self:stretch; }
+.taxonomy-grid .row{
+  display:grid; grid-template-columns:150px 1fr; gap:10px;
+  padding:8px 0; border-bottom:2px dashed rgba(109,88,62,.35);
+}
+.taxonomy-grid .row:last-child{ border-bottom:none; }
+.taxonomy-grid dt{
+  font-family:"Oswald", system-ui, sans-serif; letter-spacing:.08em;
+  text-transform:uppercase; color:#323634;
+}
+.taxonomy-grid dd{ margin:0; font-family:"IBM Plex Serif", serif; color:#1f1f1f; }
+
+/* === Taxonomy card: compact mode === */
+.taxonomy-tag{
+  border-width: 2px;             /* was 3px */
+  border-radius: 9px;            /* slightly tighter corners */
+  padding: 8px 10px;             /* was ~12–14px */
+  transform: rotate(-.2deg);     /* subtler tilt to save area */
+}
+
+/* rows: smaller type, tighter grid */
+.taxonomy-grid{
+  font-size: 13px;               /* global size for the card */
+}
+.taxonomy-grid .row{
+  grid-template-columns: 130px 1fr; /* was 150px label column */
+  gap: 8px;                         /* was 10px */
+  padding: 6px 0;                   /* was 8px 0 */
+  border-bottom: 1.5px dashed rgba(109,88,62,.35); /* was 2px */
+}
+.taxonomy-grid .row:last-child{ border-bottom: none; }
+
+/* labels & values */
+.taxonomy-grid dt{
+  font-size: 12px;               /* down from default */
+  letter-spacing: .06em;         /* slightly less spacing to save width */
+}
+.taxonomy-grid dd{
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* bottom placement still fills remaining space but with less air */
+.taxonomy--bottom{
+  margin-top: auto;
+  align-self: stretch;
 }
 
 /* ===== Responsive ===== */
@@ -544,16 +667,18 @@ body::after{
   filter: blur(.35px) contrast(1.02);
 }
 
-/* MOLD — scattered specks of mildew */
-.fx--mold {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 5;
+/* === Global mold overlay for all internal pages (no duplication with .fx--mold) === */
+.flipbook .page:not(.hard)::before{
+  content:"";
+  position:absolute; inset:0; pointer-events:none; z-index:1;
   background: url("mold-specks.png") center/cover no-repeat;
-  mix-blend-mode: multiply;
-  opacity: 0.45;
+  mix-blend-mode:multiply;
+  opacity:.42;
 }
+
+/* If legacy inline overlay <i class="fx fx--mold"> is present, hide it to avoid double-darkening */
+.flipbook .page .fx--mold{ display:none !important; }
+
 
 
 /* REQUIRED: base overlay box */
@@ -566,6 +691,14 @@ body::after{
   pointer-events:none;
   z-index:6;                          /* above paper fiber ::after */
   mix-blend-mode:multiply;
+}
+
+/* === Stabilize Turn.js page box to prevent shrink/slide artifacts === */
+.flipbook .page{
+  width: var(--page-w) !important;
+  height: var(--page-h) !important;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 
@@ -590,3 +723,320 @@ body::after{
 }
 .woodlouse--despawn{ opacity:0; transition:opacity .2s ease; }
 
+/* === Global body text bump (slight, consistent across the flipbook) === */
+:root{
+  --book-body-size: 14px;     /* tweak to 16.5px or 17px if you want a bit more */
+  --book-body-line: 1.4;     /* comfortable leading for the new size */
+}
+
+/* Main body containers */
+.flipbook .page:not(.hard) .specimen-notes,
+.flipbook .page:not(.hard) .intro-body,
+.flipbook .page:not(.hard) .conclusion .intro-body,
+.flipbook .page:not(.hard) .abs-body,
+.flipbook .page:not(.hard) .specimen1-prose,
+.flipbook .page:not(.hard) .taxonomy-grid {        /* affects dd text */
+  font-size: var(--book-body-size) !important;
+  line-height: var(--book-body-line) !important;
+}
+
+/* Ensure inner elements inherit the new size */
+.flipbook .page:not(.hard) .specimen-notes p,
+.flipbook .page:not(.hard) .intro-body p,
+.flipbook .page:not(.hard) .conclusion .intro-body p,
+.flipbook .page:not(.hard) .abs-body p,
+.flipbook .page:not(.hard) .specimen1-prose p,
+.flipbook .page:not(.hard) .intro-list li,
+.flipbook .page:not(.hard) .taxonomy-grid dd {
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+/* Optional: keep “Keywords” line visually aligned with the new size */
+.flipbook .page:not(.hard) .abs-keys{
+  font-size: var(--book-body-size) !important;
+  line-height: var(--book-body-line) !important;
+}
+
+
+/* ===== SPINE-ONLY (tiny) — final, minimal, working ===== */
+
+/* 1) Keep mold on ::before (no side stripes anywhere) */
+body .book-wrap .flipbook .page:not(.hard)::before{
+  content:"";
+  position:absolute; inset:0;
+  z-index:1; pointer-events:none; mix-blend-mode:multiply;
+  background: url("mold-specks.png") center/cover no-repeat !important;
+  left:auto !important; right:auto !important; width:auto !important;
+}
+
+/* 2) Base paper fiber on ::after (no gutters by default) */
+body .book-wrap .flipbook .page:not(.hard)::after{
+  content:"";
+  position:absolute; inset:0;
+  z-index:2; pointer-events:none; mix-blend-mode:multiply;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.02)),
+    url("paper-fiber.png") !important;
+  background-size: cover, cover !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-position: center, center !important;
+}
+
+/* 3) LEFT page (even) → draw a tiny spine shadow on its RIGHT edge only */
+body .book-wrap .flipbook .page:not(.hard).even::after{
+  background:
+    /* 1px hairline right at the spine */
+    linear-gradient(to left, rgba(0,0,0,.18), rgba(0,0,0,0) 100%) right center / 1px 100% no-repeat,
+    /* soft 4px fade inside the spine */
+    linear-gradient(to left, rgba(0,0,0,.10), rgba(0,0,0,0) 60%) right center / 4px 100% no-repeat,
+    /* keep the base fiber layers */
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.02)),
+    url("paper-fiber.png") !important;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat !important;
+  background-size: 1px 100%, 4px 100%, cover, cover !important;
+  background-position: right center, right center, center, center !important;
+}
+
+/* 4) RIGHT page (odd) → ensure ZERO inner shadow (fiber only) */
+body .book-wrap .flipbook .page:not(.hard).odd::after{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.02)),
+    url("paper-fiber.png") !important;
+}
+
+/* 5) Guard: if any earlier rules put a side shadow on ::before for even/odd, neutralize them */
+body .book-wrap .flipbook .page:not(.hard).even::before,
+body .book-wrap .flipbook .page:not(.hard).odd::before{
+  left:auto !important; right:auto !important; width:auto !important;
+  background: url("mold-specks.png") center/cover no-repeat !important;
+}
+
+/* Bigger left-page hero (still contained above the footer row) */
+.specimen-left{
+  display: grid;
+  grid-template-rows: auto minmax(0,1fr) auto;  /* title | hero | footer */
+}
+
+.specimen-left .specimen-hero{
+  min-height: 0;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* Make the image larger */
+.specimen-left .specimen-hero-img{
+  width: 90%;          /* try 98–100% for desired size */
+  max-height: 100%;    /* stays within the middle row */
+  object-fit: contain;
+}
+
+/* === Taxonomy table: 14px titles + tighter spacing === */
+.taxonomy-grid{
+  font-size: 14px;          /* base for values */
+  line-height: 1.28;        /* tighter line spacing */
+}
+
+.taxonomy-grid dt{
+  font-size: 14px !important;      /* titles at 14px */
+  letter-spacing: .06em;           /* slightly reduced tracking */
+  line-height: 1.25;               /* compact label lines */
+}
+
+.taxonomy-grid dd{
+  font-size: 14px;                 /* match titles */
+  line-height: 1.28;               /* compact value lines */
+}
+
+/* tighten paragraph spacing inside values */
+.taxonomy-grid dd p{
+  margin: 0.25rem 0 !important;    /* less space between paragraphs */
+}
+
+/* reduce vertical padding per row */
+.taxonomy-grid .row{
+  padding: 4px 0;                  /* was 6–8px */
+  gap: 8px;                        /* keep columns readable */
+}
+
+/* keep last row clean */
+.taxonomy-grid .row:last-child{ border-bottom: none; }
+
+
+/* === Mini taxonomy card for intro/abstract bullets === */
+.taxonomy--mini{
+  border: 2px dashed rgba(109,88,62,.62);
+  border-radius: 9px;
+  padding: 8px 10px;
+  transform: rotate(-.2deg);
+  background: transparent;
+  margin-top: .6rem;
+}
+
+.taxonomy-mini{
+  /* compact type */
+  font-size: 13px;
+  line-height: 1.28;
+  /* make the items flow into two columns on large pages */
+  column-count: 2;
+  column-gap: 14px;
+}
+
+.taxonomy-mini .row{
+  break-inside: avoid;
+  display: grid;
+  grid-template-columns: 20px 1fr; /* icon | text */
+  align-items: start;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.taxonomy-mini .label{
+  display: inline-block;
+  font-family:"Oswald", system-ui, sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size: 13px;
+  color:#323634;
+}
+
+.taxonomy-mini .desc{
+  display:block;
+  font-family:"IBM Plex Serif", serif;
+  color:#292521;
+}
+
+.taxonomy-mini .ico{
+  width:16px; height:16px;
+  stroke:#323634; stroke-width:1.6;
+  fill:none;
+}
+
+/* Stack to one column on small screens */
+@media (max-width:900px){
+  .taxonomy-mini{ column-count: 1; }
+}
+
+
+
+/* ENABLE HTML mold overlay (above the paper fiber) */
+.flipbook .page .fx--mold{
+  display:block !important;
+  position:absolute; inset:0;
+  background: url("mold-specks.png") center/cover no-repeat;
+  mix-blend-mode:multiply;
+  opacity:.42;            /* tweak .35–.55 if needed */
+  z-index:7;              /* above ::after fiber (z=2) */
+  pointer-events:none;
+}
+
+/* (optional) avoid double-darkening if you keep using the HTML overlay */
+.flipbook .page:not(.hard)::before{ content:none !important; }
+
+/* Center the image on the abstract page's right column */
+.abs-side-figure{
+  align-self: center;      /* vertical centering in the grid cell */
+  justify-self: center;    /* horizontal centering in the grid cell */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.abs-side-img{
+  margin: 0 auto;          /* safety: keeps it centered if width < 100% */
+  max-height: 78%;
+}
+
+/* shift abstract image left so it isn't cropped */
+.abs-side-figure{
+  display:flex;
+  justify-content:flex-start;   /* anchor to the left of its column */
+  overflow:visible;             /* allow overhang after rotation */
+}
+
+.abs-side-img.abs-rot{
+  width:auto;
+  height:100%;
+  transform-origin:center;
+  transform: translateX(-10%) rotate(-30deg) scale(1.4); /* tweak -10% / 1.2 */
+}
+
+.specimen-notes .abs-bullets{
+  list-style: disc;
+  font-family: "IBM Plex Serif", serif;
+  font-size: 14px;
+  margin: .45rem 0 0 1.2rem;
+  padding-left: .2rem;
+}
+.specimen-notes .abs-bullets li{ margin: .3rem 0; }
+.specimen-notes .abs-bullets .label{
+  font-family: "Oswald", system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 14px;
+  color:#1f1f1f;
+}
+
+/* Intro: leave room on the right and drop art there */
+.intro-notes{ position:relative; }
+
+/* reserve a wider right column for the image */
+.intro-notes .narrow-right{
+  margin-right: clamp(220px, 40%, 300px);   /* was 180px,34%,260px */
+}
+
+/* image uses the same width as the reserved slot */
+.intro-notes .intro-art{
+  position:absolute;
+  right:14px;              /* was 18px, nudge a bit tighter to edge */
+  bottom:16px;
+  width: clamp(220px, 40%, 300px);  /* match the margin-right above */
+  max-height:52%;          /* optional: a touch taller */
+  object-fit:contain;
+  z-index:2;
+  pointer-events:none;
+}
+
+@media (max-width:900px){
+  .intro-notes .narrow-right{ margin-right:0; }
+  .intro-notes .intro-art{ position:static; width:60%; max-height:none; margin:.6rem auto 0; }
+}
+
+
+/* ==== Ultra-compact taxonomy (near single-line spacing) ==== */
+.taxonomy-tag.taxonomy--compact.tax-tight{
+  /* small global shrink; adjust if needed */
+  transform: scale(.95) rotate(-.1deg);
+  transform-origin: left bottom;
+  border-width: 1px !important;
+  border-radius: 7px !important;
+  padding: 6px 8px !important;
+}
+
+.taxonomy-tag.taxonomy--compact.tax-tight .taxonomy-grid{
+  font-size: 13px !important;      /* values */
+  line-height: 1.05 !important;       /* ~single-line */
+}
+
+.taxonomy-tag.taxonomy--compact.tax-tight .taxonomy-grid .row{
+  grid-template-columns: 100px 1fr !important;  /* narrower label col */
+  gap: 6px !important;
+  padding: 2px 0 !important;                    /* very tight rows */
+  border-bottom: 1px dashed rgba(109,88,62,.28) !important;
+}
+.taxonomy-tag.taxonomy--compact.tax-tight .taxonomy-grid .row:last-child{
+  border-bottom: none !important;
+}
+
+.taxonomy-tag.taxonomy--compact.tax-tight .taxonomy-grid dt{
+  font-size: 13px !important;
+  letter-spacing: .04em !important;
+  line-height: 1.05 !important;
+}
+
+.taxonomy-tag.taxonomy--compact.tax-tight .taxonomy-grid dd{
+  font-size: 13px !important;
+  line-height: 1.05 !important;
+}
+.taxonomy-tag.taxonomy--compact.tax-tight .taxonomy-grid dd p{
+  margin: .15rem 0 !important;       /* minimal paragraph spacing */
+}

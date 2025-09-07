@@ -1,211 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="woodlouse.css">
   <meta charset="UTF-8" />
+  <title>Digital Ecologies</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- CSS (keep your files as-is) -->
+  <link rel="stylesheet" href="woodlouse.css">
   <link rel="stylesheet" href="style.css"/>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet"/>
-  <title>Digital Ecologies</title>
 </head>
 <body>
   <div class="book-wrap">
     <div class="flipbook">
+
       <!-- FRONT COVER (art PNG fills the page) -->
       <div class="hard front-cover">
         <div class="cover-inner" aria-label="Cover">
           <div class="cover-stamp" aria-hidden="true"></div>
-          <h1 class="cover-title">DIGITAL ECOLOGIES OF HOPE</h1>
+          <!--<h1 class="cover-title">DIGITAL ECOLOGIES OF HOPE</h1>
           <p class="cover-sub">A Natural History of Emerging Media Futures</p>
-          <p class="cover-editor">By __________</p>
+          <p class="cover-editor">By __________</p>-->
         </div>
       </div>
 
       <!-- INSIDE FRONT HARD -->
       <div class="hard inner-front"></div>
 
-      <!-- ABSTRACT — PAGE 1 -->
+      <!-- ABSTRACT (one page; left text ~62%, right image) -->
       <div class="parchment">
-        <div class="conteudo abstract">
-          <div>
-            <section class="abs-text">
-              <h2 class="abs-title">ABSTRACT</h2>
-              <p class="abs-body">
-                This project presents a collaborative field guide documenting “digital ecologies of hope”: instances
-                where media technologies become instruments of collective imagination, care, and becoming across diverse
-                global contexts. Using the aesthetic and organizational principles of naturalist field guides, fourteen
-                researchers contribute “specimens” from their work, ranging from Sudanese youth maintaining educational
-                networks amid civil war to transgender youth documenting voice transitions as acts of collective
-                becoming. Each specimen follows field guide conventions (i.e., classification, habitat, conservation
-                status, field notes, and visual documentation), treating hopeful practices as living systems worthy of
-                documentation and preservation.
-              </p>
-            </section>
-          </div>
-          <div class="margem" aria-hidden="true">field notes → abstract</div>
+        <div class="conteudo specimen-right">
+          <header class="specimen-head">
+            <h2 class="abs-title">ABSTRACT</h2>
+          </header>
+
+          <section class="specimen-notes" style="max-width:none;">
+            <div class="abs-two-col" style="display:grid; grid-template-columns:62% 38%; gap:12px; align-items:start;">
+              <!-- LEFT: text -->
+              <div class="abs-left">
+                <p>
+                  This project presents a collaborative field guide documenting “digital ecologies of hope”: instances
+                  where media technologies become instruments of collective imagination, care, and becoming across diverse
+                  global contexts. Using the aesthetic and organizational principles of naturalist field guides, fourteen
+                  researchers contribute “specimens” from their work, ranging from Sudanese youth maintaining educational
+                  networks amid civil war to transgender youth documenting voice transitions as acts of collective becoming.
+                  Each specimen follows field guide conventions (i.e., classification, habitat, conservation status, field
+                  notes, and visual documentation), treating hopeful practices as living systems worthy of documentation and
+                  preservation.
+                </p>
+                <p>
+                  Ultimately, by attending to what we call “felt futures”—the emotionally charged visions of possibility that
+                  animate research—we seek to demonstrate how research itself can become utopian practice through
+                  collaborative authorship and multimodal representation.
+                </p>
+                <p class="abs-keys" style="margin-top:.6rem;">
+                  <span class="keys-label">Keywords:</span>
+                  digital hope, digital resilience, networked care, youth digital practices, critical fabulations, field guide
+                </p>
+                <i class="fx fx--mold" aria-hidden="true"></i>
+              </div>
+
+              <!-- RIGHT: image -->
+               
+                <!--<figure class="abs-side-figure">
+                  <img src="abstract.png" alt="Abstract illustration"
+                      class="abs-side-img placa abs-rot" />
+                </figure> -->
+            </div>
+          </section>
         </div>
-        <i class="fx fx--oily"></i>
-        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>        
+        <div class="margem" aria-hidden="true">field notes → abstract</div>
+        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
       </div>
 
-      <!-- ABSTRACT — PAGE 2 -->
+      <!-- INTRODUCTION (text-only, styled like specimen right page; title uses Abstract font) -->
       <div class="parchment">
-        <div class="conteudo abstract abstract--inner">
-          <div class="abs-grid abs-grid--left-page">
-            <div class="abs-art abs-art--ghost" aria-hidden="true"></div>
-            <section class="abs-text">
-              <p class="abs-body">
-                Each specimen follows field guide conventions (i.e., classification, habitat, conservation status, field
-                notes, and visual documentation), treating hopeful practices as living systems worthy of documentation
-                and preservation. Ultimately, by attending to what we call “felt futures”—the emotionally charged
-                visions of possibility that animate research—we seek to demonstrate how research itself can become
-                utopian practice through collaborative authorship and multimodal representation.
-              </p>
-              <br />
-              <p class="abs-keys">
-                <span class="keys-label">Keywords:</span>
-                digital hope, digital resilience, networked care, youth digital practices, critical fabulations, field
-                guide
-              </p>
-            </section>
-          </div>
-        </div>
-        <i class="fx fx--oily"></i>
-      </div>
-
-      <!-- INTRODUCTION (FIXED: removed page-stamp from container; added child stamp) -->
-      <div class="parchment">
-        <div class="conteudo intro">
-          <small class="subtitulo">introduction</small><br />
-          <small class="mono">This is a placeholder for intro text...</small>
+        <div class="conteudo specimen-right">
+          <header class="specimen-head">
+            <h2 class="abs-title">INTRODUCTION</h2>
+          </header>
+          <section class="specimen-notes">
+            <p>Media studies finds itself responding to an accelerating cascade of technological crises—from surveillance capitalism and algorithmic bias <br/>to disinformation and democratic erosion—that understandably focuses scholarly attention on how digital systems amplify harm and concentrate power (Arora, 2024; Sebastián-Martín, 2024; Srnicek, 2017; Zuboff, 2019). In such moments, critical frameworks become essential tools for understanding these urgent threats. Yet this necessary hermeneutics of suspicion can obscure other dynamics within the same systems. Alongside exploitation and control, we continue to witness emergent practices of care, imagination, and collective becoming—practices that offer crucial insight into how people navigate technological constraints while opening up possibilities for different futures.</p>
+            <p>Building on Rosner’s (2018) formulation of critical fabulations, this project attends to these hopeful practices without abandoning critique. By fabulation, we do not mean fabrication. Rather, following Rosner, we use the term to describe methods of reinterpreting and representing real-world practices in ways that surface alternative meanings, suppressed histories, and collective aspirations. Rosner writes of “telling stories that awaken alternative histories” and “shift according to the aspirations of those who absorb them” (p. 119). In extending Hartman’s (2008) concept of “writing against the archive,” she positions fabulation as a strategy of collective meaning-making that surfaces possibilities suppressed by dominant techno-narratives.</p>
+          </section>
         </div>
         <div class="margem" aria-hidden="true">field notes → introduction</div>
-        <!-- optional stamp as a CHILD, not on the page element -->
         <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
+        <i class="fx fx--mold" aria-hidden="true"></i>
       </div>
 
-      <!-- SPECIMEN 1 — PAGE 1 (figure/hero) -->
+      <!-- INTRODUCTION (text-only, styled like specimen right page; title uses Abstract font) -->
+        <div class="parchment">
+          <div class="conteudo specimen-right">
+            <header class="specimen-head">
+              <!-- <h2 class="abs-title">INTRODUCTION</h2> -->
+            </header>
+
+            <!-- add reserved right column for art -->
+            <section class="specimen-notes intro-notes">
+              <p>Drawing inspiration from naturalist field guides—which serve as "invitation[s] not just to look, but to discover" (Rajendra-Nicolucci & Zuckerman, 2021, p. 7)—our field guide enacts this strategy by weaving together rigorous observation, creative representation, and multimodal storytelling in ways that privilege care and imagination over academic convention. We do so by mapping these critical fabulations in an intentionally accessible, visual artifact, allowing them to take up their space in—and bridging the gap between—public and academic conversations around media. Our field guide also rises up to a critical challenge in contemporary utopias where, rather than only creating fictional maps of the future, there is a pressing need of producing “adequate maps of the present which permit images of a connected but transformed future” (Levitas, 1993, p. 257). </p>
+
+              <!-- only this paragraph is narrowed to leave room for the image -->
+              <p class="narrow-right">Developed collaboratively within [anonymized lab name]—an international research collective exploring global intersections of media and social justice—this project brings together 14 researchers working across diverse cultural and methodological contexts. Each researcher contributes “specimens” from their work, representing instances where media practices foster agency, resilience, and collective imagination amid intersecting technological, social, political, and economic constraints.</p>
+
+              <!-- image anchored to bottom-right of the section -->
+              <img src="intro.png" alt="Introduction illustration" class="intro-art placa">
+            </section>
+          </div>
+
+          <div class="margem" aria-hidden="true">field notes → introduction</div>
+          <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
+          <i class="fx fx--mold" aria-hidden="true"></i>
+        </div>
+
+
+     <!-- INTRODUCTION (text-only, styled like specimen right page; title uses Abstract font) -->
+<div class="parchment">
+  <div class="conteudo specimen-right">
+    <header class="specimen-head">
+      <!-- <h2 class="abs-title">INTRODUCTION</h2> -->
+    </header>
+
+    <section class="specimen-notes">
+      <p>Reflecting our own backgrounds and sites of inquiry, these specimens span diverse contexts: Sudanese youth using social media to maintain educational communities amid civil war; Afro-Brazilian students finding identity affirmation through Instagram; transgender youth documenting voice transitions as acts of collective becoming; among others.</p>
+
+      <p>The field guide format afforded us to carefully strike a fine balance between presenting difference and commonality—through identifying, classifying, and juxtaposing these diverse practices. With each entry authentically depicted and annotated with field notes, we embrace the nuances in each context. At the same time, we heed Fenton’s (2008, p. 245) advice of not showcasing hope as “disparate acts of resistance" and rather find a “binding solidarity” that is required to challenge the social and economic injustices on a global scale. We bind these practices and contexts in our field guide, offering a contemporary account on how utopia is collectively realized “into practical political realities” (Fenton, 2008, p. 244).</p>
+
+      <p>Each specimen is documented using field guide conventions, including:</p>
+      <br/>
+
+      <!-- Compact taxonomy card (ultra-tight) -->
+      <section class="taxonomy-tag taxonomy--bottom taxonomy--compact tax-tight">
+        <dl class="taxonomy-grid">
+          <div class="row">
+            <dt>Classification</dt>
+            <dd>Connecting the practice to broader taxonomies of digital hope</dd>
+          </div>
+          <div class="row">
+            <dt>Habitat</dt>
+            <dd>Mapping the sociotechnical conditions enabling its emergence</dd>
+          </div>
+          <div class="row">
+            <dt>Conservation Status</dt>
+            <dd>Assessing resilience against algorithmic and political threats</dd>
+          </div>
+          <div class="row">
+            <dt>Field Notes</dt>
+            <dd>Offering situated, qualitative observations from researchers</dd>
+          </div>
+          <div class="row">
+            <dt>Visual Documentation</dt>
+            <dd>Providing visual cohesion and ethical anonymization through hand-drawn illustrations</dd>
+          </div>
+        </dl>
+      </section>
+    </section>
+  </div>
+  <div class="margem" aria-hidden="true">field notes → introduction</div>
+  <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
+  <i class="fx fx--mold" aria-hidden="true"></i>
+</div>
+
+
+<!-- INTRODUCTION (text-only, styled like specimen right page; title uses Abstract font) -->
       <div class="parchment">
-        <div class="conteudo specimen1-page">
-          <figure class="specimen1-figure">
-            <img id="specimen1-hero" src="transparent-aspirational self-imaging.png"
-                 alt="Specimen 1: Aspirational AI Self-Imaging" class="specimen1-figure-img placa" />
+        <div class="conteudo specimen-right">
+          <header class="specimen-head">
+            <!--<h2 class="abs-title">INTRODUCTION</h2>-->
+          </header>
+          <section class="specimen-notes">
+              <p>As we have argued elsewhere, “doing research is not only a process of inquiry, data collection and analysis, but also an imaginative act that in itself is civic and political” (Authors, forthcoming). We are driven by a belief that researchers must attend to the affective and imaginative orientations embedded in scholarly work—what we term "felt futures," the emotionally charged visions of possibility that animate research. Our field guide project embodies this understanding, treating the documentation of hopeful practices as itself a practice of imagination oriented toward different technological futures. In other words, echoing Benjamin's (2024) charge to dismantle dominant imaginaries and cultivate forms of imagination rooted in solidarity, we are treating hope not merely as an object of study but as a sustainable and equitable way of conducting research itself.</p>
+              <p>Significantly, our approach also responds to what Arora (2024) identifies as the Western-centrism of techno-pessimism. Drawing on extensive fieldwork across the Global South, she notes that “pessimism is a privilege for those who can afford to live in despair. The rest of the world has little choice but to be optimistic as their future depends on it” (p. 15). Her critique underscores how dominant academic frameworks often marginalize the innovative and resilient ways in which people use technology to sustain community, create opportunity, and build change under precarious conditions perpetuated by systemic inequities. Keenly attuned to this critique, our specimens deliberately center perspectives often marginalized in dominant media studies discourse, particularly from the Global South and diasporic communities. </p>
+            </section>
+        </div>
+        <div class="margem" aria-hidden="true">field notes → introduction</div>
+        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
+        <i class="fx fx--mold" aria-hidden="true"></i>
+      </div>
+
+<!-- INTRODUCTION (text-only, styled like specimen right page; title uses Abstract font) -->
+      <div class="parchment">
+        <div class="conteudo specimen-right">
+          <header class="specimen-head">
+            <!--<h2 class="abs-title">INTRODUCTION</h2>-->
+          </header>
+          <section class="specimen-notes">
+            <p>Rather than defaulting to Western platforms or narratives, the practices we document span a range of sociotechnical environments—from conflict zones and diasporic classrooms to transnational activist networks—revealing how digital hope emerges within, and perhaps because of, conditions of constraint, not outside or in the absence of them.</p>
+            <p>Finally, this project embraces a collaborative model of knowledge production (Literat et al., 2017). Developing this project collaboratively, our approach mirrors the very practices we document: networks of care, collective meaning-making, and distributed agency. Just as our specimens reveal how digital media enables new forms of collective becoming, our authorship model exemplifies how academic knowledge production might "become otherwise" through more collaborative, inclusive, and equitable structures.</p>
+          </section>
+        </div>
+        <div class="margem" aria-hidden="true">field notes → introduction</div>
+        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
+        <i class="fx fx--mold" aria-hidden="true"></i>
+      </div>
+<!-- INTRODUCTION image -->
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-left">
+          
+          <figure class="specimen-hero">
+            <img id="introduction art" src="intro-art.png"
+                 alt="Specimen 1: Aspirational AI Self-Imaging" class="specimen-hero-img placa" />
           </figure>
         </div>
-        <i class="fx fx--mold"></i>
+        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
+        <i class="fx fx--mold" aria-hidden="true"></i>
       </div>
 
-      <!-- SPECIMEN 1 — PAGE 2 (meta + facts) -->
-      <div class="parchment">
-        <div class="conteudo specimen1-page">
-          <div class="margem" aria-hidden="true">field notes → specimen #1</div>
-          <header class="specimen1-meta">
+      <!-- =============== SPECIMEN 1 — Aspirational AI Self-Imaging (STRICT SPREAD) =============== -->
+      <!-- LEFT PAGE -->
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-left">
+          <header class="specimen-head">
             <div class="specimen-id">SPECIMEN #1</div>
-            <div class="specimen-title-line">Aspirational AI Self-Imaging</div>
+            <h2 class="specimen-title">Aspirational AI Self-Imaging</h2>
           </header>
-          <br />
-          <dl class="specimen1-facts taped" role="list">
-            <div class="row"><dt>Classification</dt><dd>Techno-Social Ritual; Future Self Visualization</dd></div>
-            <div class="row"><dt>Habitat</dt><dd>Thrives in youth-focused social media spaces. Particularly abundant in TikTok.</dd></div>
-            <div class="row"><dt>Conservation Status</dt><dd>Currently flourishing, though sensitive to algorithmic climate changes.</dd></div>
-          </dl>
-          <br />
-          <section class="specimen1-prose">
-            <h4 class="specimen1-desc-head">Field Notes</h4>
-            <p>She stands in the harsh fluorescence of a <span class="marker-underline">bathroom</span>, phone raised, purple hoodie, uncertain pose.</p>
-          </section>
+          <figure class="specimen-hero">
+            <img id="specimen1-hero" src="specimen1.png"
+                 alt="Specimen 1: Aspirational AI Self-Imaging" class="specimen-hero-img placa" />
+          </figure>
+          <p class="doc-by"><span class="notes-head">Documented by:</span> [Anonymized]</p>
         </div>
         <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
-        <i class="fx fx--mold"></i>
+        <i class="fx fx--mold" aria-hidden="true"></i>
       </div>
 
-      <!-- SPECIMEN 1 — PAGE 3 -->
-      <div class="parchment">
-        <div class="conteudo specimen1-page">
-          <section class="specimen1-prose">
-            <p>What catches my attention isn’t the mirror selfie, but what she does next: using <span class="marker-circle">Remini</span> to cast herself forward in time…</p>
-            <p>In this quiet digital ritual, I recognize something raw and honest…</p>
+      <!-- RIGHT PAGE -->
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-right">
+          <section class="specimen-notes">
+            <h3 class="notes-head">Field Notes</h3>
+            <p>She stands in the harsh fluorescence of a <span class="marker-underline">bathroom</span>, phone raised, purple hoodie, uncertain pose. What catches my attention isn’t the mirror selfie, but what she does next: using <span class="marker-circle">Remini</span> to cast herself forward in time…</p>
+            <p>In this quiet digital ritual, I recognize something raw and honest… In an era often dark with technological dystopias, these emergent practices suggest a different path…</p>
           </section>
-        </div>
-        <i class="fx fx--oily"></i>
-      </div>
 
-      <!-- SPECIMEN 1 — PAGE 4 -->
-      <div class="parchment">
-        <div class="conteudo specimen1-page">
-          <div class="margem" aria-hidden="true">field notes → specimen #1</div>
-          <section class="specimen1-prose">
-            <p>In an era often dark with technological dystopias, these emergent practices suggest a different path…</p>
-            <p class="specimen1-credit"><br/><span class="specimen1-desc-head">Documented by:</span> [Anonymized]</p>
-          </section>
-        </div>
-      </div>
-
-
-      <!-- SPECIMEN 2 — PAGE 1 (figure/hero) -->
-        <div class="parchment">
-          <div class="conteudo specimen1-page">
-            <figure class="specimen1-figure">
-              <img id="specimen2-hero" src="closed_fist_cropped.png"
-                   alt="Specimen 2: Closed Fist" class="specimen2-figure-img placa" />
-            </figure>
-            <div class="margem" aria-hidden="true">field notes → specimen #2</div>
-            <header class="specimen1-meta">
-              <div class="specimen-id">SPECIMEN #2</div>
-              <div class="specimen-title-line">Closed Fist</div>
-            </header>
-            <br />
-            <dl class="specimen1-facts taped" role="list">
-              <div class="row"><dt>Classification</dt><dd>Resistance Ecologies; Youth Freedom Archives; Collective;Imagination Networks</dd></div>
-              <div class="row"><dt>Habitat</dt><dd>Observed primarily in digital clearings created by youth activists. Specimens often migrate to archival territories. Commonly sighted in bilingual formations, indicating caring environmental adaptations.</dd></div>
-              <div class="row"><dt>Conservation Status</dt><dd>Still fragile, reliant on local support, yet exhibiting potential for impactful spread.</dd></div>
+          <!-- Taxonomy (contour-only) -->
+          <section class="taxonomy-tag taxonomy--bottom">
+            <dl class="taxonomy-grid">
+              <div class="row"><dt>Classification</dt><dd>Techno-Social Ritual; Future Self Visualization</dd></div>
+              <div class="row"><dt>Habitat</dt><dd>Thrives in youth-focused social media spaces; abundant in TikTok</dd></div>
+              <div class="row"><dt>Conservation Status</dt><dd>Flourishing; sensitive to algorithmic climate changes</dd></div>
             </dl>
-            <br />
-          </div>
-          <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
-          <i class="fx fx--mold"></i>
-        </div>
-
-      <!-- SPECIMEN 2 — PAGE 3 -->
-      <div class="parchment">
-        <div class="conteudo specimen1-page">
-          <section class="specimen1-prose">
-            <h4 class="specimen1-desc-head">Field Notes</h4>
-            <p>Four youth activists appear on a live Zoom session, each speaking with urgency. These aren’t just voices echoing statistics or academic findings about police presence in schools; they are the voices of those directly impacted by the policies they’re challenging. In this teach-in, their stories aren’t only heard—they are felt.</p>
-            <p>Their presentation is supported by bilingual slides, with each bullet point in both English and Spanish. This choice is intentional, reflecting their awareness of who is most affected by these issues. A reminder that we keep us safe.</p>
-            <p>As I continue to listen and watch, it becomes clear that this digital space is more than a forum for advocacy—it’s a space for “freedom dreaming.” These students aren’t just calling for the removal of police from schools; they’re envisioning a future where mutual care replaces fear and control. This virtual setting invites us to imagine a world where we are responsible for each other’s well-being, and where education fosters growth, not surveillance. In a world often shaped by fear-based ideologies, these youth remind us that digital spaces don’t have to replicate that fear—they can become sites of radical hope, where we dream together about the future our children deserve.</p>
-            <p>The students' message extends beyond the live broadcast: later archived on social media, it serves as a touchstone for others to revisit, reflect on, and share as they continue organizing. Beyond immediate organizing, digital spaces thus become archives of collective memory, preserving and amplifying the voices leading the charge for a better future.</p>  
           </section>
+
+          <div class="margem" aria-hidden="true">field notes → specimen #1</div>
+          <i class="fx fx--mold" aria-hidden="true"></i>
         </div>
-        <i class="fx fx--oily"></i>
       </div>
 
-      <!-- SPECIMEN 2 — PAGE 4 -->
-      <div class="parchment">
-        <div class="conteudo specimen1-page">
+      <!-- =============== SPECIMEN 2 — Closed Fist (STRICT SPREAD) =============== -->
+      <!-- LEFT PAGE -->
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-left">
+          <header class="specimen-head">
+            <div class="specimen-id">SPECIMEN #2</div>
+            <h2 class="specimen-title">Closed Fist</h2>
+          </header>
+          <figure class="specimen-hero">
+            <img id="specimen2-hero" src="closed_fist_cropped.png"
+                 alt="Specimen 2: Closed Fist" class="specimen-hero-img placa" />
+          </figure>
+          <p class="doc-by"><span class="notes-head">Documented by:</span> [Anonymized]</p>
+        </div>
+        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
+                  <i class="fx fx--mold" aria-hidden="true"></i>
+      </div>
+
+      <!-- RIGHT PAGE -->
+      <div class="parchment specimen-spread">
+        <div class="conteudo specimen-right">
+          <section class="specimen-notes">
+            <h3 class="notes-head">Field Notes</h3>
+            <p>Four youth activists appear on a live Zoom session, each speaking with urgency… bilingual slides… “we keep us safe.”</p>
+            <p>Digital space as “freedom dreaming” and archive of collective memory…</p>
+          </section>
+
+          <!-- Taxonomy (contour-only) -->
+          <section class="taxonomy-tag taxonomy--bottom">
+            <dl class="taxonomy-grid">
+              <div class="row"><dt>Classification</dt><dd>Resistance Ecologies; Youth Freedom Archives; Collective Imagination Networks</dd></div>
+              <div class="row"><dt>Habitat</dt><dd>Digital clearings created by youth activists; archived on social media</dd></div>
+              <div class="row"><dt>Conservation Status</dt><dd>Fragile; reliant on local support; potential for impactful spread</dd></div>
+            </dl>
+          </section>
+
           <div class="margem" aria-hidden="true">field notes → specimen #2</div>
-          <section class="specimen1-prose">
-            <p>In an era often dark with technological dystopias, these emergent practices suggest a different path…</p>
-            <p class="specimen1-credit"><br/><span class="specimen1-desc-head">Documented by:</span> [Anonymized]</p>
-          </section>
         </div>
+                  <i class="fx fx--mold" aria-hidden="true"></i>
+
       </div>
 
+      <!-- OTHER PAGES / PLACEHOLDERS (optional) -->
+      <div class="parchment">
+        <div class="conteudo"><img src="img-1.png" alt="Specimen 2 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div>
+      </div>
+      <div class="parchment">
+        <div class="conteudo"><img src="img-2.png" alt="Specimen 3 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div>
+        <div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div>
+      </div>
+      <div class="parchment">
+        <div class="conteudo"><img src="img-3.png" alt="Specimen 4 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div>
+      </div>
+      <div class="parchment">
+        <div class="conteudo"><img src="img-4.png" alt="Specimen 5 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div>
+      </div>
 
-      <!-- OTHER PAGES / PLACEHOLDERS -->
-      <div class="parchment"><div class="conteudo"><img src="img-1.png" alt="Specimen 2 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-      <div class="parchment"><div class="conteudo"><img src="img-2.png" alt="Specimen 3 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div><div class="page-stamp" aria-hidden="true">LOT 1000 • 2025</div></div>
-      <div class="parchment"><div class="conteudo"><img src="img-3.png" alt="Specimen 4 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-      <div class="parchment"><div class="conteudo"><img src="img-4.png" alt="Specimen 5 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-      <div class="parchment"><div class="conteudo"><img src="img-5.png" alt="Specimen 6 (placeholder)" class="placa" /><small class="fig">(specimen sketch)</small></div></div>
-
-      <!-- BACK COVERS -->
+      <!-- BACK COVERS — MUST BE THE FINAL TWO ELEMENTS -->
       <div class="hard inner-back"></div>
       <div class="hard back-cover"><div class="cover-inner"><p class="cover-sub"></p></div></div>
-    </div>
-  </div>
+
+    </div> <!-- /.flipbook -->
+  </div>   <!-- /.book-wrap -->
 
   <!-- JS -->
   <script src="jquery.js"></script>
