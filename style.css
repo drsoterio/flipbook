@@ -453,7 +453,7 @@ body::after{
   transform: rotate(-.35deg);
 }
 .taxonomy-tag::before, .taxonomy-tag::after{ content:none !important; }
-.taxonomy--bottom{ margin-top:auto; align-self:stretch; }
+.taxonomy--bottom{ align-self:stretch; }
 .taxonomy-grid .row{
   display:grid; grid-template-columns:150px 1fr; gap:10px;
   padding:8px 0; border-bottom:2px dashed rgba(109,88,62,.35);
@@ -838,7 +838,7 @@ body .book-wrap .flipbook .page:not(.hard).odd::before{
 /* Bigger left-page hero (still contained above the footer row) */
 .specimen-left{
   display: grid;
-  grid-template-rows: auto minmax(0,1fr) auto;  /* title | hero | footer */
+  grid-template-rows: 10% 55% auto;  /* title | hero | footer */
 }
 
 .specimen-left .specimen-hero{
@@ -948,7 +948,7 @@ body .book-wrap .flipbook .page:not(.hard).odd::before{
 
   font-size: var(--tax-fs);
   line-height: 1.18;
-  max-height: 36%;                        /* cap height lower */
+  /* max-height: 36%;                        cap height lower */
   overflow: hidden;
   padding: 5px 7px;                       /* tighter card padding */
 }
@@ -1148,7 +1148,7 @@ body .book-wrap .flipbook .page:not(.hard).odd::before{
 /* 1) Left page becomes a 4-row grid ONLY when a taxonomy is present */
 .specimen-left:has(.taxonomy-tag){
   display: grid !important;                     /* override the flex utility */
-  grid-template-rows: auto minmax(0,1fr) auto auto;  /* head | hero | taxonomy | footer */
+  grid-template-rows: 10% 55% auto;  /* head | hero | taxonomy | footer */
   row-gap: 8px;
 }
 
@@ -1161,7 +1161,7 @@ body .book-wrap .flipbook .page:not(.hard).odd::before{
 .specimen-left:has(.taxonomy-tag) .taxonomy-tag{
   grid-row: 3;
   align-self: end;
-  max-height: 32%;                      /* <= tweak to 30–34% if needed */
+  /* max-height: 32%;                      <= tweak to 30–34% if needed */
   overflow: hidden;
 
   /* compact card */
@@ -1200,4 +1200,9 @@ body .book-wrap .flipbook .page:not(.hard).odd::before{
   max-height: 100%;
   object-fit: contain;
   transform: none;                      /* neutralize any page-specific scaling */
+}
+
+
+figure.specimen-hero > img {
+  height: 350px;
 }
